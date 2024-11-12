@@ -1,0 +1,56 @@
+﻿@page "/Aktiv"
+<div class="AssetContainer">
+    <div class="TopContainer">
+        <div class="TopQuestion">
+            <label>Har du en bil?</label>
+            <div class="toggle-container">
+                <input type="checkbox" id="toggle1" class="toggle-checkbox">
+                <label for="toggle1" class="toggle-label"></label>
+            </div>
+        </div>
+        <div class="TopQuestion">
+            <label>Har du en bolig?</label>
+            <div class="toggle-container">
+                <input type="checkbox" id="toggle2" class="toggle-checkbox">
+                <label for="toggle2" class="toggle-label"></label>
+            </div>
+        </div>
+        <div class="TopQuestion">
+            <label>Har du en opsparing?</label>
+            <div class="toggle-container">
+                <input type="checkbox" id="toggle3" class="toggle-checkbox">
+                <label for="toggle3" class="toggle-label"></label>
+            </div>
+        </div>
+        <div class="TopQuestion">
+            <label>Har du en pensionsopsparing?</label>
+            <div class="toggle-container">
+                <input type="checkbox" id="toggle4" class="toggle-checkbox">
+                <label for="toggle4" class="toggle-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="SelectorContainer">
+        @for (var i = 0; i <= _componentAmount; i++)
+        {
+        <div class="Selector">
+            <AssetSelectorComponent/>
+        </div>
+        }
+        <div class="Selector" id="ButtonBox">
+            <button @onclick="AddComponent">Tilføj flere (+)</button>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private int _componentAmount;
+    
+    private void AddComponent()
+    {
+        _componentAmount++;
+    }
+}
