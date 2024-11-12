@@ -1,0 +1,77 @@
+﻿@page "/arvelader"
+
+<h3>Velkommen til Arvefordeleren. Du skal nu indtaste dine oplysninger som arvelader</h3>
+
+@if (testators.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th>Adresse</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var testator in testators)
+            {
+                <tr>
+                    <td>@testator.Name</td>
+                    <td>@testator.Address</td>
+                    <td>
+                        <button class="btn btn-delete" @onclick="() => DeleteTestator(testator.Name)">Slet</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Ingen arvelader er oprettet endnu.</p>
+}
+
+<EditForm Model="@testator" OnValidSubmit="AddTestator" FormName="CreateTestatorForm">
+    <div class="form-group">
+        <label for="name">Navn:</label>
+        <InputText id="name" class="form-control" @bind-Value="testator.Name"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="address">Adresse:</label>
+        <InputText id="address" class="form-control" @bind-Value="testator.Address"></InputText>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Gem arvelader</button>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private Testator? testator { get; set; } = new();
+
+    private List<Testator> testators = new List<Testator>();
+
+    protected override void OnInitialized()
+    {
+        testators = TestatorRepository.GetTestators();
+    }
+
+    private void AddTestator()
+    {
+        var newTestator = new Testator
+            {
+                Id = testators.Any() ? testators.Max(t => t.Id) + 1 : 1,
+                Name = testator.Name,
+                Address = testator.Address
+            };
+
+        testators.Add(newTestator);
+
+        testator = new Testator();
+    }
+
+    private void DeleteTestator(string name)
+    {
+        TestatorRepository.DeleteTestator(name);
+        testators = TestatorRepository.GetTestators();
+    }
+}
