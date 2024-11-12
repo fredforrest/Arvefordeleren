@@ -1,0 +1,27 @@
+﻿<div class="AssetContainer">
+    <h4>Angiv aktiv</h4>
+    <select name="Types">
+        @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
+        {
+            <option value=@type>@type.ToString()</option>
+        }
+    </select>
+    
+    @if (Note)
+    {
+        <input type="text" placeholder="Note"/>
+    }
+    else
+    {
+        <div class="NoteBox">
+            <a @onclick="() => Note = true">Tilføj Note (+)</a>
+        </div>
+    }
+    
+    <a>Hjælp</a>
+</div>
+
+
+@code {
+    private bool Note = false;
+}
