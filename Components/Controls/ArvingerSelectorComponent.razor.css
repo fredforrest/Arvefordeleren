@@ -1,0 +1,81 @@
+.AssetContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #EFFAF7;
+    width: 100%;
+    padding: 0 8vh 2vh 8vh;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
+}
+.NoteBox {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: left;
+    margin-bottom: 4vh;
+}
+
+a {
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+}
+a:hover {
+    cursor: pointer;
+}
+
+h4 {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 2vh;
+    font-family: Arial, sans-serif;
+}
+
+select {
+    appearance: none;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    border: none;
+    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    height: 4vh;
+    margin-bottom: 2vh;
+    padding-left: 1vh;
+}
+
+/* Adjusting the caret icon */ 
+select {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIwLDAsMTYsMCw4LDgiIHN0eWxlPSJmaWxsOiM0MjQyNDI7c3Ryb2tlOm5vbmU7Ii8+PC9zdmc+');
+    background-repeat: no-repeat;
+    background-position: right 5% center;
+    background-size: 1.5vh 1.5vw;
+}
+
+/* Styling for the input field */
+input {
+    appearance: none;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    border: none;
+    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    width: 95%;
+    height: 4vh;
+    margin-bottom: 2vh;
+    padding-left: 1vh;
+}
+
+/* Hover and focus effects */
+select:hover, select:focus,
+input:hover, input:focus {
+    border-color: #aaa;
+    outline: none;
+}

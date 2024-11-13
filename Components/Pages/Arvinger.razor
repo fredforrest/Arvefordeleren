@@ -1,0 +1,15 @@
+
+@page "/arvinger"
+
+@using Arvefordeleren.Models.Repositories
+
+<div>
+    <h1>Arvinger</h1>
+    <ul>
+        @foreach (var arving in ArvingerRepository.GetArvinger())
+        {
+            <li>@arving.Name - @arving.Address</li>
+        }
+    </ul>
+    <ArvingerSelectorComponent />
+</div>
