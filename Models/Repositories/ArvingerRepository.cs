@@ -10,6 +10,11 @@ namespace Arvefordeleren.Models.Repositories
             _arvinger.Add(arving);
         }
 
+        public static void RemoveArving(Arving arving)
+        {
+            _arvinger.Remove(arving);
+        }
+
         public static List<Arving> GetArvinger()
         {
             return _arvinger;

@@ -8,8 +8,17 @@
     <ul>
         @foreach (var arving in ArvingerRepository.GetArvinger())
         {
-            <li>@arving.Name - @arving.Address</li>
+            <li>
+                @arving.Name - @arving.Address
+            </li>
         }
     </ul>
     <ArvingerSelectorComponent />
 </div>
+
+@code {
+    private void RemoveArving(Arving arving)
+    {
+        ArvingerRepository.RemoveArving(arving);
+    }
+}
