@@ -7,8 +7,6 @@
         <label for="name">Name:</label>
         <input type="text" id="name" @bind="Name" />
         <br />
-        <label for="address">Address:</label>
-        <input type="text" id="address" @bind="Address" />
         <br />
         <button class="Knapper" type="button" @onclick="AddArving">Add</button>
     </form>
@@ -17,7 +15,7 @@
         @foreach (var arving in ArvingerRepository.GetArvinger())
         {
             <li>
-                @arving.Name - @arving.Address
+                @arving.Name
                 <button class="Knapper" type="button" @onclick="() => ArvingerRepository.RemoveArving(arving)">Remove</button>
             </li>
         }
@@ -26,13 +24,13 @@
 
 @code {
     private string Name { get; set; }
-    private string Address { get; set; }
+
 
     private void AddArving()
     {
-        ArvingerRepository.AddArving(new Arving { Name = Name, Address = Address });
+        ArvingerRepository.AddArving(new Arving { Name = Name });
         Name = string.Empty;
-        Address = string.Empty;
+
     }
 
     private void RemoveArving(Arving arving)
