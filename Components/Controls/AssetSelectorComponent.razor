@@ -1,5 +1,14 @@
-﻿<div class="AssetContainer">
-    <h4>Angiv aktiv</h4>
+﻿<div class="AssetContainer" style="position: relative;">
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <h4>Angiv aktiv</h4>
+        </div>
+        <div style="position: absolute; top: 0; right: 0;">
+            <button style="background: none; border: none; padding: 0.3vw, 0.3vh; font-size: 1.5em; cursor: pointer">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
     <select name="Types">
         @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
         {
@@ -24,4 +33,6 @@
 
 @code {
     private bool Note = false;
+
+
 }
