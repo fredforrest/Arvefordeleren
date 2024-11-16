@@ -1,18 +1,23 @@
-
 namespace Arvefordeleren.Models.Repositories
 {
-    public class ArvingerRepository
+    public static class ArvingerRepository
     {
-        private static List<Arving> _arvinger = new List<Arving>();
+        private static readonly List<Arving> _arvinger = new List<Arving>();
 
         public static void AddArving(Arving arving)
         {
-            _arvinger.Add(arving);
+            if (arving != null && !_arvinger.Contains(arving))
+            {
+                _arvinger.Add(arving);
+            }
         }
 
         public static void RemoveArving(Arving arving)
         {
-            _arvinger.Remove(arving);
+            if (arving != null && _arvinger.Contains(arving))
+            {
+                _arvinger.Remove(arving);
+            }
         }
 
         public static List<Arving> GetArvinger()

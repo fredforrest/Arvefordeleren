@@ -1,96 +1,119 @@
-.AssetContainer {
-    width: 80vw;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFF9F0;
+    margin: 0;
+    padding: 0;
 }
 
-.TopContainer {
+.asset-container {
+    width: 90%;
+    margin: auto;
+    padding: 2%;
+}
+
+.top-container {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background-color: #EFFAF7;
-    width: 100%;
-    height: 10vh;
-    border-radius: 8px;
-    margin-bottom: 4vh;
-    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
-
+    padding: 2%;
+    border-radius: 1%;
+    box-shadow: 0.5% 0.5% 1% rgba(0, 0, 0, 0.1);
 }
 
-.TopQuestion {
-    margin: 4vw;
+.top-question .help-button {
+    background-color: #EFFAF7;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-.SelectorContainer {
+.selector-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: auto;
-    gap: 2vh;
-    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    gap: 2%;
+    margin-top: 2%;
 }
 
-.Selector {
+.arving-card {
+    background-color: #F0FAF6;
+    padding: 2%;
+    border-radius: 1%;
+    box-shadow: 0.5% 0.5% 1% rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.arving-header {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    margin-bottom: 1%;
 }
 
-#ButtonBox {
-    height: 20vh;
-    align-items: flex-start;
+.remove-button {
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
-.Knapper {
+
+.arving-input {
     width: 100%;
-    height: 50%;
+    padding: 2%;
+    margin-bottom: 2%;
+    border: 0.1rem solid #CCC;
+    border-radius: 0.5rem;
+}
+
+.relation-select {
+    width: 100%;
+    padding: 2%;
+    border: 0.1rem solid #CCC;
+    border-radius: 0.5rem;
+    margin-bottom: 2%;
+}
+
+.help-link {
+    background-color: transparent;
+    border: none;
+    color: #76EE9A;
+    font-size: 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.add-more-button {
+    width: 100%;
+    padding: 2%;
     background-color: #76EE9A;
     color: white;
     border: none;
-    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
-    border-radius: 5px;
-}
-
-label {
-    font-family: Arial, sans-serif;
-}
-
-/* TOGGLE BOX */
-.toggle-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.toggle-checkbox {
-    display: none;
-}
-
-.toggle-label {
-    position: relative;
-    width: 5vw;
-    height: 26px;
-    background-color: #ccc;
-    border-radius: 50px;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 2% 0;
 }
 
-.toggle-label::before {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: 5px;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.3s;
+#button-box {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2%;
 }
 
-.toggle-checkbox:checked + .toggle-label {
+.back-button {
+    background-color: #CCC;
+    color: white;
+    padding: 1% 2%;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.next-button {
     background-color: #76EE9A;
-}
-
-.toggle-checkbox:checked + .toggle-label::before {
-    transform: translateX(3vw);
+    color: white;
+    padding: 1% 2%;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
 }

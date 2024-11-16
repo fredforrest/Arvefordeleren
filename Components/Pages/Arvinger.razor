@@ -1,22 +1,46 @@
-
 @page "/arvinger"
 
-@using Arvefordeleren.Models.Repositories
+<div class="asset-container">
+    <div class="top-container">
+        <h2>Indtast dine arvinger</h2>
+        <button class="help-button">?</button>
+    </div>
 
-<div>
-    <h1>Arvinger</h1>
-    <ul>
+    <div class="selector-container">
         @foreach (var arving in ArvingerRepository.GetArvinger())
         {
-            <li>
-                @arving.Name - @arving.Address
-            </li>
+            <div class="arving-card">
+                <div class="arving-header">
+                    <h4>Arving</h4>
+                    <button class="remove-button" @onclick="() => RemoveArving(arving)">x</button>
+                </div>
+                @*input navn for arving*@
+                <input class="arving-input" type="text" placeholder="Navn" @bind="arving.Name" />
+                @*input adresse for arving*@
+                <input class="arving-input" type="text" placeholder="Adresse" @bind="arving.Address" />
+                @*input type af arving*@
+                <select class="relation-select" @bind="arving.Type">
+                    <option value="Friarv">Friarv</option>
+                    <option value="Tvangsarv">Tvangsarv</option>
+                </select>
+            </div>
         }
-    </ul>
-    <ArvingerSelectorComponent />
+    </div>
+
+    <button class="add-more-button" @onclick="AddArving">Tilføj Flere (+)</button>
+
+    <div id="button-box">
+        <button class="back-button">Tilbage</button>
+        <button class="next-button">Næste</button>
+    </div>
 </div>
 
 @code {
+    private void AddArving()
+    {
+        ArvingerRepository.AddArving(new Arving { Name = string.Empty, Address = string.Empty, Type = ArvingType.Friarv });
+    }
+
     private void RemoveArving(Arving arving)
     {
         ArvingerRepository.RemoveArving(arving);
