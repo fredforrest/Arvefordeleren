@@ -4,42 +4,38 @@
         <div class="TopQuestion">
             <label>Har du en bil?</label>
             <div class="toggle-container">
-                <input type="checkbox" id="toggle1" class="toggle-checkbox">
-                <label for="toggle1" class="toggle-label"></label>
+                <MudSwitch @bind-Value="Car" Color="Color.Success" Size="Size.Large" @onclick="CarBool" />
             </div>
         </div>
         <div class="TopQuestion">
             <label>Har du en bolig?</label>
             <div class="toggle-container">
-                <input type="checkbox" id="toggle2" class="toggle-checkbox">
-                <label for="toggle2" class="toggle-label"></label>
+                <MudSwitch @bind-Value="Home" Color="Color.Success" Size="Size.Large" @onclick="HomeBool"/>
             </div>
         </div>
         <div class="TopQuestion">
             <label>Har du en opsparing?</label>
             <div class="toggle-container">
-                <input type="checkbox" id="toggle3" class="toggle-checkbox">
-                <label for="toggle3" class="toggle-label"></label>
+                <MudSwitch @bind-Value="TempBool" Color="Color.Success" Size="Size.Large" />
             </div>
         </div>
         <div class="TopQuestion">
             <label>Har du en pensionsopsparing?</label>
             <div class="toggle-container">
-                <input type="checkbox" id="toggle4" class="toggle-checkbox">
-                <label for="toggle4" class="toggle-label"></label>
+                <MudSwitch @bind-Value="TempBool" Color="Color.Success" Size="Size.Large" />
             </div>
         </div>
     </div>
 
     <div class="SelectorContainer">
-        @for (var i = 0; i <= _componentAmount; i++)
+        @foreach(Asset asset in AssetsRepository.Assets)
         {
         <div class="Selector">
-            <AssetSelectorComponent/>
+            <AssetSelectorComponent asset="asset"/>
         </div>
         }
         <div class="Selector" id="ButtonBox">
-            <button @onclick="AddComponent">Tilføj flere (+)</button>
+            <button @onclick="AddAsset">Tilføj flere (+)</button>
         </div>
     </div>
 </div>
@@ -47,10 +43,46 @@
 
 
 @code {
-    private int _componentAmount;
+    public bool Car { get; set; }
+    public bool Home { get; set; }
+    public bool TempBool { get; set; } // Temp Bool til "Opsparing" og "Pension" slider. Slet denne når vi når så langt.
     
-    private void AddComponent()
+    private Asset? CarAsset, HomeAsset;
+
+    private void AddAsset()
     {
-        _componentAmount++;
+        AssetsRepository.AddAsset(new Asset());
+    }
+
+    private void AddAsset(Asset asset)
+    {
+        AssetsRepository.AddAsset(asset);
+    }
+
+
+    private void CarBool()
+    {
+        if (CarAsset == null)
+        {
+            CarAsset = new Asset(AssetType.Køretøj);
+            AddAsset(CarAsset);
+        }
+        else
+        {
+            return; // Fjern CarAsset Fra listen her
+        }
+    }
+
+    private void HomeBool()
+    {
+        if (HomeAsset == null)
+        {
+            HomeAsset = new Asset(AssetType.Bolig);
+            AddAsset(HomeAsset);
+        }
+        else
+        {
+            return; // Fjern HomeAsset Fra listen her
+        }
     }
 }

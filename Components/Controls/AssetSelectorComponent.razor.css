@@ -32,11 +32,10 @@ h4 {
     font-family: Arial, sans-serif;
 }
 
-select {
-    appearance: none;
+::deep select, ::deep input {
+    all: unset;
     font-size: 1em;
     font-family: Arial, sans-serif;
-    border: none;
     box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
     border-radius: 5px;
     background-color: #fff;
@@ -45,37 +44,26 @@ select {
     width: 100%;
     height: 4vh;
     margin-bottom: 2vh;
-    padding-left: 1vh;
+    padding-left: 0.5vw;
+    box-sizing: border-box;
 }
 
-/* Adjusting the caret icon */ 
-select {
+
+::deep select {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIwLDAsMTYsMCw4LDgiIHN0eWxlPSJmaWxsOiM0MjQyNDI7c3Ryb2tlOm5vbmU7Ii8+PC9zdmc+');
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 1.5vh 1.5vw;
 }
 
-/* Styling for the input field */
-input {
-    appearance: none;
-    font-size: 1em;
-    font-family: Arial, sans-serif;
-    border: none;
-    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
-    border-radius: 5px;
-    background-color: #fff;
-    color: #333;
-    cursor: pointer;
-    width: 95%;
-    height: 4vh;
-    margin-bottom: 2vh;
-    padding-left: 1vh;
+
+::deep Form {
+    width: 75%;
 }
 
 /* Hover and focus effects */
-select:hover, select:focus,
-input:hover, input:focus {
+::deep select:hover, ::deep select:focus,
+::deep input:hover, ::deep input:focus {
     border-color: #aaa;
     outline: none;
 }
