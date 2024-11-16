@@ -1,12 +1,13 @@
 namespace Arvefordeleren.Models
 {
-    public class Arving
+    public class Heir
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public ArvingType Type { get; set; }
+        public HeirType Type { get; set; }
     }
 
-    public enum ArvingType
+    public enum HeirType
     {
         Friarv,
         Tvangsarv

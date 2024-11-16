@@ -1,0 +1,27 @@
+@page "/arvinger"
+
+<div class="HeirContainer">
+    <div class="TopContainer">
+        <h1>Indtast dine arvinger</h1>
+    </div>
+
+    <div class="SelectorContainer">
+        @foreach (var heir in HeirsRepository.Heirs)
+        {
+            <div class="Selector">
+                <HeirSelectorComponent Heir="heir"></HeirSelectorComponent>
+            </div>
+        }
+        
+        <div class="Selector" id="ButtonBox">
+            <button @onclick="AddHeir">Tilføj flere (+)</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void AddHeir()
+    {
+        HeirsRepository.AddHeir(new Heir());
+    }
+}
