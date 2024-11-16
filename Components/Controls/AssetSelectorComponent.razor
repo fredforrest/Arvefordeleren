@@ -1,27 +1,32 @@
 ﻿<div class="AssetContainer">
-    <h4>Angiv aktiv</h4>
-    <select name="Types">
-        @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
-        {
+    <h4>Aktiv</h4>
+    <EditForm Model="asset">
+        <InputSelect @bind-Value="asset.Type" name="Types">
+            @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
+            {
             <option value=@type>@type.ToString()</option>
+            }
+        </InputSelect>
+
+        @if (Note || asset.Note != null)
+        {
+        <InputText @bind-Value="asset.Note" id="inputBox" placeholder="Note"/>
         }
-    </select>
-    
-    @if (Note)
-    {
-        <input type="text" placeholder="Note"/>
-    }
-    else
-    {
+        else
+        {
         <div class="NoteBox">
             <a @onclick="() => Note = true">Tilføj Note (+)</a>
         </div>
-    }
+        }
+    </EditForm>
     
     <a>Hjælp</a>
 </div>
 
 
 @code {
+    [Parameter]
+    public Asset asset { get; set; }
+    
     private bool Note = false;
 }
