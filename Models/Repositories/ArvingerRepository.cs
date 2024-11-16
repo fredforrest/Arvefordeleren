@@ -20,6 +20,7 @@ namespace Arvefordeleren.Models.Repositories
             }
         }
 
+        //tester igen
         public static List<Arving> GetArvinger()
         {
             return _arvinger;
