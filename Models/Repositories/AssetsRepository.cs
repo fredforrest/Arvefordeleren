@@ -9,4 +9,14 @@ public static class AssetsRepository
         asset.Id = Assets.Count + 1;
         Assets.Add(asset);
     }
+
+    public static void RemoveAsset(int id)
+    {
+        Asset asset = Assets.FirstOrDefault(a => a.Id == id);
+
+        if (asset != null)
+        {
+            Assets.Remove(asset);
+        }
+    }
 }
