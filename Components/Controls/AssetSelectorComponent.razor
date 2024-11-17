@@ -1,24 +1,19 @@
 ﻿<div class="AssetContainer">
-    <h4>Aktiv</h4>
-    <EditForm Model="asset">
-        <InputSelect @bind-Value="asset.Type" name="Types">
-            @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
-            {
-<div class="AssetContainer" style="position: relative;">
-    <div style="display: flex; flex-direction: row;">
+    <div>
         <div>
-            <h4>Angiv aktiv</h4>
+            <h4>Aktiv</h4>
         </div>
-        <div style="position: absolute; top: 0; right: 0;">
-            <button style="background: none; border: none; padding: 0.3vw, 0.3vh; font-size: 1.5em; cursor: pointer">
+        <div class="AssetContainer-remove-btn">
+            <button class="Remove-btn" @onclick="() => Close(asset)">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </div>
-    <select name="Types">
-        @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
-        {
-            <option value=@type>@type.ToString()</option>
+    <EditForm Model="asset">
+        <InputSelect @bind-Value="asset.Type" name="Types">
+            @foreach (AssetType type in Enum.GetValues(typeof(AssetType)))
+            {
+                <option value=@type>@type.ToString()</option>
             }
         </InputSelect>
 
@@ -41,8 +36,18 @@
 @code {
     [Parameter]
     public Asset asset { get; set; }
-    
+
     private bool Note = false;
 
+    [Parameter]
+    public EventCallback<Asset> OnClose { get; set; }
+
+    private async void Close(Asset asset)
+    {
+        if (OnClose.HasDelegate)
+        {
+            await OnClose.InvokeAsync(asset);
+        }
+    }
 
 }

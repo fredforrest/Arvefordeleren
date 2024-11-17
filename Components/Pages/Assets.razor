@@ -31,7 +31,7 @@
         @foreach(Asset asset in AssetsRepository.Assets)
         {
         <div class="Selector">
-            <AssetSelectorComponent asset="asset"/>
+                <AssetSelectorComponent asset="asset" OnClose="HandleClose" />
         </div>
         }
         <div class="Selector" id="ButtonBox">
@@ -46,7 +46,7 @@
     public bool Car { get; set; }
     public bool Home { get; set; }
     public bool TempBool { get; set; } // Temp Bool til "Opsparing" og "Pension" slider. Slet denne når vi når så langt.
-    
+
     private Asset? CarAsset, HomeAsset;
 
     private void AddAsset()
@@ -60,6 +60,19 @@
     }
 
 
+    private void RemoveAsset(Asset asset)
+    {
+        if (asset != null)
+        {
+            AssetsRepository.RemoveAsset(asset.Id);
+        }
+    }
+
+    private void HandleClose(Asset asset)
+    {
+        RemoveAsset(asset);
+    }
+
     private void CarBool()
     {
         if (CarAsset == null)
@@ -69,7 +82,8 @@
         }
         else
         {
-            return; // Fjern CarAsset Fra listen her
+            RemoveAsset(CarAsset);
+            CarAsset = null;
         }
     }
 
@@ -82,7 +96,8 @@
         }
         else
         {
-            return; // Fjern HomeAsset Fra listen her
+            RemoveAsset(HomeAsset);
+            HomeAsset = null;
         }
     }
 }
