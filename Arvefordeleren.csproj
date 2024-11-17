@@ -11,9 +11,4 @@
       <_ContentIncludedByDefault Remove="wwwroot\bootstrap\bootstrap.min.css.map" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="CSS\" />
-      <Folder Include="wwwroot\CSS\" />
-    </ItemGroup>
-
 </Project>

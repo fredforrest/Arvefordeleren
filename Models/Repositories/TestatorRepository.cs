@@ -8,15 +8,16 @@
 
         public static void AddNewTestator(Testator testator)
         {
-            
+            var maxId = testators.Max(t => t.Id);
+            testator.Id = maxId + 1;
             testators.Add(testator);
         }
 
-        public static Testator GetTestatorByName(string name) => testators.FirstOrDefault(t => t.Name == name);
+        public static Testator GetTestatorById(int id) => testators.FirstOrDefault(t => t.Id == id);
 
-        public static void DeleteTestator(string name)
+        public static void DeleteTestator(int id)
         {
-            var testator = GetTestatorByName(name);
+            var testator = GetTestatorById(id);
             if (testator != null)
             {
                 testators.Remove(testator);
