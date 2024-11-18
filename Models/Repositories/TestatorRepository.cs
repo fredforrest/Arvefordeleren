@@ -8,7 +8,7 @@
 
         public static void AddNewTestator(Testator testator)
         {
-            var maxId = testators.Max(t => t.Id);
+            int maxId = testators.Any() ? testators.Max(t => t.Id) : 0; // Hvis listen er tom, start med ID 1
             testator.Id = maxId + 1;
             testators.Add(testator);
         }
@@ -26,7 +26,7 @@
 
         public static List<Testator> GetTestators() => new List<Testator>(testators);
 
-
+       
 
 
     }

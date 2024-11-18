@@ -71,22 +71,37 @@
     private Testator testator = new Testator();
     private List<Testator> testators = new List<Testator>();
 
+    protected override void OnInitialized()
+    {
+        testators = TestatorRepository.GetTestators();
+    }
+
+
     private void AddTestator()
     {
-        // Tilføj testator til listen og sessionbaseret lager (eller database, hvis det er tilfældet)
+        if (!string.IsNullOrWhiteSpace(testator.Name) && !string.IsNullOrWhiteSpace(testator.Address) && !string.IsNullOrWhiteSpace(testator.Email))
+        {
+            TestatorRepository.AddNewTestator(new Testator
+                {
+                    Name = testator.Name,
+                    Address = testator.Address,
+                    Email = testator.Email
+                });
 
-        testators.Add(new Testator { Name = testator.Name, Address = testator.Address, Email = testator.Email });
-        testator = new Testator(); // Nulstil formularen efter indsendelse
+            // Refresh the local list
+            testators = TestatorRepository.GetTestators();
+
+            // nulstiller formen til en ny
+            testator = new Testator();
+        }
     }
 
 
     private void DeleteTestator(int id)
-    {        
-        var testatorToRemove = testators.FirstOrDefault(t => t.Id == id);
+    {
+        TestatorRepository.DeleteTestator(id);
 
-        if (testatorToRemove != null)
-        {
-            testators.Remove(testatorToRemove);
-        }
+        // Refresh the local list 
+        testators = TestatorRepository.GetTestators();
     }
 }
