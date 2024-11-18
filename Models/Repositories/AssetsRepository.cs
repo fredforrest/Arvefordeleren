@@ -1,5 +1,3 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
-
 namespace Arvefordeleren.Models.Repositories;
 
 public static class AssetsRepository
