@@ -4,24 +4,33 @@
     <div class="TopContainer">
         <h1>Indtast dine arvinger</h1>
     </div>
-
     <div class="SelectorContainer">
         @foreach (var heir in HeirsRepository.Heirs)
         {
             <div class="Selector">
+                <button class="DeleteButton" @onclick="() => RemoveHeir(heir)">Fjern</button>
                 <HeirSelectorComponent Heir="heir"></HeirSelectorComponent>
             </div>
         }
         
         <div class="Selector" id="ButtonBox">
-            <button @onclick="AddHeir">Tilføj flere (+)</button>
+            <button class="AddButton" @onclick="AddHeir">Tilføj flere (+)</button>
         </div>
     </div>
 </div>
-
 @code {
+    private List<Heir> Heirs { get; set; } = HeirsRepository.Heirs; // Declare Heirs as a list of Heir objects
+
     private void AddHeir()
     {
         HeirsRepository.AddHeir(new Heir());
+        Heirs = HeirsRepository.Heirs; 
+        StateHasChanged(); 
+    }
+    private void RemoveHeir(Heir heir)
+    {
+        HeirsRepository.RemoveHeir(heir.Id);
+        Heirs = HeirsRepository.Heirs; 
+        StateHasChanged(); 
     }
 }

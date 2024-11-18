@@ -1,18 +1,11 @@
 <div class="HeirContainer">
     <div class="TopBox">
         <h4>Arving</h4>
-        <a @onclick="RemoveHeir">X</a>
+     
     </div>
     
     <EditForm Model="Heir">
         <InputText @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn"/>
-
-        <InputSelect @bind-Value="Heir.Type" name="Types">
-            @foreach (HeirType type in Enum.GetValues(typeof(HeirType)))
-            {
-                <option value=@type>@type.ToString()</option>
-            }
-        </InputSelect>
     </EditForm>
 
     <a>Hjælp</a>
@@ -25,8 +18,5 @@
     [Parameter]
     public Heir Heir { get; set; }
 
-    private void RemoveHeir()
-    {
-        HeirsRepository.RemoveHeir(Heir.Id);
-    }
+
 }
