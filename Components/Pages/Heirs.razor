@@ -1,4 +1,4 @@
-@page "/arvinger"
+@page "/Arvinger"
 
 <div class="HeirContainer">
     <div class="TopContainer">
@@ -19,18 +19,18 @@
     </div>
 </div>
 @code {
-    private List<Heir> Heirs { get; set; } = HeirsRepository.Heirs; // Declare Heirs as a list of Heir objects
+    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs; 
 
     private void AddHeir()
     {
         HeirsRepository.AddHeir(new Heir());
-        Heirs = HeirsRepository.Heirs; 
+        HeirsList = HeirsRepository.Heirs; 
         StateHasChanged(); 
     }
     private void RemoveHeir(Heir heir)
     {
         HeirsRepository.RemoveHeir(heir.Id);
-        Heirs = HeirsRepository.Heirs; 
+        HeirsList = HeirsRepository.Heirs; 
         StateHasChanged(); 
     }
 }
