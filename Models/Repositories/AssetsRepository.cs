@@ -1,4 +1,6 @@
-﻿namespace Arvefordeleren.Models.Repositories;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+
+namespace Arvefordeleren.Models.Repositories;
 
 public static class AssetsRepository
 {
@@ -24,4 +26,6 @@ public static class AssetsRepository
     {
         return Assets.FirstOrDefault(a => a.Id == id);
     }
+
+    public static List<Asset> GetAssets() => new List<Asset>(Assets);
 }
