@@ -6,6 +6,12 @@
     
     <EditForm Model="Heir">
         <InputText @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn"/>
+        <select @bind="Heir.Relation" name="Relation">
+            @foreach (var relation in Enum.GetValues<RelationType>())
+            {
+                <option value="@relation">@relation.ToString()</option>
+            }
+        </select>
     </EditForm>
 
 </div>
