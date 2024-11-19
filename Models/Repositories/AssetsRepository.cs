@@ -1,4 +1,4 @@
-﻿namespace Arvefordeleren.Models.Repositories;
+namespace Arvefordeleren.Models.Repositories;
 
 public static class AssetsRepository
 {
@@ -19,4 +19,18 @@ public static class AssetsRepository
             Assets.Remove(asset);
         }
     }
+
+    public static Asset? GetAssetById(int id)
+    {
+        Asset? asset = Assets.FirstOrDefault(a => a.Id == id);
+        
+        if (asset == null)
+        {
+            throw new InvalidOperationException($"Aktiv med Id {id} blev ikke fundet.");
+        }
+
+        return asset;
+    }
+
+    public static List<Asset> GetAssets() => new List<Asset>(Assets);
 }
