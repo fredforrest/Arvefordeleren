@@ -22,7 +22,14 @@ public static class AssetsRepository
 
     public static Asset? GetAssetById(int id)
     {
-        return Assets.FirstOrDefault(a => a.Id == id);
+        Asset? asset = Assets.FirstOrDefault(a => a.Id == id);
+        
+        if (asset == null)
+        {
+            throw new InvalidOperationException($"Aktiv med Id {id} blev ikke fundet.");
+        }
+
+        return asset;
     }
 
     public static List<Asset> GetAssets() => new List<Asset>(Assets);
