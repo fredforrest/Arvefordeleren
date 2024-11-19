@@ -1,4 +1,5 @@
 ﻿.Container {
     display: flex;
     flex-direction: row;
+    background-color: #FCFAF4;
 }
