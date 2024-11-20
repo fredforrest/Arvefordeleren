@@ -12,14 +12,6 @@ namespace Arvefordeleren.Models.Repositories
             Heirs.Add(heir);
         }
 
-        //public static void RemoveHeir(int id)
-        //{
-        //    Heir heir = Heirs.Where(x => x.Id == id).FirstOrDefault();
-        //    if (heir != null)
-        //    {
-        //        Heirs.Remove(heir);
-        //    }
-        //}
         public static void RemoveHeir(int id)
         {
             Heir heir = Heirs.FirstOrDefault(b => b.Id == id);

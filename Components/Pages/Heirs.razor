@@ -5,10 +5,10 @@
         <h1>Indtast dine arvinger</h1>
     </div>
     <div class="SelectorContainer">
-        @foreach (var (heir, index) in HeirsRepository.Heirs.Select((heir, index) => (heir, index)))
+        @foreach (var heir in HeirsRepository.Heirs)
         {
             <div class="Selector">
-                <HeirSelectorComponent @key="@index"Heir="heir" OnClose="HandleClose"/>
+                <HeirSelectorComponent Heir="heir" OnClose="HandleClose"/>
             </div>
         }
         
