@@ -1,10 +1,14 @@
 @using Arvefordeleren.Components.Pages
 <div class="HeirContainer">
     <div class="TopBox">
-        <h4>Arving</h4>
-        <button class="DeleteButton" @onclick="() => Close(Heir)">
-        <span aria-hidden="true">&times;</span>
-        </button>
+        <div>
+            <h4>Arving</h4>
+        </div>
+        <div class="AssetContainer-remove-btn">
+            <button class="Remove-btn" @onclick="() => Close(Heir)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
 
     
