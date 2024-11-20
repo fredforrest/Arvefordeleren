@@ -1,8 +1,12 @@
+@using Arvefordeleren.Components.Pages
 <div class="HeirContainer">
     <div class="TopBox">
         <h4>Arving</h4>
-     
+        <button class="DeleteButton" @onclick="() => Close(Heir)">
+        <span aria-hidden="true">&times;</span>
+        </button>
     </div>
+
     
     <EditForm Model="Heir">
         <InputText @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn"/>
@@ -19,8 +23,28 @@
 
 @code {
     private bool Note = false;
-    
+    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
+
+    private void RemoveHeir(Heir heir)
+    {
+        HeirsRepository.RemoveHeir(heir.Id);
+        HeirsList = HeirsRepository.Heirs;
+        StateHasChanged();
+    }
+
+
     [Parameter]
     public Heir Heir { get; set; }
+
+    [Parameter]
+    public EventCallback<Heir> OnClose { get; set; }
+
+    private async void Close(Heir heir)
+    {
+        if (OnClose.HasDelegate)
+        {
+            await OnClose.InvokeAsync(heir);
+        }
+    }
 
 }

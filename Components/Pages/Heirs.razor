@@ -5,11 +5,10 @@
         <h1>Indtast dine arvinger</h1>
     </div>
     <div class="SelectorContainer">
-        @foreach (var heir in HeirsRepository.Heirs)
+        @foreach (var (heir, index) in HeirsRepository.Heirs.Select((heir, index) => (heir, index)))
         {
             <div class="Selector">
-                <button class="DeleteButton" @onclick="() => RemoveHeir(heir)">&#10005;</button>
-                <HeirSelectorComponent Heir="heir"></HeirSelectorComponent>
+                <HeirSelectorComponent @key="@index"Heir="heir" OnClose="HandleClose"/>
             </div>
         }
         
@@ -27,10 +26,22 @@
         HeirsList = HeirsRepository.Heirs; 
         StateHasChanged(); 
     }
+    // private void RemoveHeir(Heir heir)
+    // {
+    //     HeirsRepository.RemoveHeir(heir.Id);
+    //     HeirsList = HeirsRepository.Heirs; 
+    //     StateHasChanged(); 
+    // }
     private void RemoveHeir(Heir heir)
     {
-        HeirsRepository.RemoveHeir(heir.Id);
-        HeirsList = HeirsRepository.Heirs; 
-        StateHasChanged(); 
+        if (heir != null)
+        {
+            HeirsRepository.RemoveHeir(heir.Id);
+        }
+    }
+
+    private void HandleClose(Heir heir)
+    {
+        RemoveHeir(heir);
     }
 }

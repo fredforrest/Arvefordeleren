@@ -1,5 +1,4 @@
 .HeirContainer {
-    position: relative;
     font-family: Arial, sans-serif;
     width: 80vw;
 
@@ -107,25 +106,13 @@ h1 {
     position: relative;
 }
 
-/*.DeleteButton {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    background-color: #76EE9A;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 5px;
-    transform: translate(330%, 2vh);
-    top: 0;
-}*/
 
 .DeleteButton {
-    position: absolute;
-    top: 10px; 
-    right: 10px;
+    position: relative;
+    top: 10%; 
+    right: 10%;
     margin: 0;
-    padding: 5px;
+    padding: 5%;
     background-color: #f0f0f0; 
     border: none;
     font-size: 16px;
