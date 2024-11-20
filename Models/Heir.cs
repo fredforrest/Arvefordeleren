@@ -11,11 +11,7 @@ namespace Arvefordeleren.Models
     }
     public enum RelationType
     {
-       Barn,
-       Barnebarn,
-       Forældre,
-       Bedsteforældre,
-       Andet
+       Barn, Barnebarn, ForÃ¦ldre, BedsteforÃ¦ldre, Andet
     }
 
 }
