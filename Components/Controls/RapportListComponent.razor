@@ -29,6 +29,10 @@
             @foreach (Heir heir in heirList)
             {
                 <div class="item @(heir == selectedItem ? "highlighted" : "")" @onclick="() => SelectItem(heir) ">
+                    
+                    <div class="icon">
+                        <img class="icon" src="@heir.Icon" />
+                    </div>
                     <div class="details">
                         <strong>@heir.Name</strong>
                         <p>@heir.Relation</p>
