@@ -21,5 +21,19 @@ namespace Arvefordeleren.Models.Repositories
                 Heirs.Remove(heir);
             }
         }
-    }
+
+        public static Heir? GetHeirById(int id)
+    {
+        Heir? heir = Heirs.FirstOrDefault(h => h.Id == id);
+
+        if (heir == null)
+        {
+            throw new InvalidOperationException($"Heir med Id {id} blev ikke fundet.");
+        }
+
+        return heir;
+        }
+
+        public static List<Heir> GetHeirs() => Heirs;
+     }
 }
