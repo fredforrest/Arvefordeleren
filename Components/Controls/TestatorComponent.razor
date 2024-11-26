@@ -37,6 +37,7 @@
                         <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn" disabled></InputText>
                     </div>
 
+
                     <div class="form-group">
                         <label for="address">Adresse</label>
                         <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse" disabled></InputText>
@@ -71,6 +72,11 @@
                     <label for="mail">Email</label>
                     <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
                 </div>
+
+                 <div class="form-group">
+                        <label for="marital_status">Er du gift?</label>
+                        <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large" />
+                    </div>
             </EditForm>
         </div>
     }

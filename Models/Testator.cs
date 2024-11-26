@@ -9,10 +9,12 @@ namespace Arvefordeleren.Models
 
         public string? Name { get; set; } = null;
 
+        public bool isMarried { get; set; }
+
         public string? Address { get; set; } = null;
 
         public string? Email { get; set; }
-                
+
 
     }
 }
