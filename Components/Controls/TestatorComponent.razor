@@ -1,7 +1,7 @@
 <div class="body-container">
     @if (IsSecondary)
-    {   
-        <p>Vil du tilføje en anden til arvsfordelingen?</p>
+    {
+        <p>Vil du tilføje din ægtefælle som arvelader?</p>
         <MudSwitch @bind-Value="Enable" Color="Color.Success" Size="Size.Large" />
 
         if (Enable)
@@ -33,6 +33,7 @@
                         <label for="name">Navn</label>
                         <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn" disabled></InputText>
                     </div>
+
 
                     <div class="form-group">
                         <label for="address">Adresse</label>
@@ -66,6 +67,11 @@
                     <label for="mail">Email</label>
                     <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
                 </div>
+
+                 <div class="form-group">
+                        <label for="marital_status">Er du gift?</label>
+                        <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large" />
+                    </div>
             </EditForm>
         </div>
     }
