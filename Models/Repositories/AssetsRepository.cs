@@ -32,5 +32,4 @@ public static class AssetsRepository
         return asset;
     }
 
-    public static List<Asset> GetAssets() => new List<Asset>(Assets);
 }

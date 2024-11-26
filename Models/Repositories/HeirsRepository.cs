@@ -34,6 +34,6 @@ namespace Arvefordeleren.Models.Repositories
         return heir;
         }
 
-        public static List<Heir> GetHeirs() => Heirs;
+
      }
 }
