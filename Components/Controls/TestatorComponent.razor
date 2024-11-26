@@ -1,9 +1,12 @@
 <div class="body-container">
     @if (IsSecondary)
-    {
-        <p>Vil du tilføje din ægtefælle som arvelader?</p>
-        <MudSwitch @bind-Value="Enable" Color="Color.Success" Size="Size.Large" />
-
+    {   
+        <div class="topInfo">
+            <p>Vil du tilføje din ægtefælle til arvsfordelingen?</p>
+            <div> <MudSwitch @bind-Value="Enable" Color="Color.Success" Size="Size.Large" /> </div>
+            
+        </div>
+        
         if (Enable)
         {
             <div class="testator-container">
@@ -50,7 +53,9 @@
     }
     else
     {
-        <p>Disse oplysninger gemmes ikke af os</p>
+        <div class="topInfo">
+            <p>Disse oplysninger gemmes ikke af os</p>
+        </div>
         <div class="testator-container">
             <EditForm Model="@Testator">
                 <div class="form-group">
