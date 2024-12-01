@@ -1,0 +1,69 @@
+﻿/* Global container for centering everything */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Styling for the header */
+.arvefordeler-header {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f0f0f0;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* Styling for instruction sections */
+.arvefordeler-instructions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Individual instruction boxes */
+.instruction-box {
+    background-color: #76EE9A;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+.instruction-title {
+    color: #EFFAF7;
+}
+
+.instruction-text {
+    color: #004d40;
+}
+
+/* Styling for the upload section */
+.mudblazor-search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.upload-box {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Styling for MudBlazor search box */
+.search-box {
+    
+    display: flex;
+    justify-content: center;
+}
+
+

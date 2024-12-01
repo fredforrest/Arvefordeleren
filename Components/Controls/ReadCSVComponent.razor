@@ -1,0 +1,160 @@
+﻿@inject ISnackbar Snackbar
+@inject NavigationManager navigationManager
+
+<MudStack Style="width: 100%">
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+                   @ref="@_fileUpload"
+                   OnFilesChanged="OnInputFileChanged"
+                   AppendMultipleFiles
+                   Hidden="@false"
+                   InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
+                   InputStyle="opacity:0"
+                   tabindex="-1"
+                   @ondrop="@ClearDragClass"
+                   @ondragenter="@SetDragClass"
+                   @ondragleave="@ClearDragClass"
+                   @ondragend="@ClearDragClass">
+        <ActivatorContent>
+            <MudPaper Height="300px"
+                      Outlined="true"
+                      Class="@_dragClass">
+                <MudText Typo="Typo.h6">
+                    Træk og slip filerne her eller klik
+                </MudText>
+                @foreach (var file in _fileNames)
+                {
+                    <MudChip T="string"
+                             Color="Color.Dark"
+                             Text="@file"
+                             tabindex="-1" />
+                }
+            </MudPaper>
+        </ActivatorContent>
+    </MudFileUpload>
+    <MudToolBar Gutters="@false"
+                Class="relative d-flex justify-end gap-4">
+        <MudButton Color="Color.Primary"
+                   OnClick="@OpenFilePickerAsync"
+                   Variant="Variant.Filled">
+            Åben stifinder
+        </MudButton>
+        <MudButton Color="Color.Primary"
+                   Disabled="@(!_fileNames.Any())"
+                   OnClick="@Upload"
+                   Variant="Variant.Filled">
+            Upload
+        </MudButton>
+        <MudButton Color="Color.Error"
+                   Disabled="@(!_fileNames.Any())"
+                   OnClick="@ClearAsync"
+                   Variant="Variant.Filled">
+            Slet
+        </MudButton>
+    </MudToolBar>
+</MudStack>
+
+@code {
+    public Testator testator { get; set; } = new Testator();
+    private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
+    private string _dragClass = DefaultDragClass;
+    private readonly List<string> _fileNames = new();
+    private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
+
+
+    private async Task ClearAsync()
+    {
+        await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
+        _fileNames.Clear();
+        ClearDragClass();
+    }
+
+    private Task OpenFilePickerAsync()
+        => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        foreach (var file in files)
+        {
+            _fileNames.Add(file.Name);
+        }
+    }
+
+    public async Task Upload()
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+
+        try
+        {
+            bool dataLoaded = false;  // tjekker til at se om der er blevet indlæst noget data længere nede
+
+            if (_fileUpload.Files != null && _fileUpload.Files.Count > 0)
+            {
+                foreach (var file in _fileUpload.Files)
+                {
+                    var stream = file.OpenReadStream();
+                    using var reader = new StreamReader(stream);
+                    var content = reader.ReadToEnd();
+
+                    if (!string.IsNullOrEmpty(content))
+                    {
+                        if (file.Name.Contains("Testators"))
+                        {
+                            CsvReader.ReadTestators(content);
+                            dataLoaded = true;  // Sætter sig til true, hvis data blev indlæst.
+                        }
+                        else if (file.Name.Contains("Assets"))
+                        {
+                            CsvReader.ReadAssets(content);
+                            dataLoaded = true;  
+                        }
+                        else if (file.Name.Contains("Heirs"))
+                        {
+                            CsvReader.ReadHeirs(content);
+                            dataLoaded = true;  
+                        }
+                    }
+                    else
+                    {
+                        Snackbar.Add("Filen er tom eller kunne ikke læses.", Severity.Error);
+                        return;  // Stopper hvis filen er tom
+                    }
+                }
+
+                if (!dataLoaded)
+                {
+                    Snackbar.Add("Ingen data blev indlæst fra filerne. Sørg for at filerne indeholder gyldigt data.", Severity.Error);
+                    return;  // Stopper hvis der ikke er blevet indlæst en skid data.
+                }
+
+                Snackbar.Add("Dine filer blev indlæst succesfuldt.", Severity.Success);
+
+                // Opdater UI med StateHasChanged.
+                StateHasChanged();
+
+                // Vent i 2 sekunder for en cool load effekt
+                await Task.Delay(2000);
+
+                // hopper til rapport siden, da det i sidste ende bør vise dig en færdig graf ud fra uploadet data
+                navigationManager.NavigateTo("/rapport");
+            }
+            else
+            {
+                Snackbar.Add("Ingen filer blev valgt til upload.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Fang eventuelle uventede fejl og vis en fejlmeddelelse.
+            Snackbar.Add($"Der opstod en fejl: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void SetDragClass()
+        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+
+    private void ClearDragClass()
+        => _dragClass = DefaultDragClass;
+}
+

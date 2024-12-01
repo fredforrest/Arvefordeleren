@@ -1,1 +1,30 @@
 ﻿@page "/"
+
+<div class="container">
+    <!-- Headeren -->
+    <header class="arvefordeler-header">
+        <MudText Typo="Typo.h4" Class="header-title">Arvefordeleren</MudText>
+    </header>
+
+    <!-- Instruktionerne -->
+    <section class="arvefordeler-instructions">
+        <div class="instruction-box">
+            <MudText Typo="Typo.h5" Class="instruction-title">Har du noget tidligere du gerne vil indlæse?</MudText>
+            <MudText Typo="Typo.body1" Class="instruction-text">Så find filerne gennem stifinderen.</MudText>
+        </div>
+
+        <div class="instruction-box">
+            <MudText Typo="Typo.h5" Class="instruction-title">Hvis dette er dit første besøg</MudText>
+            <MudText Typo="Typo.body1" Class="instruction-text">Så følg venligst den trinvise formular i venstre bjælke.</MudText>            
+        </div>
+    </section>
+
+    <!-- CSV delen -->
+    <section class="mudblazor-search">
+        <div class="upload-box">
+            <MudPaper Elevation="3" Class="search-box">
+                <ReadCSVComponent />
+            </MudPaper>
+        </div>
+    </section>
+</div>
