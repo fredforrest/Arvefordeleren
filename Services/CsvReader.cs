@@ -5,7 +5,7 @@ using Arvefordeleren.Models.Repositories;
 
 namespace Arvefordeleren.Services;
 
-public static class CsvReader
+public static class CSVImporter
 {
     public static void ReadAssets(string content)
     {
@@ -41,22 +41,12 @@ public static class CsvReader
         }
     }
 
-    public static void ReadTestators(string content)
+    public static void ReadTestators(Stream stream)
     {
-        var lines = content.Split('\n').Skip(1);
-        foreach (var line in lines)
+        using (var reader = new StreamReader(stream))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var columns = line.Split(',');
-            if (columns.Length < 5) continue;
-
-            TestatorRepository.testators.Add(new Testator
-            {
-                Id = int.Parse(columns[0]),
-                Name = columns[1],
-                isMarried = bool.Parse(columns[2]),
-                Address = columns[3],
-                Email = columns[4]
-            });
+            var records = csv.GetRecords<Foo>();
         }
     }
 }
