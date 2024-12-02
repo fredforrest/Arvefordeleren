@@ -11,7 +11,7 @@ public static class CSVExporter
     public static void AssetsExport(List<Asset> assets)
     {
         using (var writer = new StreamWriter("Data/Downloads/Assets.csv", false, Encoding.UTF8))
-        using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
             csv.WriteRecords(assets);
         }
@@ -20,7 +20,7 @@ public static class CSVExporter
     public static void HeirsExport(List<Heir> heirs)
     {
         using (var writer = new StreamWriter("Data/Downloads/Heirs.csv", false, Encoding.UTF8))
-        using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
             csv.WriteRecords(heirs);
         }
@@ -29,7 +29,7 @@ public static class CSVExporter
     public static void TestatorsExport(List<Testator> testators)
     {
         using (var writer = new StreamWriter("Data/Downloads/Testators.csv", false, Encoding.UTF8))
-        using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
             csv.WriteRecords(testators);
         }

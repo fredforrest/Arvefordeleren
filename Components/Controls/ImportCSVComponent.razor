@@ -1,0 +1,32 @@
+﻿@using System.Text
+@using CsvHelper
+@inject NavigationManager NavigationManager
+
+<InputFile OnChange="HandleFileChange" multiple />
+
+@code {
+    private async Task HandleFileChange(InputFileChangeEventArgs e)
+    {
+
+        foreach (var file in e.GetMultipleFiles())
+        {
+            await using var stream = file.OpenReadStream();
+            Console.WriteLine(file.Name);
+            switch (file.Name)
+            {
+                case "Testators.csv":
+                    await CSVImporter.ReadTestators(stream);
+                    break;
+                    
+                case "Assets.csv":
+                    await CSVImporter.ReadAssets(stream);
+                    break;
+                    
+                case "Heirs.csv":
+                    await CSVImporter.ReadHeirs(stream);
+                    break;
+            }
+        }
+    }
+}
+
