@@ -47,51 +47,49 @@
     private bool Home;
     private bool TempBool;
 
-    private void CarBool()
+private void CarBool()
+{
+    Car = !Car;
+    AssetsRepository.Car = Car;
+    if (Car)
     {
-        Car = !Car;
-        AssetsRepository.Car = Car;
-        if (Car)
+        if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Køretøj))
         {
-            if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Køretøj))
-            {
-                var asset = new Asset(AssetType.Køretøj);
-                AssetsRepository.AddAsset(asset);
-            }
-        }
-        else
-        {
-            var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Køretøj);
-            if (asset != null)
-            {
-                asset.IsCar = false;
-                AssetsRepository.UpdateAsset(asset);
-            }
+            var asset = new Asset(AssetType.Køretøj);
+            AssetsRepository.AddAsset(asset);
         }
     }
+    else
+    {
+        var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Køretøj);
+        if (asset != null)
+        {
+            AssetsRepository.Assets.Remove(asset);
+        }
+    }
+}
 
-    private void HomeBool()
+private void HomeBool()
+{
+    Home = !Home;
+    AssetsRepository.Home = Home;
+    if (Home)
     {
-        Home = !Home;
-        AssetsRepository.Home = Home;
-        if (Home)
+        if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Bolig))
         {
-            if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Bolig))
-            {
-                var asset = new Asset(AssetType.Bolig);
-                AssetsRepository.AddAsset(asset);
-            }
-        }
-        else
-        {
-            var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Bolig);
-            if (asset != null)
-            {
-                asset.IsHome = false;
-                AssetsRepository.UpdateAsset(asset);
-            }
+            var asset = new Asset(AssetType.Bolig);
+            AssetsRepository.AddAsset(asset);
         }
     }
+    else
+    {
+        var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Bolig);
+        if (asset != null)
+        {
+            AssetsRepository.Assets.Remove(asset);
+        }
+    }
+}
 
     private void TempBoolChanged()
     {
