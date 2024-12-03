@@ -1,4 +1,5 @@
 ﻿@page "/Aktiv"
+
 <div class="AssetContainer">
     <div class="TopContainer">
         <div class="TopQuestion">
@@ -19,20 +20,14 @@
                 <MudSwitch @bind-Value="TempBool" Color="Color.Success" Size="Size.Large" />
             </div>
         </div>
-        <div class="TopQuestion">
-            <label>Har du en pensionsopsparing?</label>
-            <div class="toggle-container">
-                <MudSwitch @bind-Value="TempBool" Color="Color.Success" Size="Size.Large" />
-            </div>
-        </div>
     </div>
 
     <div class="SelectorContainer">
-        @foreach(Asset asset in AssetsRepository.Assets)
+        @foreach (var asset in AssetsRepository.Assets)
         {
-        <div class="Selector">
+            <div class="Selector">
                 <AssetSelectorComponent asset="asset" OnClose="HandleClose" />
-        </div>
+            </div>
         }
         <div class="Selector" id="ButtonBox">
             <button @onclick="AddAsset">Tilføj flere (+)</button>
@@ -40,64 +35,79 @@
     </div>
 </div>
 
-
-
 @code {
-    public bool Car { get; set; }
-    public bool Home { get; set; }
-    public bool TempBool { get; set; } // Temp Bool til "Opsparing" og "Pension" slider. Slet denne når vi når så langt.
-
-    private Asset? CarAsset, HomeAsset;
-
-    private void AddAsset()
+    protected override void OnInitialized()
     {
-        AssetsRepository.AddAsset(new Asset());
+        Car = AssetsRepository.Car;
+        Home = AssetsRepository.Home;
+        TempBool = AssetsRepository.TempBool;
     }
 
-    private void AddAsset(Asset asset)
-    {
-        AssetsRepository.AddAsset(asset);
-    }
-
-
-    private void RemoveAsset(Asset asset)
-    {
-        if (asset != null)
-        {
-            AssetsRepository.RemoveAsset(asset.Id);
-        }
-    }
-
-    private void HandleClose(Asset asset)
-    {
-        RemoveAsset(asset);
-    }
+    private bool Car;
+    private bool Home;
+    private bool TempBool;
 
     private void CarBool()
     {
-        if (CarAsset == null)
+        Car = !Car;
+        AssetsRepository.Car = Car;
+        if (Car)
         {
-            CarAsset = new Asset(AssetType.Køretøj);
-            AddAsset(CarAsset);
+            if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Køretøj))
+            {
+                var asset = new Asset(AssetType.Køretøj);
+                AssetsRepository.AddAsset(asset);
+            }
         }
         else
         {
-            RemoveAsset(CarAsset);
-            CarAsset = null;
+            var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Køretøj);
+            if (asset != null)
+            {
+                asset.IsCar = false;
+                AssetsRepository.UpdateAsset(asset);
+            }
         }
     }
 
     private void HomeBool()
     {
-        if (HomeAsset == null)
+        Home = !Home;
+        AssetsRepository.Home = Home;
+        if (Home)
         {
-            HomeAsset = new Asset(AssetType.Bolig);
-            AddAsset(HomeAsset);
+            if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Bolig))
+            {
+                var asset = new Asset(AssetType.Bolig);
+                AssetsRepository.AddAsset(asset);
+            }
         }
         else
         {
-            RemoveAsset(HomeAsset);
-            HomeAsset = null;
+            var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Bolig);
+            if (asset != null)
+            {
+                asset.IsHome = false;
+                AssetsRepository.UpdateAsset(asset);
+            }
         }
     }
+
+    private void TempBoolChanged()
+    {
+        TempBool = !TempBool;
+        AssetsRepository.TempBool = TempBool;
+    }
+
+    private void AddAsset()
+    {
+        var asset = new Asset(AssetType.Værdigenstand);
+        AssetsRepository.AddAsset(asset);
+    }
+
+    private void HandleClose(Asset asset)
+    {
+        AssetsRepository.Assets.Remove(asset);
+    }
 }
+``

@@ -2,7 +2,12 @@ namespace Arvefordeleren.Models.Repositories;
 
 public static class AssetsRepository
 {
+
     public static List<Asset> Assets { get; set; } = new List<Asset>();
+    public static bool Car { get; set; } = false;
+    public static bool Home { get; set; } = false;
+    public static bool TempBool { get; set; } = false;
+
 
     public static void AddAsset(Asset asset)
     {
@@ -31,5 +36,15 @@ public static class AssetsRepository
 
         return asset;
     }
+
+    public static void UpdateAsset(Asset asset)
+{
+    var existingAsset = Assets.FirstOrDefault(a => a.Id == asset.Id);
+    if (existingAsset != null)
+    {
+        existingAsset.IsCar = asset.IsCar;
+        // Update other properties as needed
+    }
+}
 
 }
