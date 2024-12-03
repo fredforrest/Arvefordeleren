@@ -43,7 +43,6 @@ public static class AssetsRepository
     if (existingAsset != null)
     {
         existingAsset.IsCar = asset.IsCar;
-        // Update other properties as needed
     }
 }
 
