@@ -1,6 +1,4 @@
 ﻿@page "/rapport"
-@using System.IO.Compression
-@inject IJSRuntime JS
 
 <div class="main-container">
     <div class="headliner-container">
@@ -9,7 +7,7 @@
     
     <div class="body">
         <div class="left-body">
-            <div></div>
+            <FreePiechartComponent InheritanceInput="@FreeInheritanceSeries" />
         </div>
         <div class="right-body">
             <RapportListComponent/>
@@ -23,6 +21,10 @@
 </div>
 
 @code {
+    private List<Heir> FreeInheritance { get; set; } = new List<Heir>();
+
+    private List<FreePiechartComponent.PieChartSeriesProps> FreeInheritanceSeries => FreeInheritance.Select(h => new FreePiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
+    
     private async Task _download()
     {
         if (AssetsRepository.Assets.Any())
