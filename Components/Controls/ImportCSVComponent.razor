@@ -1,13 +1,10 @@
-﻿@using System.Text
-@using CsvHelper
-@inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavigationManager
 
 <InputFile OnChange="HandleFileChange" multiple />
 
 @code {
     private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
-
         foreach (var file in e.GetMultipleFiles())
         {
             await using var stream = file.OpenReadStream();
