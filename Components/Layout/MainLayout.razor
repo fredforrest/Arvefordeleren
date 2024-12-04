@@ -1,21 +1,19 @@
 ﻿@inherits LayoutComponentBase
-
+@inject NavigationManager NavigationManager;
+<body>
 <div class="Container">
-    <div>
-        <NavMenu/>
-    </div>
-
+    @if (NavigationManager.ToBaseRelativePath(NavigationManager.Uri) != "")
+    {
+        <div>
+            <NavMenu/>
+        </div>
+    }
     <main>
-        <article>
-            @Body
-        </article>
+        @Body
     </main>
 </div>
+</body>
 
-<div>
-    <a></a>
-    <a></a>
-</div>
 
 @* Required *@
 <MudThemeProvider />

@@ -1,14 +1,34 @@
 ﻿@inject NavigationManager NavigationManager
 
-<InputFile OnChange="HandleFileChange" multiple />
+
+<div class="file-upload">
+    <label for="fileInput" class="custom-file-label">Vælg filer</label>
+    <InputFile id="fileInput" OnChange="HandleFileChange" multiple />
+</div>
+
+<div class="chosen-files">
+    <ul>
+        @if (_fileNames.Any())
+        {
+            @foreach (var filename in _fileNames)
+            {
+                <li>@filename</li>
+            }
+        }
+    </ul>
+</div>
+    
 
 @code {
+    private List<string> _fileNames = [];
+    
     private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
         foreach (var file in e.GetMultipleFiles())
         {
             await using var stream = file.OpenReadStream();
-            Console.WriteLine(file.Name);
+            _fileNames.Add(file.Name);
+            Console.WriteLine("her");
             switch (file.Name)
             {
                 case "Testators.csv":

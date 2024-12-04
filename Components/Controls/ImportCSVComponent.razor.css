@@ -1,0 +1,23 @@
+﻿.file-upload {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-file-label {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 1em 2em;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+::deep #fileInput {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+
