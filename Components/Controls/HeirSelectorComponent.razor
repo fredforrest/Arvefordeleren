@@ -57,6 +57,7 @@
     private bool Note = false;
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
     private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
+    private TestatorService 
 
     private int selectedTestatorId;
     public int SelectedTestatorId
@@ -90,38 +91,6 @@
         editContext = new EditContext(Heir);
         editContext.OnFieldChanged += HandleFieldChanged;
         Validate();
-    }
-
-    private void EstablishRelation()
-    {
-        if(Heir.TypeOfChild == TypeOfChild.Fællesbarn)
-        {
-            foreach (var testator in testatorList)
-            {
-                if (!testator.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation))
-                {
-                    testator.Heirs.Add(heir);
-                }
-            }
-        }
-        else if (SelectedTestatorId != 0)
-        {
-            var oldTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation));
-
-            if (oldTestator != null)
-            {
-                var heirToRemove = oldTestator.Heirs.FirstOrDefault(h => h.Name == heir.Name && h.Relation == heir.Relation);
-
-                oldTestator.Heirs.Remove(heirToRemove); 
-            }
-
-            var newTestator = testatorList.FirstOrDefault(t => t.Id == SelectedTestatorId);
-   
-            if (newTestator != null && !newTestator.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation))
-            {
-                newTestator.Heirs.Add(heir);
-            }
-        }
     }
 
     private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
