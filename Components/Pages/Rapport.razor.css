@@ -50,6 +50,7 @@ h3 {
     justify-content: center;
     align-items: center;
     gap: 5vw;
+    margin-bottom: 5vh;
 }
 
 .btn-box button {
