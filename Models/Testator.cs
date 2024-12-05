@@ -15,6 +15,6 @@ namespace Arvefordeleren.Models
 
         public string? Email { get; set; }
 
-
+        
     }
 }

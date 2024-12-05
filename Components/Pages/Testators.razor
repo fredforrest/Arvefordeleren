@@ -19,4 +19,13 @@
 
 
 @code {
+    protected override void OnInitialized()
+    {
+        if (!TestatorRepository.testators.Any())
+        {
+            TestatorRepository.AddNewTestator(new Testator());
+            TestatorRepository.AddNewTestator(new Testator());
+        }
+    }
+
 }
