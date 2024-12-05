@@ -7,6 +7,7 @@ namespace Arvefordeleren.Models
     {
         public int Id { get; set; }
 
+        [Required (ErrorMessage = "Navn skal udfyldes!")]
         public string? Name { get; set; } = null;
 
         public bool isMarried { get; set; }

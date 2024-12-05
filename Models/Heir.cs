@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Arvefordeleren.Components.Pages;
 using Arvefordeleren.Models.Repositories;
 using System.Data;
@@ -8,7 +9,9 @@ namespace Arvefordeleren.Models
     public class Heir
     {
         public int Id { get; set; }
+        [Required (ErrorMessage = "Navn skal udfyldes!")]
         public string Name { get; set; }
+        [Required (ErrorMessage = "Relation skal udfyldes!")]
         public RelationType Relation { get; set; }
         public double Share = 1.0;
 
