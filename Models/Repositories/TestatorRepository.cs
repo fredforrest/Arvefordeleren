@@ -2,11 +2,7 @@
 {
     public static class TestatorRepository
     {
-        public static List<Testator> testators { get; set; } = new List<Testator>
-        {
-            new Testator { Id = 1 },
-            new Testator { Id = 2},
-        };
+        public static List<Testator> testators { get; set; } = new List<Testator>();
 
         public static void AddNewTestator(Testator testator)
         {

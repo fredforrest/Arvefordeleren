@@ -2,9 +2,10 @@
 
 <div class="Sidebox">
     <div class="TopBox">
-        Arvefordeleren
+        <a href="/">Arvefordeleren</a>
     </div>
     <div class="MidBox">
+
         <NavLink class="navLink" href="arvelader" Match="NavLinkMatch.All">
             Arvelader
         </NavLink>
@@ -14,7 +15,7 @@
         <NavLink class="navLink" href="arvinger">
             Arvinger
         </NavLink>
-        <NavLink class="navLink"  href="rapport">
+        <NavLink class="navLink" href="rapport">
             Rapport
         </NavLink>
     </div>
@@ -49,7 +50,10 @@
     {
         switch (NavigationManager.ToBaseRelativePath(NavigationManager.Uri))
         {
+            case "":
+                 break;
             case "arvelader":
+                NavigationManager.NavigateTo("/");
                 break;
             case "aktiv":
                 NavigationManager.NavigateTo("/arvelader");
@@ -62,11 +66,14 @@
                 break;
         }
     }
-    
+
     private void Next()
     {
         switch (NavigationManager.ToBaseRelativePath(NavigationManager.Uri))
         {
+            case "":
+                NavigationManager.NavigateTo("/arvelader");
+                break;
             case "arvelader":
                 NavigationManager.NavigateTo("/aktiv");
                 break;
@@ -76,8 +83,10 @@
             case "arvinger":
                 NavigationManager.NavigateTo("/rapport");
                 break;
-            case "rapport":
+            case "rapport":                
                 break;
         }
     }
 }
+
+
