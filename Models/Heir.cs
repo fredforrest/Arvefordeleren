@@ -7,6 +7,8 @@ namespace Arvefordeleren.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public RelationType Relation { get; set; }
+        public TypeOfChild TypeOfChild { get; set; }
+        public List<Testator> Testators { get; set; } = new List<Testator>();
 
         public string Icon
         {
@@ -40,6 +42,11 @@ namespace Arvefordeleren.Models
     public enum RelationType
     {
        Barn, Barnebarn, Forældre, Bedsteforældre, Andet
+    }
+
+    public enum TypeOfChild
+    {
+        Særbarn, Fællesbarn, Andet
     }
 
 }

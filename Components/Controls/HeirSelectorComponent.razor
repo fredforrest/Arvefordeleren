@@ -20,6 +20,27 @@
                 <option value="@relation">@relation.ToString()</option>
             }
         </select>
+        <div class="expandable-section" style="overflow: hidden;">
+            @if (Heir.Relation == RelationType.Barn)
+            {
+                <select @bind="Heir.TypeOfChild" name="TypeOfChild" class="type-of-child-dropdown">
+                    @foreach (var typeOfChild in Enum.GetValues<TypeOfChild>())
+                    {
+                        <option value="@typeOfChild">@typeOfChild.ToString()</option>
+                    }
+                </select>
+
+                @if (Heir.TypeOfChild == TypeOfChild.Særbarn)
+                {
+                    <select @bind="SelectedTestatorId" name="Testator" class="testator-dropdown">
+                        @foreach (var testator in testatorList)
+                        {
+                            <option value="@testator.Id">@testator.Name</option>
+                        }
+                    </select>
+                }
+            }
+        </div>
     </EditForm>
 
 </div>
@@ -28,12 +49,67 @@
 @code {
     private bool Note = false;
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
+    private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
+
+    private int selectedTestatorId;
+    public int SelectedTestatorId
+    {
+        get => selectedTestatorId;
+        set
+        {
+            if (selectedTestatorId != value)
+            {
+                selectedTestatorId = value;
+                EstablishRelation();
+            }
+        }
+    }
+    protected override void OnInitialized()
+    {
+        var existingTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
+        if (existingTestator != null)
+        {
+            SelectedTestatorId = existingTestator.Id;
+        }
+    }
 
     private void RemoveHeir(Heir heir)
     {
         HeirsRepository.RemoveHeir(heir.Id);
         HeirsList = HeirsRepository.Heirs;
         StateHasChanged();
+    }
+
+    private void EstablishRelation()
+    {
+        if(Heir.TypeOfChild == TypeOfChild.Fællesbarn)
+        {
+            foreach (var testator in testatorList)
+            {
+                if (!testator.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation))
+                {
+                    testator.Heirs.Add(Heir);
+                }
+            }
+        }
+        else if (SelectedTestatorId != null)
+        {
+            var oldTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
+
+            if (oldTestator != null)
+            {
+                var heirToRemove = oldTestator.Heirs.FirstOrDefault(h => h.Name == Heir.Name && h.Relation == Heir.Relation);
+
+                oldTestator.Heirs.Remove(heirToRemove); 
+            }
+
+            var newTestator = testatorList.FirstOrDefault(t => t.Id == SelectedTestatorId);
+   
+            if (newTestator != null && !newTestator.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation))
+            {
+                newTestator.Heirs.Add(Heir);
+            }
+        }
     }
 
 

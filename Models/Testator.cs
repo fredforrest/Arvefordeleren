@@ -15,6 +15,7 @@ namespace Arvefordeleren.Models
 
         public string? Email { get; set; }
 
+        public List<Heir> Heirs { get; set; } = new List<Heir>();
 
     }
 }
