@@ -17,33 +17,65 @@
         }
     </ul>
 </div>
+
+<button class="upload-button" @onclick="HandleUpload">Upload</button>
+
+@if (popUpSucces)
+{
+    <div class="success-popup">
+        Upload var successfuld!
+    </div>
+}
     
 
 @code {
     private List<string> _fileNames = [];
-    
+
+    private List<IBrowserFile> _selectedFiles = new();
+
+    private bool popUpSucces = false;
+
     private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
-        foreach (var file in e.GetMultipleFiles())
+        _selectedFiles = e.GetMultipleFiles().ToList();
+        _fileNames = _selectedFiles.Select(file => file.Name).ToList();
+    }
+
+    private async Task HandleUpload()
+    {
+        if (!_selectedFiles.Any())
+        {
+            return; // ingen handlinger hvis vi kkke uploader en flyvende fis
+        }
+
+        foreach (var file in _selectedFiles)
         {
             await using var stream = file.OpenReadStream();
-            _fileNames.Add(file.Name);
-            Console.WriteLine("her");
             switch (file.Name)
             {
                 case "Testators.csv":
                     await CSVImporter.ReadTestators(stream);
                     break;
-                    
+
                 case "Assets.csv":
                     await CSVImporter.ReadAssets(stream);
                     break;
-                    
+
                 case "Heirs.csv":
                     await CSVImporter.ReadHeirs(stream);
                     break;
             }
         }
+
+        popUpSucces = true;
+        StateHasChanged();
+
+        await Task.Delay(2000);
+
+        //fjern popup og hop videre til programmet
+        popUpSucces = false;
+        StateHasChanged();
+        NavigationManager.NavigateTo("arvelader");
     }
 }
 
