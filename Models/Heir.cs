@@ -12,11 +12,11 @@ namespace Arvefordeleren.Models
         [Required (ErrorMessage = "Navn skal udfyldes!")]
         public string Name { get; set; }
         [Required (ErrorMessage = "Relation skal udfyldes!")]
-        public RelationType Relation { get; set; }
+        public RelationType? Relation { get; set; }
         public double Share { get; set; } = 1.0;
 
         public TypeOfChild? TypeOfChild { get; set; }
-        public List<Testator> Testators { get; set; } = new List<Testator>();
+        public List<Testator>? Testators { get; set; } = new List<Testator>();
 
         public string Icon
         {
@@ -54,7 +54,7 @@ namespace Arvefordeleren.Models
 
     public enum TypeOfChild
     {
-        Særbarn, Fællesbarn, Andet
+        Særbarn, Fællesbarn
     }
 
 }

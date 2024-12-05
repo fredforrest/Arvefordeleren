@@ -5,31 +5,31 @@ namespace Arvefordeleren.Services
 {
     public class TestatorService
     {
-        public void EstablishRelationToHeir(Heir heir, int selectedTestatorId)
+        public void EstablishRelationToHeir(Heir heir, int? selectedTestatorId)
         {
+            foreach (var oldTestator in TestatorRepository.testators)
+            {
+                if (oldTestator.Heirs.Any(h => h.Id == heir.Id))
+                {
+                    oldTestator.Heirs.Remove(heir);
+                }
+            }
+
             if (heir.TypeOfChild == TypeOfChild.Fællesbarn)
             {
                 foreach (var testator in TestatorRepository.testators)
                 {
-                    if (!testator.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation))
+                    if (!testator.Heirs.Any(h => h.Id == heir.Id))
                     {
                         testator.Heirs.Add(heir);
                     }
                 }
             }
-            else if (selectedTestatorId != 0)
+            else if (selectedTestatorId.HasValue)
             {
-                var oldTestator = TestatorRepository.testators.FirstOrDefault(t => t.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation));
-
-                if (oldTestator != null)
-                {
-                    var heirToRemove = oldTestator.Heirs.FirstOrDefault(h => h.Name == heir.Name && h.Relation == heir.Relation);
-                    oldTestator.Heirs.Remove(heirToRemove);
-                }
-
                 var newTestator = TestatorRepository.testators.FirstOrDefault(t => t.Id == selectedTestatorId);
 
-                if (newTestator != null && !newTestator.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation))
+                if (newTestator != null && !newTestator.Heirs.Any(h => h.Id == heir.Id))
                 {
                     newTestator.Heirs.Add(heir);
                 }
