@@ -1,21 +1,22 @@
 ﻿@inherits LayoutComponentBase
+<CascadingValue Value="navMenu">
+    <div class="Container">
+        <div>
+            <NavMenu @ref="navMenu"/>
+        </div>
 
-<div class="Container">
-    <div>
-        <NavMenu/>
+        <main>
+            <article>
+                @Body
+            </article>
+        </main>
     </div>
 
-    <main>
-        <article>
-            @Body
-        </article>
-    </main>
-</div>
-
-<div>
-    <a></a>
-    <a></a>
-</div>
+    <div>
+        <a></a>
+        <a></a>
+    </div>
+</CascadingValue>
 
 @* Required *@
 <MudThemeProvider />
@@ -26,3 +27,8 @@
 
 @* Needed for snackbars *@
 <MudSnackbarProvider />
+
+@code {
+    private NavMenu navMenu;
+
+}

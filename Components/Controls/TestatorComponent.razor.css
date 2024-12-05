@@ -63,3 +63,7 @@ label {
     justify-content: flex-end;
     width: 10%;
 }
+
+::deep .validation-message {
+    color: red;
+}

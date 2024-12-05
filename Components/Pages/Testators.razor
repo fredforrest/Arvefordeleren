@@ -1,4 +1,5 @@
 ﻿@page "/arvelader"
+@using Arvefordeleren.Components.Layout
 
 <div class="main-container">
     <div class="headliner-container">
@@ -19,4 +20,13 @@
 
 
 @code {
+    [CascadingParameter] public NavMenu? NavMenu { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!HeirsRepository.Heirs.Any() && NavMenu != null)
+        {
+            NavMenu.IsValid = false;
+        }
+    }
 }

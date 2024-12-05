@@ -73,6 +73,10 @@
 .Next:hover {
     background-color: #569f6a;
 }
+.Next:disabled {
+    background-color: #595858;
+    cursor: not-allowed;
+}
 
 .Back {
     background-color: #909090;
