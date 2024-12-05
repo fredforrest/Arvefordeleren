@@ -1,40 +1,25 @@
-﻿@using Arvefordeleren.Models.Repositories;
+﻿<div class="graph-div">
+    <h4>Friarv</h4>
+    <div class="graph-body">
+        <div class="graph-left">
+            <MudChart ChartType="ChartType.Pie" InputData="@HeirsValues.ToArray()" InputLabels="@HeirsLabels.ToArray()"
+                      Width="100%"
+                      >
+            </MudChart>
+        </div>
 
-
-<h3>ForcedPiechartComponent</h3>
-
-@if (HeirsList == null || !HeirsList.Any())
-{
-    <span>No data available for Heirs</span>
-}
-else
-{
-    <div>
-    
-    <span>Heirs modtaget fra "HeirsList" Count: @HeirsList.Count</span>
-    <br />
-    <span>Indsæt value for Heirs "Share"</span>
-
-   
-    <MudPaper Class="mud-p-4">
-        @foreach (var heir in HeirsList)
-        {
-            <MudTextField Label=@($"Share for Arving: {heir.Name} ")
-                          @bind-Value="heir.Share"
-                          Type="number"
-                          Class="mud-mb-2">
-            </MudTextField>
-        }
-
-        <MudChart ChartType="ChartType.Pie"
-                  InputData="@HeirsValues.ToArray()"
-                  InputLabels="@HeirsLabels.ToArray()"
-                  Width="400px"
-                  Height="400px">
-        </MudChart>
-    </MudPaper>
+        <div class="graph-right">
+            <div class="graph-grid">
+                @foreach (var heir in HeirsList)
+                {
+                <div>
+                    <MudTextField Label=@($"Andel for: {heir.Name} ") @bind-Value="heir.Share" Type="number"/>
+                </div>
+                }
+            </div>
+        </div>
     </div>
-}
+</div>
 @code {
 
     public class PieChartSeriesProps

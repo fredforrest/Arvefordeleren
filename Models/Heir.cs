@@ -10,7 +10,7 @@ namespace Arvefordeleren.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public RelationType Relation { get; set; }
-        public double Share = 1.0;
+        public double Share { get; set; } = 1.0;
 
 
         public string Icon
