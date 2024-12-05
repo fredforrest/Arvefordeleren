@@ -26,6 +26,8 @@
     {
         if (!HeirsRepository.Heirs.Any() && NavMenu != null)
         {
+            TestatorRepository.AddNewTestator(new Testator());
+            TestatorRepository.AddNewTestator(new Testator());
             NavMenu.IsValid = false;
         }
     }
