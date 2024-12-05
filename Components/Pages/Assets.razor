@@ -1,4 +1,5 @@
 ﻿@page "/Aktiv"
+@using Arvefordeleren.Components.Layout
 
 <div class="AssetContainer">
     <div class="TopContainer">
@@ -42,65 +43,62 @@
 </div>
 
 @code {
+    [CascadingParameter] public NavMenu NavMenu { get; set; }
+    private bool Car;
+    private bool Home;
+    private bool TempBool;
+
+    
     protected override void OnInitialized()
     {
+        NavMenu.IsValid = true;
         Car = AssetsRepository.Car;
         Home = AssetsRepository.Home;
         TempBool = AssetsRepository.TempBool;
     }
 
-    private bool Car;
-    private bool Home;
-    private bool TempBool;
+    private void CarBool()
+    {
+        Car = !Car;
+        AssetsRepository.Car = Car;
+        if (Car)
+        {
+            if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Køretøj))
+            {
+                var asset = new Asset(AssetType.Køretøj);
+                AssetsRepository.AddAsset(asset);
+            }
+        }
+        else
+        {
+            var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Køretøj);
+            if (asset != null)
+            {
+                AssetsRepository.Assets.Remove(asset);
+            }
+        }
+    }
 
-private void CarBool()
-{
-    Car = !Car;
-    AssetsRepository.Car = Car;
-    if (Car)
+    private void HomeBool()
     {
-        if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Køretøj))
+        Home = !Home;
+        AssetsRepository.Home = Home;
+        if (Home)
         {
-            var asset = new Asset(AssetType.Køretøj);
-            AssetsRepository.AddAsset(asset);
+            if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Bolig))
+            {
+                var asset = new Asset(AssetType.Bolig);
+                AssetsRepository.AddAsset(asset);
+            }
         }
-    }
-    else
-    {
-        var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Køretøj);
-        if (asset != null)
+        else
         {
-            AssetsRepository.Assets.Remove(asset);
+            var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Bolig);
+            if (asset != null)
+            {
+                AssetsRepository.Assets.Remove(asset);
+            }
         }
-    }
-}
-
-private void HomeBool()
-{
-    Home = !Home;
-    AssetsRepository.Home = Home;
-    if (Home)
-    {
-        if (!AssetsRepository.Assets.Any(a => a.Type == AssetType.Bolig))
-        {
-            var asset = new Asset(AssetType.Bolig);
-            AssetsRepository.AddAsset(asset);
-        }
-    }
-    else
-    {
-        var asset = AssetsRepository.Assets.FirstOrDefault(a => a.Type == AssetType.Bolig);
-        if (asset != null)
-        {
-            AssetsRepository.Assets.Remove(asset);
-        }
-    }
-}
-
-    private void TempBoolChanged()
-    {
-        TempBool = !TempBool;
-        AssetsRepository.TempBool = TempBool;
     }
 
     private void AddAsset()

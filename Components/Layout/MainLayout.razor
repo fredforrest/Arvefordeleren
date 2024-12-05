@@ -1,19 +1,22 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager NavigationManager;
-<body>
-<div class="Container">
-    @if (NavigationManager.ToBaseRelativePath(NavigationManager.Uri) != "")
-    {
+<CascadingValue Value="navMenu">
+    <div class="Container">
         <div>
-            <NavMenu/>
+            <NavMenu @ref="navMenu"/>
         </div>
-    }
-    <main>
-        @Body
-    </main>
-</div>
-</body>
 
+        <main>
+            <article>
+                @Body
+            </article>
+        </main>
+    </div>
+
+    <div>
+        <a></a>
+        <a></a>
+    </div>
+</CascadingValue>
 
 @* Required *@
 <MudThemeProvider />
@@ -24,3 +27,8 @@
 
 @* Needed for snackbars *@
 <MudSnackbarProvider />
+
+@code {
+    private NavMenu navMenu;
+
+}

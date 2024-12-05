@@ -21,13 +21,30 @@
     </div>
     <div class="BotBox">
         <button @onclick="() => Back()" class="Back">Tilbage</button>
-        <button @onclick="() => Next()" class="Next">Næste</button>
-
+        @if (IsValid)
+        {
+            <button @onclick="() => Next()" class="Next">Næste</button>
+        }
+        else
+        {
+            <button class="Next" disabled>Næste</button>
+        }
     </div>
 </div>
 
 @code
 {
+    private bool isValid;
+
+    public bool IsValid
+    {
+        get => isValid;
+        set
+        {
+            isValid = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
     
     private void Back()
     {
