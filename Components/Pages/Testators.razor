@@ -12,8 +12,13 @@
     </div>
     
     <div class="body">
-        <TestatorComponent Testator="TestatorRepository.GetTestatorById(1)"/>
-        <TestatorComponent IsSecondary="true" Testator="TestatorRepository.GetTestatorById(2)"/>
+        @if (TestatorRepository.testators.Any())
+        {
+            foreach (var testator in TestatorRepository.testators)
+            {
+                <TestatorComponent Testator="testator"/>
+            }
+        }
     </div>
 </div>
 
@@ -21,13 +26,17 @@
 
 @code {
     [CascadingParameter] public NavMenu? NavMenu { get; set; }
-
+    
     protected override void OnInitialized()
     {
-        if (!HeirsRepository.Heirs.Any() && NavMenu != null)
+        if (!TestatorRepository.testators.Any())
         {
             TestatorRepository.AddNewTestator(new Testator());
             TestatorRepository.AddNewTestator(new Testator());
+        }
+
+        if (NavMenu != null && !TestatorRepository.testators.Any())
+        {
             NavMenu.IsValid = false;
         }
     }

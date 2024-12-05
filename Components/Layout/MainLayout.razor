@@ -1,20 +1,19 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager NavigationManager;
-<CascadingValue Value="navMenu">
-    <body>
-        <div class="Container">
-            @if (NavigationManager.ToBaseRelativePath(NavigationManager.Uri) != "")
-            {
-            <div>
-                <NavMenu @ref="navMenu"/>
-            </div>
-            } 
+
+<div class="Container">
+    <div>
+        <NavMenu @ref="navMenu"/>
+    </div>
+
+    @if (navMenu != null)
+    {
+        <CascadingValue Value="navMenu">
             <main>
                 @Body
             </main>
-        </div>
-    </body>
-</CascadingValue>
+        </CascadingValue>
+    }
+</div>
 
 
 @* Required *@
@@ -29,5 +28,13 @@
 
 @code {
     private NavMenu navMenu;
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
 
 }
