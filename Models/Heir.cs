@@ -15,7 +15,7 @@ namespace Arvefordeleren.Models
         public RelationType Relation { get; set; }
         public double Share = 1.0;
 
-        public TypeOfChild TypeOfChild { get; set; }
+        public TypeOfChild? TypeOfChild { get; set; }
         public List<Testator> Testators { get; set; } = new List<Testator>();
 
         public string Icon

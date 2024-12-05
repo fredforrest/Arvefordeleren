@@ -22,10 +22,10 @@
                 <option value="@relation">@relation.ToString()</option>
             }
         </select>
-        <div class="expandable-section" style="overflow: hidden;">
+        <div class="expandable-section"">
             @if (Heir.Relation == RelationType.Barn)
             {
-                <select @bind="Heir.TypeOfChild" name="TypeOfChild" class="type-of-child-dropdown">
+                <select @bind="Heir.TypeOfChild" name="TypeOfChild">
                     @foreach (var typeOfChild in Enum.GetValues<TypeOfChild>())
                     {
                         <option value="@typeOfChild">@typeOfChild.ToString()</option>
@@ -34,7 +34,7 @@
 
                 @if (Heir.TypeOfChild == TypeOfChild.Særbarn)
                 {
-                    <select @bind="SelectedTestatorId" name="Testator" class="testator-dropdown">
+                    <select @bind="SelectedTestatorId" name="Testator">
                         @foreach (var testator in testatorList)
                         {
                             <option value="@testator.Id">@testator.Name</option>
@@ -67,16 +67,8 @@
             if (selectedTestatorId != value)
             {
                 selectedTestatorId = value;
-                EstablishRelation();
+                EstablishRelation(Heir);
             }
-        }
-    }
-    protected override void OnInitialized()
-    {
-        var existingTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
-        if (existingTestator != null)
-        {
-            SelectedTestatorId = existingTestator.Id;
         }
     }
 
@@ -89,45 +81,48 @@
 
     protected override void OnInitialized()
     {
+        var existingTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
+        if (existingTestator != null)
+        {
+            SelectedTestatorId = existingTestator.Id;
+        }
+
         editContext = new EditContext(Heir);
         editContext.OnFieldChanged += HandleFieldChanged;
         Validate();
     }
+
     private void EstablishRelation()
     {
         if(Heir.TypeOfChild == TypeOfChild.Fællesbarn)
         {
             foreach (var testator in testatorList)
             {
-                if (!testator.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation))
+                if (!testator.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation))
                 {
-                    testator.Heirs.Add(Heir);
+                    testator.Heirs.Add(heir);
                 }
             }
         }
-        else if (SelectedTestatorId != null)
+        else if (SelectedTestatorId != 0)
         {
-            var oldTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
+            var oldTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation));
 
             if (oldTestator != null)
             {
-                var heirToRemove = oldTestator.Heirs.FirstOrDefault(h => h.Name == Heir.Name && h.Relation == Heir.Relation);
+                var heirToRemove = oldTestator.Heirs.FirstOrDefault(h => h.Name == heir.Name && h.Relation == heir.Relation);
 
                 oldTestator.Heirs.Remove(heirToRemove); 
             }
 
             var newTestator = testatorList.FirstOrDefault(t => t.Id == SelectedTestatorId);
    
-            if (newTestator != null && !newTestator.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation))
+            if (newTestator != null && !newTestator.Heirs.Any(h => h.Name == heir.Name && h.Relation == heir.Relation))
             {
-                newTestator.Heirs.Add(Heir);
+                newTestator.Heirs.Add(heir);
             }
         }
     }
-
-
-    [Parameter]
-    public Heir Heir { get; set; }
 
     private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
     {

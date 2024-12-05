@@ -1,120 +1,120 @@
-@using Arvefordeleren.Components.Layout
+    @using Arvefordeleren.Components.Layout
 
-<SectionContent SectionName="nav-menu"></SectionContent>
-<div class="body-container">
-    @if (IsSecondary)
-    {   
-        <div class="topInfo">
-            <p>Vil du tilføje din ægtefælle til arvsfordelingen?</p>
-            <div> <MudSwitch @bind-Value="EnableOtherField" Color="Color.Success" Size="Size.Large" /> </div>
+    <SectionContent SectionName="nav-menu"></SectionContent>
+    <div class="body-container">
+        @if (IsSecondary)
+        {   
+            <div class="topInfo">
+                <p>Vil du tilføje din ægtefælle til arvsfordelingen?</p>
+                <div> <MudSwitch @bind-Value="EnableOtherField" Color="Color.Success" Size="Size.Large" /> </div>
             
-        </div>
+            </div>
         
-        if (EnableOtherField)
+            if (EnableOtherField)
+            {
+                <div class="testator-container">
+                    <EditForm EditContext="editContext">
+                        <DataAnnotationsValidator/>
+                        <div class="form-group">
+                            <ValidationMessage For="() => Testator.Name"></ValidationMessage>
+                            <label for="name">Navn *</label>
+                            <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Adresse</label>
+                            <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mail">Email</label>
+                            <InputText @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
+                        </div>
+                    </EditForm>
+                </div>
+            }
+            else
+            {
+                <div class="testator-container">
+                    <EditForm Model="@Testator">
+                        <div class="form-group">
+                            <label for="name">Navn</label>
+                            <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn" disabled></InputText>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="address">Adresse</label>
+                            <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse" disabled></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mail">Email</label>
+                            <InputText @bind-Value="Testator.Email" placeholder="Indtast Email" disabled></InputText>
+                        </div>
+                    </EditForm>
+                </div>
+            }
+        }
+        else
         {
+            <div class="topInfo">
+                <p>Disse oplysninger gemmes ikke af os</p>
+            </div>
             <div class="testator-container">
                 <EditForm EditContext="editContext">
                     <DataAnnotationsValidator/>
                     <div class="form-group">
                         <ValidationMessage For="() => Testator.Name"></ValidationMessage>
                         <label for="name">Navn *</label>
-                        <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn"></InputText>
+                        <InputText id="name" @bind-Value="Testator.Name" placeholder="Indtast Navn"></InputText>
                     </div>
 
                     <div class="form-group">
                         <label for="address">Adresse</label>
-                        <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
+                        <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
                     </div>
 
                     <div class="form-group">
                         <label for="mail">Email</label>
-                        <InputText @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
+                        <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marital_status">Er du gift?</label>
+                        <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large"/>
                     </div>
                 </EditForm>
             </div>
         }
-        else
+    </div>
+    @code {
+        [CascadingParameter] public NavMenu? NavMenu { get; set; }
+        [Parameter] public bool IsSecondary { get; set; }
+        [Parameter] public Testator Testator { get; set; }
+        public bool EnableOtherField;
+        private EditContext editContext;
+    
+        protected override void OnInitialized()
         {
-            <div class="testator-container">
-                <EditForm Model="@Testator">
-                    <div class="form-group">
-                        <label for="name">Navn</label>
-                        <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn" disabled></InputText>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="address">Adresse</label>
-                        <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse" disabled></InputText>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mail">Email</label>
-                        <InputText @bind-Value="Testator.Email" placeholder="Indtast Email" disabled></InputText>
-                    </div>
-                </EditForm>
-            </div>
+            editContext = new EditContext(Testator);
+            editContext.OnFieldChanged += HandleFieldChanged;
+            if (Testator.Name != null)
+            {
+                EnableOtherField = true;
+            }
+        }
+    
+        private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+        {
+            Validate();
+        }
+    
+        private void Validate()
+        {
+            if (NavMenu != null)
+            {
+                NavMenu.IsValid = ValidationService.IsAllFieldsValid(TestatorRepository.testators);
+            }
         }
     }
-    else
-    {
-        <div class="topInfo">
-            <p>Disse oplysninger gemmes ikke af os</p>
-        </div>
-        <div class="testator-container">
-            <EditForm EditContext="editContext">
-                <DataAnnotationsValidator/>
-                <div class="form-group">
-                    <ValidationMessage For="() => Testator.Name"></ValidationMessage>
-                    <label for="name">Navn *</label>
-                    <InputText id="name" @bind-Value="Testator.Name" placeholder="Indtast Navn"></InputText>
-                </div>
-
-                <div class="form-group">
-                    <label for="address">Adresse</label>
-                    <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
-                </div>
-
-                <div class="form-group">
-                    <label for="mail">Email</label>
-                    <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
-                </div>
-
-                <div class="form-group">
-                    <label for="marital_status">Er du gift?</label>
-                    <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large"/>
-                </div>
-            </EditForm>
-        </div>
-    }
-</div>
-@code {
-    [CascadingParameter] public NavMenu? NavMenu { get; set; }
-    [Parameter] public bool IsSecondary { get; set; }
-    [Parameter] public Testator Testator { get; set; }
-    public bool EnableOtherField;
-    private EditContext editContext;
-    
-    protected override void OnInitialized()
-    {
-        editContext = new EditContext(Testator);
-        editContext.OnFieldChanged += HandleFieldChanged;
-        if (Testator.Name != null)
-        {
-            EnableOtherField = true;
-        }
-    }
-    
-    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
-    {
-        Validate();
-    }
-    
-    private void Validate()
-    {
-        if (NavMenu != null)
-        {
-            NavMenu.IsValid = ValidationService.IsAllFieldsValid(TestatorRepository.testators);
-        }
-    }
-}

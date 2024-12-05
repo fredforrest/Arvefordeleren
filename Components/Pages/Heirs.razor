@@ -20,13 +20,13 @@
 </div>
 @code {
     [CascadingParameter] public NavMenu? NavMenu { get; set; }
+    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs; 
+    private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
 
     protected override void OnInitialized()
     {
         Validate();
     }
-    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs; 
-    private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
 
     private void AddHeir()
     {
@@ -36,22 +36,18 @@
     
     private void HandleClose(Heir heir)
     {
-        if (heir != null)
-        {
-            HeirsRepository.RemoveHeir(heir.Id);
+        HeirsRepository.RemoveHeir(heir.Id);
 
-            foreach (var testator in testatorList)
+        foreach (var testator in testatorList)
+        {
+            if (testator.Heirs.Any(h => h.Id == heir.Id))
             {
-                if (testator.Heirs.Any(h => h.Id == heir.Id))
-                {
-                    testator.Heirs.Remove(heir);
-                }
+                testator.Heirs.Remove(heir);
+                StateHasChanged();
+                Validate();
             }
         }
-    }
-        HeirsRepository.RemoveHeir(heir.Id);
-        StateHasChanged(); 
-        Validate();
+        
     }
 
     private void Validate()
