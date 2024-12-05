@@ -5,7 +5,7 @@ namespace Arvefordeleren.Services;
 public static class ValidationService
 {
 
-    public static bool IsAllFieldsValid<T>(List<T> list)
+    public static bool IsAllFieldsValid<T>(List<T> list) // Validerer om alting på alle items i en liste er opfyldte
     {
         if (list == null || list.Count == 0)
             return false;
@@ -21,6 +21,21 @@ public static class ValidationService
         }
 
         return list.Count != 0;
+    }
+
+    public static bool IsAllFieldsValid<T>(T item) // Validerer om alting på 1 enkelt item er opfyldte
+    {
+        if (item == null)
+            return false;
+        
+        var context = new ValidationContext(item, null, null);
+        var results = new List<ValidationResult>();
+        if (!Validator.TryValidateObject(item, context, results, true))
+        {
+            return false;
+        }
+
+        return true;
     }
     
 }

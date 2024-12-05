@@ -1,4 +1,13 @@
-﻿.hero{
+﻿.body {
+    font-family: Arial, sans-serif;
+}
+
+.Container {
+    display: flex;
+    flex-direction: row;
+}
+
+.hero{
     height: 60vh;
     width: 100vw;
     background-position: center;
@@ -11,7 +20,7 @@
     object-position: center;
     margin: auto;
     width: 100%;
-    height: 50%
+    height: 100%
 }
 
 .hero-content {
