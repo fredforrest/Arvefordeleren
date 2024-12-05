@@ -1,4 +1,4 @@
-@using Arvefordeleren.Components.Pages
+@using Arvefordeleren.Components.Layout
 <div class="HeirContainer">
     <div class="TopBox">
         <div>
@@ -12,8 +12,10 @@
     </div>
 
     
-    <EditForm Model="Heir">
-        <InputText @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn"/>
+    <EditForm EditContext="editContext">
+        <DataAnnotationsValidator/>
+        <ValidationMessage For="() => Heir.Name"></ValidationMessage>
+        <InputText id="name" @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn *"/>
         <select @bind="Heir.Relation" name="Relation">
             @foreach (var relation in Enum.GetValues<RelationType>())
             {
@@ -47,6 +49,11 @@
 
 
 @code {
+    [CascadingParameter] public NavMenu? NavMenu { get; set; }
+    [Parameter] public Heir Heir { get; set; }
+    [Parameter] public EventCallback<Heir> OnClose { get; set; }
+
+    private EditContext editContext;
     private bool Note = false;
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
     private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
@@ -76,10 +83,16 @@
     private void RemoveHeir(Heir heir)
     {
         HeirsRepository.RemoveHeir(heir.Id);
-        HeirsList = HeirsRepository.Heirs;
-        StateHasChanged();
+        Validate();
+
     }
 
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(Heir);
+        editContext.OnFieldChanged += HandleFieldChanged;
+        Validate();
+    }
     private void EstablishRelation()
     {
         if(Heir.TypeOfChild == TypeOfChild.Fællesbarn)
@@ -116,14 +129,25 @@
     [Parameter]
     public Heir Heir { get; set; }
 
-    [Parameter]
-    public EventCallback<Heir> OnClose { get; set; }
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        Validate();
+    }
 
     private async void Close(Heir heir)
     {
         if (OnClose.HasDelegate)
         {
             await OnClose.InvokeAsync(heir);
+            Validate();
+        }
+    }
+
+    private void Validate()
+    {
+        if (NavMenu != null)
+        {
+            NavMenu.IsValid = ValidationService.IsAllFieldsValid(HeirsRepository.Heirs);
         }
     }
 

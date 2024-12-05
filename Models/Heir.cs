@@ -1,12 +1,20 @@
+using System.ComponentModel.DataAnnotations;
+using Arvefordeleren.Components.Pages;
+using Arvefordeleren.Models.Repositories;
 using System.Data;
+using static MudBlazor.Icons.Material;
 
 namespace Arvefordeleren.Models
 {
     public class Heir
     {
         public int Id { get; set; }
+        [Required (ErrorMessage = "Navn skal udfyldes!")]
         public string Name { get; set; }
+        [Required (ErrorMessage = "Relation skal udfyldes!")]
         public RelationType Relation { get; set; }
+        public double Share = 1.0;
+
         public TypeOfChild TypeOfChild { get; set; }
         public List<Testator> Testators { get; set; } = new List<Testator>();
 
