@@ -57,7 +57,7 @@
     private bool Note = false;
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
     private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
-    private TestatorService 
+    private TestatorService service = new TestatorService();
 
     private int selectedTestatorId;
     public int SelectedTestatorId
@@ -68,7 +68,7 @@
             if (selectedTestatorId != value)
             {
                 selectedTestatorId = value;
-                EstablishRelation(Heir);
+                service.EstablishRelationToHeir(Heir, selectedTestatorId);
             }
         }
     }
@@ -79,7 +79,7 @@
         Validate();
 
     }
-
+        
     protected override void OnInitialized()
     {
         var existingTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
