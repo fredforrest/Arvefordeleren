@@ -5,7 +5,7 @@
 
 # dotenv files
 .env
-Data/Downloads/*
+Data/Downloads/*.csv
 Data/*.zip
 
 # User-specific files
