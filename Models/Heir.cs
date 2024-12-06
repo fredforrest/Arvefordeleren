@@ -14,6 +14,8 @@ namespace Arvefordeleren.Models
         [Required (ErrorMessage = "Relation skal udfyldes!")]
         public RelationType Relation { get; set; }
         public double Share { get; set; } = 1.0;
+        public int? ParentId { get; set; } // Tilføjet den her da man åbenbart ikke bare kan kalde på relationstypen
+        public List<Heir> Children { get; set; } = new List<Heir>(); // Tilføjet den her da man åbenbart ikke bare kan kalde på relationstypen
 
 
         public string Icon

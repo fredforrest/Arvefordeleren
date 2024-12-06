@@ -106,6 +106,52 @@ h1 {
     position: relative;
 }
 
+/*Alt herunder meter for at vise Stammetræet*/
+.FamilyTreePopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
 
+.FamilyTreeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    overflow-x: auto;
+}
 
+.TreeNode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 20px;
+    position: relative;
+}
+
+.TreeChildren {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 20px;
+    position: relative;
+}
+
+.HeirBox {
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 14px;
+}
 
