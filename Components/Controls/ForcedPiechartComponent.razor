@@ -1,0 +1,57 @@
+﻿<h3>ForcedPiechartComponent</h3>
+
+@using Arvefordeleren.Models.Repositories;
+
+
+@if (ForcedHeirsList == null || !ForcedHeirsList.Any())
+{
+    <span>No data available for Heirs</span>
+}
+else
+{
+    <div>
+
+        <span>Heirs modtaget fra "ForcedHeirs" Count: @ForcedHeirsList.Count</span>
+        <br />
+        <span>Indsæt value for Heirs "Share"</span>
+
+
+        <MudPaper Class="mud-p-4">
+            @foreach (var heir in ForcedHeirsList)
+            {
+                <MudTextField Label=@($"Share for Arving: {heir.Name} - {heir.Relation}")
+                              @bind-Value="heir.Share"
+                              Type="number"
+                              Class="mud-mb-2">
+                </MudTextField>
+            }
+
+            <MudChart ChartType="ChartType.Pie"
+                      InputData="@ForcedHeirsValues.ToArray()"
+                      InputLabels="@ForcedHeirsLabels.ToArray()" 
+                      Width="400px"
+                      Height="400px">
+            </MudChart>
+        </MudPaper>
+    </div>
+}
+
+
+
+@code {
+
+    public class PieChartSeriesProps
+    {
+        public string Name { get; set; }
+        public double Value { get; set; }
+
+    }
+
+    [Parameter]
+    public List<PieChartSeriesProps> ForcedInheritanceInput { get; set; } = new List<PieChartSeriesProps>();
+    private List<Heir> ForcedHeirsList => HeirsRepository.ForcedHeirs;
+
+    private List<double> ForcedHeirsValues => ForcedHeirsList.Select(heir => heir.Share).ToList();
+    private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(heir => heir.Name).ToList();
+}
+

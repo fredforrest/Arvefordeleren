@@ -12,19 +12,35 @@
     <div class="body">
         <div>
             <FreePiechartComponent InheritanceInput="@FreeInheritanceSeries" />
+            <br />
+            <ForcedPiechartComponent ForcedInheritanceInput="@ForcedInheritanceSeries" />
+
         </div>
 
         <div class="right-body">
             <RapportListComponent/>
         </div>
         
+       
+        
     </div>
 </div>
 
 @code {
     private List<Heir> FreeInheritance { get; set; } = new List<Heir>();
+    private List<Heir> ForcedInheritance { get; set; } = new List<Heir>();
+
 
     private List<FreePiechartComponent.PieChartSeriesProps> FreeInheritanceSeries => FreeInheritance.Select(h => new FreePiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
+    private List<ForcedPiechartComponent.PieChartSeriesProps> ForcedInheritanceSeries => ForcedInheritance.Select(h => new ForcedPiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
 
-    
+    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
+
+    protected override void OnInitialized()
+    {
+        HeirsRepository.OnForcedHeirsUpdated = () =>
+        {
+            StateHasChanged(); 
+        };
+    }
 }
