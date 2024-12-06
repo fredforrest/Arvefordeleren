@@ -27,18 +27,18 @@
             @if (Heir.Relation == RelationType.Barn)
             {
             <select @bind="Heir.TypeOfChild" name="TypeOfChild" @onclick="() => OnTypeOfChildSelected(Heir)">
-                    <option value="">Fællesbarn eller særbarn?</option>
+                    <option value="">FÃ¦llesbarn eller sÃ¦rbarn?</option>
                     @foreach (var typeOfChild in Enum.GetValues<TypeOfChild>())
                     {
                         <option value="@typeOfChild">@typeOfChild.ToString()</option>
                     }
                 </select>
             }
-            @if(Heir.Relation == RelationType.Barn && Heir.TypeOfChild == TypeOfChild.Særbarn ||
-            Heir.Relation != RelationType.Barn && Heir.TypeOfChild != TypeOfChild.Fællesbarn)
+            @if(Heir.Relation == RelationType.Barn && Heir.TypeOfChild == TypeOfChild.SÃ¦rbarn ||
+            Heir.Relation != RelationType.Barn && Heir.TypeOfChild != TypeOfChild.FÃ¦llesbarn)
             {
                 <select @bind="SelectedTestatorId" name="Testator">
-                    <option value="">Vælg arvelader</option>
+                    <option value="">VÃ¦lg arvelader</option>
                     @foreach (var testator in testatorList)
                     {
                         <option value="@testator.Id">@testator.Name</option>
@@ -121,10 +121,12 @@
 
     private void OnTypeOfChildSelected(Heir heir)
     {
-        if(heir.TypeOfChild == TypeOfChild.Fællesbarn)
+        if(heir.TypeOfChild == TypeOfChild.FÃ¦llesbarn)
         {
             service.EstablishRelationToHeir(heir, SelectedTestatorId);
         }
+        
+        Validate();
     }
 
     private void HandleRelationChange()
@@ -133,6 +135,8 @@
         {
             Heir.TypeOfChild = null;
         }
+        
+        Validate();
     }
 
 }
