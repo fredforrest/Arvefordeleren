@@ -108,6 +108,7 @@ h1 {
 
 .TreeButton {
     width: 10%;
+    top: 10px;
     height: 10%;
     box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
     border-radius: 5px;
