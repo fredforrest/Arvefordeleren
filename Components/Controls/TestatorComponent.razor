@@ -1,4 +1,4 @@
-@using Arvefordeleren.Components.Layout
+    @using Arvefordeleren.Components.Layout
 
 <div class="body-container">
     @if (Testator.Id == 2)
@@ -20,10 +20,10 @@
                         <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn"></InputText>
                     </div>
 
-                    <div class="form-group">
-                        <label for="address">Adresse</label>
-                        <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
-                    </div>
+                        <div class="form-group">
+                            <label for="address">Adresse</label>
+                            <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
+                        </div>
 
                     <div class="form-group">
                         <label for="mail">Email</label>
@@ -68,15 +68,15 @@
                     <InputText id="name" @bind-Value="Testator.Name" type="text" placeholder="Indtast Navn"/>
                 </div>
 
-                <div class="form-group">
-                    <label for="address">Adresse</label>
-                    <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
-                </div>
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mail">Email</label>
-                    <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
-                </div>
+                    <div class="form-group">
+                        <label for="mail">Email</label>
+                        <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
+                    </div>
 
                 <div class="form-group">
                     <label>Er du gift?</label>
@@ -105,10 +105,10 @@
         Validate();
     }
     
-    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
-    {
-        Validate();
-    }
+        private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+        {
+            Validate();
+        }
     
     private void Validate()
     {

@@ -6,5 +6,7 @@
 
 .Container {
     display: flex;
+    background-color: #FCFAF4;
+
     flex-direction: row;
 }
