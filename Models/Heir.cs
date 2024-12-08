@@ -15,8 +15,6 @@ namespace Arvefordeleren.Models
         public RelationType? Relation { get; set; }
         public double Share { get; set; } = 1.0;
         public int? ParentId { get; set; } // Tilføjet den her da man åbenbart ikke bare kan kalde på relationstypen
-        public List<Heir> Children { get; set; } = new List<Heir>(); // Tilføjet den her da man åbenbart ikke bare kan kalde på relationstypen
-
         public TypeOfChild? TypeOfChild { get; set; }
         public List<Testator>? Testators { get; set; } = new List<Testator>();
 
@@ -35,12 +33,6 @@ namespace Arvefordeleren.Models
                     case RelationType.Forældre:
                         return "/images/Forældre.png";
 
-                    case RelationType.Bedsteforældre:
-                        return "/images/Bedsteforældre.png";
-
-                    case RelationType.Andet:
-                        return "/images/Andet.png";
-
                     default:
                         return "/images/favicon.png";
                 }
@@ -51,7 +43,7 @@ namespace Arvefordeleren.Models
 
     public enum RelationType
     {
-       Barn, Barnebarn, Forældre, Bedsteforældre, Andet
+       Barn, Barnebarn, Forældre
     }
 
     public enum TypeOfChild

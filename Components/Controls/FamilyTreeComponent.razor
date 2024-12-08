@@ -1,0 +1,58 @@
+﻿<MudPaper Width="300px" Elevation="0">
+    <MudTreeView T="string" ReadOnly="true" Hover="true"
+                 ExpandOnClick="true">
+        @foreach (Heir parent in testator1.Heirs.Where(h => h.Relation == RelationType.Forældre))
+        {
+            <MudTreeViewItem Text="@parent.Name">
+                <MudTreeViewItem Text="@testator1.Name">
+                    @foreach (Heir heir in testator1.Heirs.Where(h => h.Relation == RelationType.Barn))
+                    {
+                        <MudTreeViewItem Text="@heir.Name" Expanded="@(heir.Relation == RelationType.Barnebarn)">
+                            @foreach (Heir heir in testator1.Heirs.Where(h => h.ParentId == heir.Id))
+                        {
+                            @if (heir.Relation == RelationType.Barnebarn)
+                            {
+                                <MudTreeViewItem Text="@heir.Name"/>
+                            }
+                        }
+                    </MudTreeViewItem>
+                    }
+                </MudTreeViewItem>
+            </MudTreeViewItem>
+        }
+
+        @if (testator2.Name != null)
+        {
+            @foreach (Heir parent in testator2.Heirs.Where(h => h.Relation == RelationType.Forældre))
+            {
+                <MudTreeViewItem Text="@parent.Name">
+                    <MudTreeViewItem Text="@testator2.Name">
+                        @foreach (Heir heir in testator2.Heirs.Where(h => h.Relation == RelationType.Barn))
+                        {
+                            <MudTreeViewItem Text="@heir.Name" Expanded="@(heir.Relation == RelationType.Barnebarn)">
+                                @foreach (Heir heir in testator2.Heirs.Where(h => h.ParentId == heir.Id))
+                            {
+                                @if (heir.Relation == RelationType.Barnebarn)
+                                {
+                                    <MudTreeViewItem Text="@heir.Name"/>
+                                }
+                            }
+                        </MudTreeViewItem>
+                        }
+                    </MudTreeViewItem>
+                </MudTreeViewItem>
+            }
+        }
+    </MudTreeView>
+</MudPaper>
+
+@code {
+    private Testator testator1;
+    private Testator testator2;
+
+    protected override void OnInitialized()
+    {
+        testator1 = TestatorRepository.GetTestatorById(1);
+        testator2 = TestatorRepository.GetTestatorById(2);
+    }
+}

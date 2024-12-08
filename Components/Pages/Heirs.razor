@@ -25,28 +25,7 @@
     @if (IsTreeVisable) // Alt herunder fungere ikke helt godt, det meget rodet og måske lidt svært at forstå.
     {
         <div class="FamilyTreePopup">
-            <div class="FamilyTreeContainer">
-                <div class="TreeChildren">
-                    @foreach (var parent in Parents)
-                    {
-                        <div class="TreeNode">
-                            <div class="HeirBox">@parent.Name (@parent.Relation)</div>
-                        </div>
-                    }
-                </div>
-                <div class="TreeNode">
-                    <div class="HeirBox">Dig
-                        <div class="TreeChildren">
-                            @foreach (var child in Children)
-                            {
-                                <div class="TreeNode">
-                                    <div class="HeirBox">@child.Name (@child.Relation)</div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <FamilyTreeComponent/>
         </div>
     }
 </div>

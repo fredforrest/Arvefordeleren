@@ -45,7 +45,16 @@
                     }
                 </select>
             }
-            
+            @if (Heir.Relation == RelationType.Barnebarn)
+            {
+                <select @bind="Heir.ParentId" name="ParentId">
+                    <option value="">Vælg forældre</option>
+                    @foreach (var heir in HeirsList.Where(h => h.Relation == RelationType.Barn))
+                    {
+                        <option value="@heir.Id">@heir.Name</option>
+                    }
+                </select>
+            }
         </div>
     </EditForm>
 
@@ -125,7 +134,7 @@
         {
             service.EstablishRelationToHeir(heir, SelectedTestatorId);
         }
-        
+
         Validate();
     }
 
@@ -135,7 +144,17 @@
         {
             Heir.TypeOfChild = null;
         }
-        
+
+        Validate();
+    }
+
+    private void HandleRelationChange(Heir heir)
+    {
+        if (Heir.Relation != RelationType.Barnebarn)
+        {
+            Heir.TypeOfChild = null;
+        }
+
         Validate();
     }
 
