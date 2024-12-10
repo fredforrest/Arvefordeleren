@@ -8,13 +8,17 @@
             <h1>Arvefordeleren</h1>
             <button @onclick="Start">Start din fordeling</button>
         </div>
-
+      
         <div class="content">
-            <h1>Vil du importere dit data?</h1>
-            <ImportCSVComponent />
+          <div class="tooltip">
+              Hjælp
+            <span class="tooltiptext">Indlæs et tidligere udarbejdet testamente, for at rette i det eller blot for at se dette igen. Indlæs dine filer og upload til programmet</span>
+          </div>
+          <h1>Vil du importere dit data? </h1>                
+          <ImportCSVComponent/>
         </div>
 
-    </div>
+   
 </div>
 
 @code {

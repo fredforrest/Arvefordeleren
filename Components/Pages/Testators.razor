@@ -6,17 +6,22 @@
         <h3>Velkommen til Arvefordeleren</h3>
         <h3>Indtast dine oplysninger</h3>
     </div>
-    
+
     <div class="info">
         <p>Ønsker du at lave arvsfordeling alene, skal du blot indtaste dine oplysninger. Ønsker du at lave en arvsfordeling med en sammenlever eller ægtefælle, skal du blot tilføje vedkommende.</p>
     </div>
-    
+
+    <div class="tooltip">
+        Hjælp
+        <span class="tooltiptext">Du kan oprette et testamente som enlig eller ægtefæller. Dette har betydning for hvordan din tvangsarv blandt andet testamenteres til efterkommere.</span>
+    </div>
+
     <div class="body">
         @if (TestatorRepository.testators.Any())
         {
             foreach (var testator in TestatorRepository.testators)
             {
-                <TestatorComponent Testator="testator"/>
+                <TestatorComponent Testator="testator" />
             }
         }
     </div>
@@ -26,7 +31,7 @@
 
 @code {
     [CascadingParameter] public NavMenu? NavMenu { get; set; }
-    
+
     protected override void OnInitialized()
     {
         if (!TestatorRepository.testators.Any())
