@@ -68,3 +68,31 @@ h3 {
 .info p{
     font-size: 1.1em;
 }
+
+.body-container {
+    margin-top: 3vh;
+    padding: 2vw;
+    background-color: #EFFAF7;
+    border-radius: 15px;
+    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
+    width: 50%;
+}
+
+.topInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+}
+.topInfo p {
+    width: 90%;
+}
+
+.topInfo > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 10%;
+}

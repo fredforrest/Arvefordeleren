@@ -21,7 +21,33 @@
         {
             foreach (var testator in TestatorRepository.testators)
             {
-                <TestatorComponent Testator="testator" />
+                <div class="body-container">
+                    @if (testator.Id == 1)
+                    {
+                        <div class="topInfo">
+                            <p>Disse oplysninger gemmes ikke af os</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="topInfo">
+                            <p>Vil du tilføje din ægtefælle til arvsfordelingen?</p>
+                            <div> <MudSwitch @bind-Value="IsSecondary" Color="Color.Success" Size="Size.Large"/> </div>
+                        </div> 
+                    }
+                    
+                    <TestatorComponent Testator="testator"/>
+                </div>
+            }
+
+            if (TestatorRepository.testators.Count == 1)
+            {
+                <div class="body-container">
+                    <div class="topInfo">
+                        <p>Vil du tilføje din ægtefælle til arvsfordelingen?</p>
+                        <div> <MudSwitch @bind-Value="IsSecondary" Color="Color.Success" Size="Size.Large"/> </div>
+                    </div> 
+                </div>
             }
         }
     </div>
@@ -31,18 +57,57 @@
 
 @code {
     [CascadingParameter] public NavMenu? NavMenu { get; set; }
-
-    protected override void OnInitialized()
+    private bool _isSecondary;
+    public bool IsSecondary
     {
-        if (!TestatorRepository.testators.Any())
+        get => _isSecondary;
+        set
+        {
+            _isSecondary = value;
+            CreateSecondary();
+        }
+    }
+
+
+    private void CreateSecondary()
+    {
+        if (!IsSecondary)
+        {
+            TestatorRepository.DeleteTestator(2); // Altid slet testator 2 hvis den findes.
+        }
+        else if(TestatorRepository.testators.Count == 1)
         {
             TestatorRepository.AddNewTestator(new Testator());
+        }
+        
+        Validate();
+    }
+    
+    protected override void OnInitialized()
+    {
+        if (TestatorRepository.testators.Count == 2)
+        {
+            IsSecondary = true;
+        }
+        
+        if (!TestatorRepository.testators.Any())
+        {
             TestatorRepository.AddNewTestator(new Testator());
         }
 
         if (NavMenu != null && !TestatorRepository.testators.Any())
         {
             NavMenu.IsValid = false;
+        }
+        
+        Validate();
+    }
+    
+    private void Validate()
+    {
+        if (NavMenu != null)
+        {
+            NavMenu.IsValid = ValidationService.IsAllFieldsValid(TestatorRepository.testators);
         }
     }
 }
