@@ -6,11 +6,17 @@
 .custom-file-label {
     display: inline-block;
     background-color: #007bff;
-    color: #fff;
+    color: white;
     padding: 1em 2em;
-    border-radius: 0.5em;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
     cursor: pointer;
+    transition: .3s;
 }
+
+    .custom-file-label:hover{
+        background-color: blue;
+    }
 
 ::deep #fileInput {
     position: absolute;
@@ -22,12 +28,32 @@
 
 .upload-button {
     margin-top: 1em;
-    padding: 0.5em 1em;
-    background-color: #28a745;
-    color: #fff;
+    padding: 1em 2.5em;
+    color: white;
+    background-color: #76EE9A;
     border: none;
-    border-radius: 0.5em;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
     cursor: pointer;
+    transition: .3s;
+}
+
+    .upload-button:hover {
+        background-color: #569f6a;
+    }
+
+    .upload-button:disabled {
+        background-color: #ccc;
+        color: #888; 
+        cursor: not-allowed; 
+    }
+
+.chosen-files {
+    margin-top: 2vh;
+    background-color: white;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    text-align: center;
 }
 
 .success-popup {

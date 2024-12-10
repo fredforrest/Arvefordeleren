@@ -18,7 +18,7 @@
     </ul>
 </div>
 
-<button class="upload-button" @onclick="HandleUpload">Upload</button>
+<button class="upload-button" @onclick="HandleUpload" disabled="@(!_selectedFiles.Any())">Upload</button>
 
 @if (popUpSucces)
 {
