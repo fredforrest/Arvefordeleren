@@ -1,7 +1,7 @@
 @inject NavigationManager NavigationManager
 @page "/"
 @layout EmptyLayout;
-<div class="body">
+<div class="body" xmlns="http://www.w3.org/1999/html">
     <div class="hero">
         <img src="images/Background.png"/>
         <div class="hero-content">
@@ -10,15 +10,14 @@
         </div>
       
         <div class="content">
-          <div class="tooltip">
-              Hjælp
-            <span class="tooltiptext">Indlæs et tidligere udarbejdet testamente, for at rette i det eller blot for at se dette igen. Indlæs dine filer og upload til programmet</span>
-          </div>
-          <h1>Vil du importere dit data? </h1>                
-          <ImportCSVComponent/>
+            <div class="tooltip">
+                Hjælp
+                <span class="tooltiptext">Indlæs et tidligere udarbejdet testamente, for at rette i det eller blot for at se dette igen.<br/><br/> Indlæs dine .csv filer som du downloadede sidst og upload dem til programmet</span>
+            </div>
+            <h1>Vil du importere dit data? </h1>
+            <ImportCSVComponent/>
         </div>
-
-   
+    </div>
 </div>
 
 @code {
