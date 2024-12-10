@@ -1,91 +1,35 @@
-    @using Arvefordeleren.Components.Layout
+@using Arvefordeleren.Components.Layout
 
-<div class="body-container">
-    @if (Testator.Id == 2)
-    {   
-        <div class="topInfo">
-            <p>Vil du tilføje din ægtefælle til arvsfordelingen?</p>
-            <div> <MudSwitch @bind-Value="EnableOtherField" Color="Color.Success" Size="Size.Large" /> </div>
+<div class="testator-container">
+    <EditForm EditContext="_editContext">
+        <DataAnnotationsValidator/>
+        <div class="form-group">
+            <ValidationMessage For="() => Testator.Name"></ValidationMessage>
+            <label for="name">Navn *</label>
+            <InputText id="name" @bind-Value="Testator.Name" type="text" placeholder="Indtast Navn"/>
         </div>
-        
-        if (EnableOtherField)
+
+            <div class="form-group">
+                <label for="address">Adresse</label>
+                <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
+            </div>
+
+            <div class="form-group">
+                <label for="mail">Email</label>
+                <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
+            </div>
+
+        @if (Testator.Id == 1)
         {
-            Validate(); // Valider før vi gør noget
-            <div class="testator-container">
-                <EditForm EditContext="_editContext">
-                    <DataAnnotationsValidator/>
-                    <div class="form-group">
-                        <ValidationMessage For="() => Testator.Name"></ValidationMessage>
-                        <label for="name">Navn *</label>
-                        <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn"></InputText>
-                    </div>
-
-                        <div class="form-group">
-                            <label for="address">Adresse</label>
-                            <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
-                        </div>
-
-                    <div class="form-group">
-                        <label for="mail">Email</label>
-                        <InputText @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
-                    </div>
-                </EditForm>
+            <div class="form-group">
+                <label>Er du gift?</label>
+                <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large"/>
             </div>
         }
-        else
-        {
-            Validate(); // Valider før vi gør noget
-            <div class="testator-container">
-                <div class="form-group">
-                    <label for="name">Navn</label>
-                    <InputText @bind-Value="Testator.Name" placeholder="Indtast Navn" disabled></InputText>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="address">Adresse</label>
-                    <InputText @bind-Value="Testator.Address" placeholder="Indtast Adresse" disabled></InputText>
-                </div>
-
-                <div class="form-group">
-                    <label for="mail">Email</label>
-                    <InputText @bind-Value="Testator.Email" placeholder="Indtast Email" disabled></InputText>
-                </div>
-            </div>
-        }
-    }
-    else
-    {
-        <div class="topInfo">
-            <p>Disse oplysninger gemmes ikke af os</p>
-        </div>
-        <div class="testator-container">
-            <EditForm EditContext="_editContext">
-                <DataAnnotationsValidator/>
-                <div class="form-group">
-                    <ValidationMessage For="() => Testator.Name"></ValidationMessage>
-                    <label for="name">Navn *</label>
-                    <InputText id="name" @bind-Value="Testator.Name" type="text" placeholder="Indtast Navn"/>
-                </div>
-
-                    <div class="form-group">
-                        <label for="address">Adresse</label>
-                        <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mail">Email</label>
-                        <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
-                    </div>
-
-                <div class="form-group">
-                    <label>Er du gift?</label>
-                    <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large"/>
-                </div>
-            </EditForm>
-        </div>
-    }
+    </EditForm>
 </div>
+
+
 @code {
     [CascadingParameter] public NavMenu? NavMenu { get; set; }
     [Parameter] public bool IsSecondary { get; set; }
@@ -120,8 +64,5 @@
         {
             NavMenu.IsValid = ValidationService.IsAllFieldsValid(TestatorRepository.testators);
         }
-        
-        
-        
     }
 }
