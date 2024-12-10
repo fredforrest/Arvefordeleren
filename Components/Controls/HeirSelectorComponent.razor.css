@@ -32,36 +32,30 @@ h4 {
 .tooltip {
     position: relative;
     display: inline-block;
-    bottom: 150%;
-    color: crimson;
+    color: #000000;
     border-bottom: 1px dotted black;
+    cursor: default;
 }
 
 
     .tooltip .tooltiptext {
+        padding: 30%;
         visibility: hidden;
-        width: 120px;
-        background-color: #555;
+        background-color: rgb(61, 61, 61);
         color: #fff;
-        width: 300px;
+        width: 20vw;
         text-align: center;
-        padding: 5px 0;
         border-radius: 6px;
         position: absolute;
-        z-index: 1;
         bottom: 200%;
-        left: 50%;
-        margin-left: -60px;
+        left: -10vw;
         opacity: 0;
         transition: opacity 0.3s;
     }
 
 
         .tooltip .tooltiptext::after {
-            content: "";
             position: relative;
-            top: 100%;
-            left: 50%;
             margin-left: -5px;
             border-width: 5px;
             border-style: solid;
