@@ -46,26 +46,21 @@ namespace Arvefordeleren.Models.Repositories
 
         public static Action? OnForcedHeirsUpdated { get; set; }
         public static void AddHeirToFamilyList(Heir heir)
+{
+    if (!ForcedHeirs.Any(h => h.Id == heir.Id))
+    {
+        switch (heir.Relation)
         {
-
-            if (!ForcedHeirs.Any(h => h.Id == heir.Id))
-            //if(!ForcedHeirs.Any(h => h.Relation == heir.Relation))
-            
-            {
-                switch (heir.Relation)
-                {
-                    case RelationType.Barn:
-                    case RelationType.Barnebarn:
-                    case RelationType.ForÊldre:
-                    case RelationType.BedsteforÊldre:
-
-                        ForcedHeirs.Add(heir);
-                        OnForcedHeirsUpdated?.Invoke();
-                        break;
-
-                }
-            }
+            case RelationType.Barn:
+            case RelationType.Barnebarn:
+            case RelationType.For√¶ldre:
+            case RelationType.Bedstefor√¶ldre:
+                ForcedHeirs.Add(heir);
+                DistributeSharesEqually(); // Fordel andelene
+                break;
         }
+    }
+}
 
         public static void UpdateHeirRelation(Heir heir)
         {
@@ -75,7 +70,7 @@ namespace Arvefordeleren.Models.Repositories
                 ForcedHeirs.Remove(existingHeir);
             }
 
-            // Tjek om arvingen kvalificerer sig til ForcedHeirs baseret pÂ relation
+            // Tjek om arvingen kvalificerer sig til ForcedHeirs baseret pÔøΩ relation
             if (IsForcedRelation(heir.Relation))
             {
                 ForcedHeirs.Add(heir);
@@ -87,7 +82,7 @@ namespace Arvefordeleren.Models.Repositories
                 ForcedHeirs.Remove(heir);
             }
 
-            // Udl¯s en event for at opdatere UI
+            // UdlÔøΩs en event for at opdatere UI
             OnForcedHeirsUpdated?.Invoke();
         }
 
@@ -95,11 +90,47 @@ namespace Arvefordeleren.Models.Repositories
         {
             return relation == RelationType.Barn ||
                    relation == RelationType.Barnebarn ||
-                   relation == RelationType.ForÊldre ||
-                   relation == RelationType.BedsteforÊldre;
+                   relation == RelationType.For√¶ldre ||
+                   relation == RelationType.Bedstefor√¶ldre;
         }
+
+        
+public static void DistributeSharesEqually()
+{
+    if (ForcedHeirs.Count == 0) return;
+
+    double equalShare = 100.0 / ForcedHeirs.Count;
+    foreach (var heir in ForcedHeirs)
+    {
+        heir.Share = equalShare;
     }
 
+    OnForcedHeirsUpdated?.Invoke();
+}
+
+public static void UpdateHeirShare(Heir heir, double newShare)
+{
+    double totalWithoutCurrent = ForcedHeirs
+        .Where(h => h.Id != heir.Id)
+        .Sum(h => h.Share);
+
+    // Hvis den samlede v√¶rdi med ny andel overstiger 100, begr√¶ns det
+    if (totalWithoutCurrent + newShare <= 100)
+    {
+        heir.Share = newShare;
+    }
+    else
+    {
+        heir.Share = Math.Max(0, 100 - totalWithoutCurrent);
+    }
+
+    OnForcedHeirsUpdated?.Invoke(); // Opdater UI
+}
+
+
+
+
+    }
 
 
 }

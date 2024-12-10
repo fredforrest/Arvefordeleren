@@ -1,57 +1,108 @@
-﻿<h3>ForcedPiechartComponent</h3>
+﻿@using Arvefordeleren.Models
 
-@using Arvefordeleren.Models.Repositories;
+<h3>ForcedPiechartComponent</h3>
+
+<MudChart ChartType="ChartType.Pie"
+          Data="@ForcedInheritanceSeries.Select(i => i.Value).ToArray()" 
+          Labels="@ForcedInheritanceSeries.Select(i => i.Name).ToArray()" />
 
 
-@if (ForcedHeirsList == null || !ForcedHeirsList.Any())
+@foreach (var heir in HeirsRepository.ForcedHeirs)
+{
+    <div>
+        <label>@heir.Name:</label>
+        <MudNumericField T="double"
+                         Value="@heir.Share"
+                         MinValue="0"
+                         MaxValue="@GetMaxAllowedShare(heir)"
+                         ValueChanged="@(newShare => OnShareChange(heir, newShare))"
+                         Immediate="true"
+                         Step="1"
+                         Adornment="Adornment.End"
+                         AdornmentText="%" />
+    </div>
+}
+
+@if (!ForcedHeirsList.Any())
 {
     <span>No data available for Heirs</span>
 }
 else
 {
-    <div>
-
-        <span>Heirs modtaget fra "ForcedHeirs" Count: @ForcedHeirsList.Count</span>
-        <br />
-        <span>Indsæt value for Heirs "Share"</span>
-
-
-        <MudPaper Class="mud-p-4">
-            @foreach (var heir in ForcedHeirsList)
-            {
-                <MudTextField Label=@($"Share for Arving: {heir.Name} - {heir.Relation}")
-                              @bind-Value="heir.Share"
-                              Type="number"
-                              Class="mud-mb-2">
-                </MudTextField>
-            }
-
-            <MudChart ChartType="ChartType.Pie"
-                      InputData="@ForcedHeirsValues.ToArray()"
-                      InputLabels="@ForcedHeirsLabels.ToArray()" 
-                      Width="400px"
-                      Height="400px">
-            </MudChart>
-        </MudPaper>
-    </div>
+    <MudPaper Class="mud-p-4">
+        @foreach (var heir in ForcedHeirsList)
+        {
+            <MudTextField T="double"
+                          Label=@($"Share for Arving: {heir.Name} - {heir.Relation}")
+                          Value="@heir.Share"
+                          Immediate="true"
+                          OnBlur="@(e => ValidateAndSetShare(heir))"
+                          Adornment="Adornment.End"
+                          AdornmentText="%" />
+        }
+    </MudPaper>
 }
-
-
 
 @code {
 
-    public class PieChartSeriesProps
-    {
-        public string Name { get; set; }
-        public double Value { get; set; }
+        [Parameter]
+    public List<PieChartSeriesProps> ForcedInheritanceInput { get; set; }
+    private double TotalShare => HeirsRepository.ForcedHeirs.Sum(h => h.Share);
 
+    private List<PieChartSeriesProps> ForcedInheritanceSeries => HeirsRepository.ForcedHeirs
+        .Select(h => new PieChartSeriesProps { Name = h.Name, Value = h.Share })
+        .ToList();
+
+    private void OnShareChange(Heir heir, double newShare)
+    {
+        HeirsRepository.UpdateHeirShare(heir, newShare);
+        StateHasChanged(); // Opdater UI
     }
 
-    [Parameter]
-    public List<PieChartSeriesProps> ForcedInheritanceInput { get; set; } = new List<PieChartSeriesProps>();
+    private void ValidateAndSetShare(Heir heir)
+    {
+        double totalWithoutCurrent = HeirsRepository.ForcedHeirs
+            .Where(h => h.Id != heir.Id)
+            .Sum(h => h.Share);
+
+        if (TotalShare > 100)
+        {
+            heir.Share = Math.Max(0, 100 - totalWithoutCurrent);
+            Console.WriteLine($"Værdi korrigeret på tab: {heir.Share}%.");
+        }
+
+        UpdateForcedHeirs(); // Sikrer repository-konsistens
+        StateHasChanged(); // Opdater UI
+    }
+
+    private double GetMaxAllowedShare(Heir heir)
+    {
+        double totalWithoutCurrent = HeirsRepository.ForcedHeirs
+            .Where(h => h.Id != heir.Id)
+            .Sum(h => h.Share);
+
+        return Math.Max(0, 100 - totalWithoutCurrent);
+    }
+
+    private void UpdateForcedHeirs()
+    {
+        if (TotalShare > 100)
+        {
+            double excess = TotalShare - 100;
+            foreach (var heir in HeirsRepository.ForcedHeirs.OrderByDescending(h => h.Share))
+            {
+                if (excess <= 0) break;
+
+                double reduction = Math.Min(excess, heir.Share);
+                heir.Share -= reduction;
+                excess -= reduction;
+            }
+        }
+    }
+
     private List<Heir> ForcedHeirsList => HeirsRepository.ForcedHeirs;
 
     private List<double> ForcedHeirsValues => ForcedHeirsList.Select(heir => heir.Share).ToList();
+
     private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(heir => heir.Name).ToList();
 }
-
