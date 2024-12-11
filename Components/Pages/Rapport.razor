@@ -1,5 +1,4 @@
 ﻿@page "/rapport"
-@using Arvefordeleren.Models  <!-- Sørg for at importere Models her -->
 
 <div class="main-container">
     <div class="headliner-container">
@@ -12,15 +11,18 @@
 
     <div class="body">
         <div>
-            <FreePiechartComponent />
-
+            <FreePiechartComponent InheritanceInput="@FreeInheritanceSeries" />
             <br />
             <ForcedPiechartComponent ForcedInheritanceInput="@ForcedInheritanceSeries" />
+
         </div>
 
         <div class="right-body">
             <RapportListComponent/>
         </div>
+        
+       
+        
     </div>
 </div>
 
@@ -28,14 +30,9 @@
     private List<Heir> FreeInheritance { get; set; } = new List<Heir>();
     private List<Heir> ForcedInheritance { get; set; } = new List<Heir>();
 
-    // Opdatering af PieChartSeriesProps til at bruge den fælles model
-    private List<PieChartSeriesProps> FreeInheritanceSeries => FreeInheritance
-        .Select(h => new PieChartSeriesProps { Name = h.Name, Value = h.Share })
-        .ToList();
 
-    private List<PieChartSeriesProps> ForcedInheritanceSeries => ForcedInheritance
-        .Select(h => new PieChartSeriesProps { Name = h.Name, Value = h.Share })
-        .ToList();
+    private List<FreePiechartComponent.PieChartSeriesProps> FreeInheritanceSeries => FreeInheritance.Select(h => new FreePiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
+    private List<ForcedPiechartComponent.PieChartSeriesProps> ForcedInheritanceSeries => ForcedInheritance.Select(h => new ForcedPiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
 
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
 
