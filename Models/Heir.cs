@@ -5,7 +5,7 @@ using static MudBlazor.Icons.Material;
 
 namespace Arvefordeleren.Models
 {
-    public class Heir
+    public class Heir : Person
     {
         public int Id { get; set; }
         public string Name { get; set; }

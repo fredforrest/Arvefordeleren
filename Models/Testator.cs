@@ -3,7 +3,7 @@ using System.Dynamic;
 
 namespace Arvefordeleren.Models
 {
-    public class Testator
+    public class Testator : Person
     {
         public int Id { get; set; }
 
@@ -14,6 +14,7 @@ namespace Arvefordeleren.Models
         public string? Address { get; set; } = null;
 
         public string? Email { get; set; }
+        
 
 
     }

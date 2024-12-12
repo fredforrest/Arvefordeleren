@@ -85,6 +85,8 @@
 @code {
     [Parameter] public bool IsSecondary { get; set; }
     [Parameter] public Testator Testator { get; set; }
+    private List<Person> ForcedHeirs => HeirsRepository.ForcedHeirs;
+
 
     protected override void OnInitialized()
     {
@@ -92,7 +94,25 @@
         {
             Enable = true;
         }
+
+        var spouse = new Person();
+
+        spouse = TestatorRepository.GetTestatorById(2);
+
+        if (spouse != null)
+        {
+            TestatorRepository.AddTestatorToForcedHeirs(spouse);
+            StateHasChanged();
+        }
     }
+
+    // private void AddTestatorToForcedHeirs(Person testator)
+    // {
+    //     if (testator.Id == 2)
+    //     {
+    //         ForcedHeirsList.Add(testator);
+    //     }
+    // }
 
     public bool Enable;
 }

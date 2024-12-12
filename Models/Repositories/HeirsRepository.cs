@@ -5,7 +5,7 @@ namespace Arvefordeleren.Models.Repositories
     public static class HeirsRepository
     {
         public static List<Heir> Heirs { get; set; } = new List<Heir>();
-        public static List<Heir> ForcedHeirs { get; set; } = new List<Heir>();
+        public static List<Person> ForcedHeirs { get; set; } = new List<Person>();
 
         public static void AddHeir(Heir heir)
         {
@@ -45,27 +45,74 @@ namespace Arvefordeleren.Models.Repositories
         }
 
         public static Action? OnForcedHeirsUpdated { get; set; }
-        public static void AddHeirToFamilyList(Heir heir)
+        //public static void AddHeirToFamilyList(Heir heir, Testator testator)
+        //{
+
+        //    if (!ForcedHeirs.Any(h => h.Id == heir.Id))
+        //    //if(!ForcedHeirs.Any(h => h.Relation == heir.Relation))
+
+        //    {
+        //        switch (heir.Relation)
+        //        {
+        //            case RelationType.Barn:
+        //            case RelationType.Barnebarn:
+        //            case RelationType.Forældre:
+        //            case RelationType.Bedsteforældre:
+
+        //                ForcedHeirs.Add(heir);
+        //                OnForcedHeirsUpdated?.Invoke();
+        //                break;
+
+        //        }
+        //    }
+        //}
+
+        //public static void AddHeirToFamilyList(Heir heir, Testator? testator = null)
+        //{
+        //    if (testator != null)
+        //    {
+        //        if (!ForcedHeirs.OfType<Testator>().Any(t => t.Id == testator.Id))
+        //        {
+        //            ForcedHeirs.Add(testator);
+        //            OnForcedHeirsUpdated?.Invoke();
+        //        }
+        //    }
+        //    else if (!ForcedHeirs.OfType<Heir>().Any(h => h.Id == heir.Id))
+        //    {
+        //        if (IsForcedRelation(heir.Relation))
+        //        {
+        //            ForcedHeirs.Add(heir);
+        //            OnForcedHeirsUpdated?.Invoke();
+        //        }
+        //    }
+        //}
+
+        public static void AddHeirToFamilyList(Heir heir, Testator? testator = null)
         {
-
-            if (!ForcedHeirs.Any(h => h.Id == heir.Id))
-            //if(!ForcedHeirs.Any(h => h.Relation == heir.Relation))
-            
+            if (testator != null)
             {
-                switch (heir.Relation)
+                if (!ForcedHeirs.OfType<Testator>().Any(t => t.Id == testator.Id))
                 {
-                    case RelationType.Barn:
-                    case RelationType.Barnebarn:
-                    case RelationType.Forældre:
-                    case RelationType.Bedsteforældre:
-
-                        ForcedHeirs.Add(heir);
-                        OnForcedHeirsUpdated?.Invoke();
-                        break;
-
+                    ForcedHeirs.Add(testator);
+                    OnForcedHeirsUpdated?.Invoke();
+                }
+            }
+            else if (!ForcedHeirs.Any(h => h.Id == heir.Id))
+            {
+                if (IsForcedRelation(heir.Relation))
+                {
+                    ForcedHeirs.Add(new Person
+                    {
+                        Id = heir.Id,
+                        Name = heir.Name,
+                        Relation = heir.Relation
+                    });
+                    OnForcedHeirsUpdated?.Invoke();
                 }
             }
         }
+
+
 
         public static void UpdateHeirRelation(Heir heir)
         {
@@ -75,17 +122,20 @@ namespace Arvefordeleren.Models.Repositories
                 ForcedHeirs.Remove(existingHeir);
             }
 
-            // Tjek om arvingen kvalificerer sig til ForcedHeirs baseret på relation
             if (IsForcedRelation(heir.Relation))
             {
-                ForcedHeirs.Add(heir);
+                ForcedHeirs.Add(new Person
+                {
+                    Id = heir.Id,
+                    Name = heir.Name,
+                    Relation = heir.Relation
+                });
             }
 
-
-            else if(!IsForcedRelation(heir.Relation))
-            {
-                ForcedHeirs.Remove(heir);
-            }
+            //else if(!IsForcedRelation(heir.Relation))
+            //{
+            //    ForcedHeirs.Remove(heir);
+            //}
 
             // Udløs en event for at opdatere UI
             OnForcedHeirsUpdated?.Invoke();
@@ -97,6 +147,7 @@ namespace Arvefordeleren.Models.Repositories
                    relation == RelationType.Barnebarn ||
                    relation == RelationType.Forældre ||
                    relation == RelationType.Bedsteforældre;
+                   // Muligivis tilføj spouse som ENUM;
         }
     }
 

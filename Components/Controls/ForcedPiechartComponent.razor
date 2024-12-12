@@ -49,7 +49,7 @@ else
 
     [Parameter]
     public List<PieChartSeriesProps> ForcedInheritanceInput { get; set; } = new List<PieChartSeriesProps>();
-    private List<Heir> ForcedHeirsList => HeirsRepository.ForcedHeirs;
+    private List<Person> ForcedHeirsList => HeirsRepository.ForcedHeirs;
 
     private List<double> ForcedHeirsValues => ForcedHeirsList.Select(heir => heir.Share).ToList();
     private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(heir => heir.Name).ToList();

@@ -8,6 +8,19 @@
             new Testator { Id = 2},
         };
 
+        public static List<Person> ForcedHeirs { get; set; } = new List<Person>();
+
+        public static void AddTestatorToForcedHeirs(Person testator)
+        {
+
+
+            if (testator.Id == 2)
+            {
+                ForcedHeirs.Add(testator);
+            }
+        }
+
+
         public static void AddNewTestator(Testator testator)
         {
             int maxId = testators.Any() ? testators.Max(t => t.Id) : 0; // Hvis listen er tom, start med ID 1
