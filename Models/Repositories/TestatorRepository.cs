@@ -2,11 +2,7 @@
 {
     public static class TestatorRepository
     {
-        public static List<Testator> testators { get; set; } = new List<Testator>
-        {
-            new Testator { Id = 1 },
-            new Testator { Id = 2},
-        };
+        public static List<Testator> testators { get; set; } = new List<Testator>();
 
         public static List<Person> ForcedHeirs { get; set; } = new List<Person>();
 
@@ -38,5 +34,7 @@
                 testators.Remove(testator);
             }
         }
+
+        
     }
 }

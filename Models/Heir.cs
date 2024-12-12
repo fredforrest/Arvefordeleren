@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Arvefordeleren.Components.Pages;
 using Arvefordeleren.Models.Repositories;
 using System.Data;
@@ -8,10 +9,14 @@ namespace Arvefordeleren.Models
     public class Heir : Person
     {
         public int Id { get; set; }
+        [Required (ErrorMessage = "Navn skal udfyldes!")]
         public string Name { get; set; }
-        public RelationType Relation { get; set; }
-        public double Share = 1.0;
+        [Required (ErrorMessage = "Relation skal udfyldes!")]
+        public RelationType? Relation { get; set; }
+        public double Share { get; set; } = 1.0;
 
+        public TypeOfChild? TypeOfChild { get; set; }
+        public List<Testator>? Testators { get; set; } = new List<Testator>();
 
         public string Icon
         {
@@ -45,6 +50,11 @@ namespace Arvefordeleren.Models
     public enum RelationType
     {
        Barn, Barnebarn, Forældre, Bedsteforældre, Andet
+    }
+
+    public enum TypeOfChild
+    {
+        Særbarn, Fællesbarn
     }
 
 }

@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,9 +18,11 @@
 
     <ItemGroup>
       <Content Include="Components\Controls\RapportListComponent.razor.css" />
+      <Content Include="Data\Downloads\dl.txt" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="CsvHelper" Version="33.0.1" />
       <PackageReference Include="MudBlazor" Version="7.15.0" />
     </ItemGroup>
 

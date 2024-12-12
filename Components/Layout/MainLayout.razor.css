@@ -1,5 +1,12 @@
-﻿.Container {
-    display: flex;
-    flex-direction: row;
+﻿body, html {
+    height: 100%;
     background-color: #FCFAF4;
+
+}
+
+.Container {
+    display: flex;
+    background-color: #FCFAF4;
+
+    flex-direction: row;
 }
