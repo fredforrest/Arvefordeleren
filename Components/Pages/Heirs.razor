@@ -17,17 +17,6 @@
             <button class="AddButton" @onclick="AddHeir">Tilføj flere (+)</button>
         </div>
     </div>
-
-    <div>
-        <button class="TreeButton" @onclick="ShowFamilyTree">Se Stamtræ</button>
-    </div>
-
-    @if (IsTreeVisable) // Alt herunder fungere ikke helt godt, det meget rodet og måske lidt svært at forstå.
-    {
-        <div class="FamilyTreePopup">
-            <FamilyTreeComponent/>
-        </div>
-    }
 </div>
 
 @code {
@@ -35,22 +24,11 @@
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs; 
     private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
 
-    private bool IsTreeVisable = false;
-
-    //De her to laver egentlig bare en liste med given relationtype
-    private List<Heir> Parents => HeirsRepository.Heirs.Where(h => h.Relation == RelationType.Forældre).ToList();
-    private List<Heir> Children => HeirsRepository.Heirs.Where(h => h.Relation == RelationType.Barn).ToList();
-
-
     protected override void OnInitialized()
     {
         Validate();
     }
 
-    private void ShowFamilyTree()
-    {
-        IsTreeVisable = !IsTreeVisable;
-    }
 
     private void AddHeir()
     {

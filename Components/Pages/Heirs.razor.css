@@ -106,29 +106,5 @@ h1 {
     position: relative;
 }
 
-.TreeButton {
-    width: 10%;
-    top: 10px;
-    height: 10%;
-    box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
-    border-radius: 5px;
-    background-color: #76EE9A;
-}
 
-/*Alt herunder meter for at vise Stammetræet*/
-.FamilyTreePopup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #76EE9A;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow: auto;
-}
 
