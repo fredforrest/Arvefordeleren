@@ -5,20 +5,77 @@
     padding: 2%;
     border-radius: 8px;
     box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
-    overflow: auto; /* Use 'auto' to show scrollbars only when necessary */
+    overflow: auto;
     display: flex;
-    flex-direction: column; /* Ensures it stacks correctly */
+    flex-direction: column;
+    position: relative;
 }
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+}
+
+.title-left {
+    flex-grow: 0;
+}
+
+.title-right {
+    flex-grow: 0;
+}
+
+h4 {
+    font-weight: normal;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.tooltip {
+    position: relative;
+    color: #000000;
+    border-bottom: 1px dotted black;
+    cursor: default;
+    margin-top: -100%;    
+}
+
+    .tooltip .tooltiptext {
+        padding: 30%;
+        visibility: hidden;
+        background-color: rgb(61, 61, 61);
+        color: #fff;
+        width: 20vw;
+        text-align: center;
+        border-radius: 6px;
+        position: absolute;
+        bottom: -250%;
+        right: 3vw;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+        .tooltip .tooltiptext::after {
+            position: relative;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
 
 .graph-body {
     display: flex;
     flex-direction: row;
     gap: 5rem;
     justify-content: flex-start;
-    align-items: flex-start; /* Use flex-start for vertical alignment */
+    align-items: flex-start;
     max-width: 100%;
     max-height: 100%;
-    overflow: hidden; /* Prevent unnecessary overflow from child elements */
+    overflow: hidden;
 }
 
 .graph-left {
@@ -34,12 +91,12 @@
 }
 
 .graph-grid {
-    width: 100%; /* Adjust the width of the grid container */
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    grid-auto-rows: auto; /* Rows adapt to content height */
+    grid-auto-rows: auto;
     gap: 2vh;
-    grid-auto-flow: row dense; /* Rows are filled compactly */
+    grid-auto-flow: row dense;
 }
 
 h4 {
@@ -47,4 +104,5 @@ h4 {
     font-size: 1.4rem;
     padding-left: 2%;
     margin-bottom: 2rem;
+    display: inline-block;
 }

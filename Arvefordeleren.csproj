@@ -4,14 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Compile Remove="Data\**" />
-      <Content Remove="Data\**" />
-      <EmbeddedResource Remove="Data\**" />
-      <None Remove="Data\**" />
-    </ItemGroup>
 
     <ItemGroup>
       <None Remove="Components\Controls\RapportListComponent.razor.css" />
@@ -24,6 +18,7 @@
 
     <ItemGroup>
       <Content Include="Components\Controls\RapportListComponent.razor.css" />
+      <Content Include="Data\Downloads\dl.txt" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,9 +1,13 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager navManager
 
 <div class="Container">
-    <div>
-        <NavMenu @ref="navMenu"/>
-    </div>
+    @if (!isHomePage)
+    {
+        <div>
+            <NavMenu @ref="navMenu"/>
+        </div>
+    }
 
     @if (navMenu != null)
     {
@@ -28,6 +32,7 @@
 
 @code {
     private NavMenu navMenu;
+    private bool isHomePage => navManager.Uri.EndsWith("/");
     
     protected override void OnAfterRender(bool firstRender)
     {

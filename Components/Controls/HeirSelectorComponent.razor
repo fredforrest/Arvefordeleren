@@ -16,38 +16,44 @@
         <DataAnnotationsValidator/>
         <ValidationMessage For="() => Heir.Name"></ValidationMessage>
         <InputText id="name" @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn *"/>
-        <select @bind="Heir.Relation" name="Relation" @onclick="HandleRelationChange">
+
+        <select @bind="@SelectedTestatorId" name="Testator" @onclick="Validate">
             <option value="">Angiv relation</option>
-            @foreach (var relation in Enum.GetValues<RelationType>())
+            @foreach (var testator in TestatorRepository.testators)
             {
-                <option value="@relation">@relation.ToString()</option>
+                <option value="@testator.Id">@testator.Name</option>
             }
+            <option value=3>Begge</option>
         </select>
+
         <div>
-            @if (Heir.Relation == RelationType.Barn)
+            @if(SelectedTestatorId != null)
             {
-            <select @bind="Heir.TypeOfChild" name="TypeOfChild" @onclick="() => OnTypeOfChildSelected(Heir)">
-                    <option value="">FÊllesbarn eller sÊrbarn?</option>
-                    @foreach (var typeOfChild in Enum.GetValues<TypeOfChild>())
-                    {
-                        <option value="@typeOfChild">@typeOfChild.ToString()</option>
-                    }
+                <select @bind="Heir.RelationType" name="RelationType">
+                    <option value="">Angiv relation</option>
+                        @foreach (var relation in Enum.GetValues<RelationType>())
+                        {
+                            @if(SelectedTestatorId == 3)
+                            {
+                                if(relation != RelationType.For√¶ldre)
+                                {
+                                    <option value="@relation">@relation.ToString()</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@relation">@relation.ToString()</option>
+                            }
+                        }
                 </select>
             }
-            @if(Heir.Relation == RelationType.Barn && Heir.TypeOfChild == TypeOfChild.SÊrbarn ||
-            Heir.Relation != RelationType.Barn && Heir.TypeOfChild != TypeOfChild.FÊllesbarn)
-            {
-                <select @bind="SelectedTestatorId" name="Testator">
-                    <option value="">VÊlg arvelader</option>
-                    @foreach (var testator in testatorList)
-                    {
-                        <option value="@testator.Id">@testator.Name</option>
-                    }
-                </select>
-            }
-            
         </div>
     </EditForm>
+
+    <div class="tooltip">
+        Hj√¶lp
+        <span class="tooltiptext">Her skal de oprette deres arvinger med navn, relation og, hvis flere arveladere er oprettet, til hvilken denne arving er tilh√∏rende til. Relationen har en betydning for hvordan tvangsarven fordeles.</span>
+    </div>
 
 </div>
 
@@ -59,8 +65,6 @@
 
     private EditContext editContext;
     private bool Note = false;
-    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
-    private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
     private TestatorService service = new TestatorService();
 
     private int? selectedTestatorId;
@@ -69,10 +73,19 @@
         get => selectedTestatorId;
         set
         {
+            
             if (selectedTestatorId != value)
             {
                 selectedTestatorId = value;
-                service.EstablishRelationToHeir(Heir, selectedTestatorId);
+                if(selectedTestatorId == 3)
+                {
+                    service.EstablishRelationToHeir(Heir, 1);
+                    service.EstablishRelationToHeir(Heir, 2);
+                }
+                else
+                {
+                    service.EstablishRelationToHeir(Heir, selectedTestatorId);
+                }
             }
         }
     }
@@ -86,7 +99,7 @@
 
     protected override void OnInitialized()
     {
-        var existingTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
+        var existingTestator = TestatorRepository.testators.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.RelationType == Heir.RelationType));
         if (existingTestator != null)
         {
             SelectedTestatorId = existingTestator.Id;
@@ -118,21 +131,4 @@
             NavMenu.IsValid = ValidationService.IsAllFieldsValid(HeirsRepository.Heirs);
         }
     }
-
-    private void OnTypeOfChildSelected(Heir heir)
-    {
-        if(heir.TypeOfChild == TypeOfChild.FÊllesbarn)
-        {
-            service.EstablishRelationToHeir(heir, SelectedTestatorId);
-        }
-    }
-
-    private void HandleRelationChange()
-    {
-        if (Heir.Relation != RelationType.Barn)
-        {
-            Heir.TypeOfChild = null;
-        }
-    }
-
 }

@@ -17,6 +17,44 @@
     right: 1%;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+    color: #000000;
+    border-bottom: 1px dotted black;
+    cursor: default;
+}   
+
+
+    .tooltip .tooltiptext {
+        padding: 30%;
+        visibility: hidden;
+        background-color: rgb(61, 61, 61);
+        color: #fff;
+        width: 20vw;
+        text-align: center;
+        border-radius: 6px;
+        position: absolute;
+        bottom: 200%;
+        left: -10vw;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+
+        .tooltip .tooltiptext::after {
+            position: relative;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
 .Remove-btn {
     background: none;
     border: none;

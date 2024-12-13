@@ -7,11 +7,11 @@ namespace Arvefordeleren.Models
     {
         public int Id { get; set; }
         [Required (AllowEmptyStrings = false, ErrorMessage = "Navn skal udfyldes!")]
-        public string? Name { get; set; } = null;
+        public string? Name { get; set; } = "";
 
         public bool isMarried { get; set; }
 
-        public string? Address { get; set; } = null;
+        public string? Address { get; set; } = "";
 
         public string? Email { get; set; }
 
