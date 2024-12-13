@@ -3,16 +3,16 @@
 
 <div class="HeirContainer">
     <div class="TopContainer">
-        <h1>Indtast dine arvinger</h1>
+        <h1>Indtast dine arvinger </h1>
     </div>
     <div class="SelectorContainer">
         @foreach (var heir in HeirsRepository.Heirs)
         {
             <div class="Selector">
-                <HeirSelectorComponent Heir="heir" OnClose="HandleClose"/>
+                <HeirSelectorComponent Heir="heir" OnClose="HandleClose" />
             </div>
         }
-        
+
         <div class="Selector" id="ButtonBox">
             <button class="AddButton" @onclick="AddHeir">Tilføj flere (+)</button>
         </div>
@@ -21,7 +21,7 @@
 
 @code {
     [CascadingParameter] public NavMenu? NavMenu { get; set; }
-    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs; 
+    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
     private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
 
     protected override void OnInitialized()
@@ -33,9 +33,9 @@
     private void AddHeir()
     {
         HeirsRepository.AddHeir(new Heir());
-        StateHasChanged(); 
+        StateHasChanged();
     }
-    
+
     private void HandleClose(Heir heir)
     {
         HeirsRepository.RemoveHeir(heir.Id);
@@ -49,7 +49,7 @@
                 Validate();
             }
         }
-        
+
     }
 
     private void Validate()
