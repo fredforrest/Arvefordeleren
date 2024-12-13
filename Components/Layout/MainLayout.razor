@@ -2,20 +2,19 @@
 
 <div class="Container">
     <div>
-        <NavMenu/>
+        <NavMenu @ref="navMenu"/>
     </div>
 
-    <main>
-        <article>
-            @Body
-        </article>
-    </main>
+    @if (navMenu != null)
+    {
+        <CascadingValue Value="navMenu">
+            <main>
+                @Body
+            </main>
+        </CascadingValue>
+    }
 </div>
 
-<div>
-    <a></a>
-    <a></a>
-</div>
 
 @* Required *@
 <MudThemeProvider />
@@ -26,3 +25,16 @@
 
 @* Needed for snackbars *@
 <MudSnackbarProvider />
+
+@code {
+    private NavMenu navMenu;
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+
+}

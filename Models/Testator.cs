@@ -6,7 +6,7 @@ namespace Arvefordeleren.Models
     public class Testator
     {
         public int Id { get; set; }
-
+        [Required (AllowEmptyStrings = false, ErrorMessage = "Navn skal udfyldes!")]
         public string? Name { get; set; } = null;
 
         public bool isMarried { get; set; }
@@ -15,6 +15,7 @@ namespace Arvefordeleren.Models
 
         public string? Email { get; set; }
 
+        public List<Heir> Heirs { get; set; } = new List<Heir>();
 
     }
 }

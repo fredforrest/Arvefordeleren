@@ -1,4 +1,5 @@
 @page "/Arvinger"
+@using Arvefordeleren.Components.Layout
 
 <div class="HeirContainer">
     <div class="TopContainer">
@@ -18,25 +19,42 @@
     </div>
 </div>
 @code {
+    [CascadingParameter] public NavMenu? NavMenu { get; set; }
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs; 
+    private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
+
+    protected override void OnInitialized()
+    {
+        Validate();
+    }
 
     private void AddHeir()
     {
         HeirsRepository.AddHeir(new Heir());
-        HeirsList = HeirsRepository.Heirs; 
         StateHasChanged(); 
     }
-
-    private void RemoveHeir(Heir heir)
-    {
-        if (heir != null)
-        {
-            HeirsRepository.RemoveHeir(heir.Id);
-        }
-    }
-
+    
     private void HandleClose(Heir heir)
     {
-        RemoveHeir(heir);
+        HeirsRepository.RemoveHeir(heir.Id);
+
+        foreach (var testator in testatorList)
+        {
+            if (testator.Heirs.Any(h => h.Id == heir.Id))
+            {
+                testator.Heirs.Remove(heir);
+                StateHasChanged();
+                Validate();
+            }
+        }
+        
+    }
+
+    private void Validate()
+    {
+        if (!HeirsRepository.Heirs.Any() && NavMenu != null)
+        {
+            NavMenu.IsValid = false;
+        }
     }
 }

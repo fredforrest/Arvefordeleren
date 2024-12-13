@@ -1,4 +1,4 @@
-@using Arvefordeleren.Components.Pages
+@using Arvefordeleren.Components.Layout
 <div class="HeirContainer">
     <div class="TopBox">
         <div>
@@ -12,42 +12,126 @@
     </div>
 
     
-    <EditForm Model="Heir">
-        <InputText @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn"/>
-        <select @bind="Heir.Relation" name="Relation">
+    <EditForm EditContext="editContext">
+        <DataAnnotationsValidator/>
+        <ValidationMessage For="() => Heir.Name"></ValidationMessage>
+        <InputText id="name" @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn *"/>
+        <select @bind="Heir.Relation" name="Relation" @onclick="HandleRelationChange">
+            <option value="">Angiv relation</option>
             @foreach (var relation in Enum.GetValues<RelationType>())
             {
                 <option value="@relation">@relation.ToString()</option>
             }
         </select>
+        <div>
+            @if (Heir.Relation == RelationType.Barn)
+            {
+            <select @bind="Heir.TypeOfChild" name="TypeOfChild" @onclick="() => OnTypeOfChildSelected(Heir)">
+                    <option value="">Fællesbarn eller særbarn?</option>
+                    @foreach (var typeOfChild in Enum.GetValues<TypeOfChild>())
+                    {
+                        <option value="@typeOfChild">@typeOfChild.ToString()</option>
+                    }
+                </select>
+            }
+            @if(Heir.Relation == RelationType.Barn && Heir.TypeOfChild == TypeOfChild.Særbarn ||
+            Heir.Relation != RelationType.Barn && Heir.TypeOfChild != TypeOfChild.Fællesbarn)
+            {
+                <select @bind="SelectedTestatorId" name="Testator">
+                    <option value="">Vælg arvelader</option>
+                    @foreach (var testator in testatorList)
+                    {
+                        <option value="@testator.Id">@testator.Name</option>
+                    }
+                </select>
+            }
+            
+        </div>
     </EditForm>
 
 </div>
 
 
 @code {
+    [CascadingParameter] public NavMenu? NavMenu { get; set; }
+    [Parameter] public Heir Heir { get; set; }
+    [Parameter] public EventCallback<Heir> OnClose { get; set; }
+
+    private EditContext editContext;
     private bool Note = false;
     private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
+    private List<Testator> testatorList { get; set; } = TestatorRepository.testators;
+    private TestatorService service = new TestatorService();
+
+    private int? selectedTestatorId;
+    public int? SelectedTestatorId
+    {
+        get => selectedTestatorId;
+        set
+        {
+            if (selectedTestatorId != value)
+            {
+                selectedTestatorId = value;
+                service.EstablishRelationToHeir(Heir, selectedTestatorId);
+            }
+        }
+    }
 
     private void RemoveHeir(Heir heir)
     {
         HeirsRepository.RemoveHeir(heir.Id);
-        HeirsList = HeirsRepository.Heirs;
-        StateHasChanged();
+        Validate();
+
     }
 
+    protected override void OnInitialized()
+    {
+        var existingTestator = testatorList.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.Relation == Heir.Relation));
+        if (existingTestator != null)
+        {
+            SelectedTestatorId = existingTestator.Id;
+        }
 
-    [Parameter]
-    public Heir Heir { get; set; }
+        editContext = new EditContext(Heir);
+        editContext.OnFieldChanged += HandleFieldChanged;
+        Validate();
+    }
 
-    [Parameter]
-    public EventCallback<Heir> OnClose { get; set; }
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        Validate();
+    }
 
     private async void Close(Heir heir)
     {
         if (OnClose.HasDelegate)
         {
             await OnClose.InvokeAsync(heir);
+            Validate();
+        }
+    }
+
+    private void Validate()
+    {
+        if (NavMenu != null)
+        {
+            NavMenu.IsValid = ValidationService.IsAllFieldsValid(HeirsRepository.Heirs);
+        }
+    }
+
+    private void OnTypeOfChildSelected(Heir heir)
+    {
+        if(heir.TypeOfChild == TypeOfChild.Fællesbarn)
+        {
+            service.EstablishRelationToHeir(heir, SelectedTestatorId);
+        }
+    }
+
+    private void HandleRelationChange()
+    {
+        if (Heir.Relation != RelationType.Barn)
+        {
+            Heir.TypeOfChild = null;
         }
     }
 

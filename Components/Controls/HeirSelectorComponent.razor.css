@@ -1,39 +1,31 @@
 .HeirContainer {
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #EFFAF7;
     width: 100%;
-    padding: 0 8vh 2vh 8vh;
+    padding: 1.5vh 2vw;
     border-radius: 8px;
     box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);
 }
 
-.TopBox
-{
+.TopBox {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 }
 
-.TopBox a {
-    margin-left: 100%;
-}
-
-a {
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-}
-a:hover {
-    cursor: pointer;
-}
+    .TopBox a {
+        margin-left: auto;
+    }
 
 h4 {
-    font-weight: normal;
     font-size: 1em;
     color: #333;
-    margin-bottom: 2vh;
+    margin: 2vh;
     font-family: Arial, sans-serif;
 }
 
@@ -53,7 +45,6 @@ h4 {
     box-sizing: border-box;
 }
 
-
 ::deep select {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIwLDAsMTYsMCw4LDgiIHN0eWxlPSJmaWxsOiM0MjQyNDI7c3Ryb2tlOm5vbmU7Ii8+PC9zdmc+');
     background-repeat: no-repeat;
@@ -61,22 +52,10 @@ h4 {
     background-size: 1.5vh 1.5vw;
 }
 
-
-::deep Form {
-    width: 75%;
-}
-
-/* Hover and focus effects */
-::deep select:hover, ::deep select:focus,
-::deep input:hover, ::deep input:focus {
-    border-color: #aaa;
-    outline: none;
-}
-
 .AssetContainer-remove-btn {
     position: absolute;
-    top: 0%;
-    right: 0%;
+    top: 2%; 
+    right: 2%;
 }
 
 .Remove-btn {
@@ -86,3 +65,6 @@ h4 {
     cursor: pointer;
 }
 
+::deep .validation-message {
+    color: red;
+}

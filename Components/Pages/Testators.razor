@@ -1,4 +1,5 @@
 ﻿@page "/arvelader"
+@using Arvefordeleren.Components.Layout
 
 <div class="main-container">
     <div class="headliner-container">
@@ -11,12 +12,32 @@
     </div>
     
     <div class="body">
-        <TestatorComponent Testator="TestatorRepository.GetTestatorById(1)"/>
-        <TestatorComponent IsSecondary="true" Testator="TestatorRepository.GetTestatorById(2)"/>
+        @if (TestatorRepository.testators.Any())
+        {
+            foreach (var testator in TestatorRepository.testators)
+            {
+                <TestatorComponent Testator="testator"/>
+            }
+        }
     </div>
 </div>
 
 
 
 @code {
+    [CascadingParameter] public NavMenu? NavMenu { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        if (!TestatorRepository.testators.Any())
+        {
+            TestatorRepository.AddNewTestator(new Testator());
+            TestatorRepository.AddNewTestator(new Testator());
+        }
+
+        if (NavMenu != null && !TestatorRepository.testators.Any())
+        {
+            NavMenu.IsValid = false;
+        }
+    }
 }
