@@ -57,12 +57,11 @@ namespace Arvefordeleren.Models.Repositories
 {
     if (!ForcedHeirs.Any(h => h.Id == heir.Id))
     {
-        switch (heir.Relation)
+        switch (heir.RelationType)
         {
             case RelationType.Barn:
             case RelationType.Barnebarn:
             case RelationType.Forældre:
-            case RelationType.Bedsteforældre:
                 ForcedHeirs.Add(heir);
                 DistributeSharesEqually(); // Fordel andelene
                 break;
@@ -79,13 +78,13 @@ namespace Arvefordeleren.Models.Repositories
             }
 
 
-            if (IsForcedRelation(heir.Relation))
+            if (IsForcedRelation(heir.RelationType.Value))
             {
                 ForcedHeirs.Add(heir);
             }
 
 
-            else if(!IsForcedRelation(heir.Relation))
+            else if(!IsForcedRelation(heir.RelationType.Value))
             {
                 ForcedHeirs.Remove(heir);
             }
@@ -98,8 +97,7 @@ namespace Arvefordeleren.Models.Repositories
         {
             return relation == RelationType.Barn ||
                    relation == RelationType.Barnebarn ||
-                   relation == RelationType.Forældre ||
-                   relation == RelationType.Bedsteforældre;
+                   relation == RelationType.Forældre;
         }
 
         
