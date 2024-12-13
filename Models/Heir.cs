@@ -12,30 +12,25 @@ namespace Arvefordeleren.Models
         [Required (ErrorMessage = "Navn skal udfyldes!")]
         public string Name { get; set; }
         [Required (ErrorMessage = "Relation skal udfyldes!")]
-        public RelationType? Relation { get; set; }
+        public RelationType? RelationType { get; set; }
         public double Share { get; set; } = 1.0;
-
-        public TypeOfChild? TypeOfChild { get; set; }
+        public int? ParentId { get; set; } // Tilføjet den her da man åbenbart ikke bare kan kalde på relationstypen
         public List<Testator>? Testators { get; set; } = new List<Testator>();
 
         public string Icon
         {
             get
             {
-                switch (Relation)
+                switch (RelationType)
                 {
-                    case RelationType.Barn:
+                    case Models.RelationType.Barn:
                         return "/images/Barn.png";
 
-                    case RelationType.Barnebarn:
+                    case Models.RelationType.Barnebarn:
                         return "/images/Barnebarn.png";
 
-                    case RelationType.Forældre:
+                    case Models.RelationType.Forældre:
                         return "/images/Forældre.png";
-
-                    case RelationType.Bedsteforældre:
-                        return "/images/Bedsteforældre.png";
-                    
                     default:
                         return "/images/Andet.png";
                 }
@@ -46,12 +41,6 @@ namespace Arvefordeleren.Models
 
     public enum RelationType
     {
-       Barn, Barnebarn, Søskende, Forældre, Bedsteforældre, Andet
+       Barn, Barnebarn, Søskende, Forældre, Andet
     }
-
-    public enum TypeOfChild
-    {
-        Særbarn, Fællesbarn
-    }
-
 }
