@@ -54,7 +54,7 @@
 
     private List<Asset> assetList;
     private List<Heir> heirList;
-    private List<Person> forcedHeirsList => HeirsRepository.ForcedHeirs;
+    private List<Person> forcedHeirsList => Models.Shared.SharedData.ForcedHeirs;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,10 +64,21 @@
 
         foreach (var heir in HeirsRepository.Heirs)
         {
-            HeirsRepository.AddHeirToFamilyList(heir);
-            HeirsRepository.UpdateHeirRelation(heir);
-
+            if (heir is Heir heirAsHeir)
+            {
+                HeirsRepository.AddHeirToFamilyList(heirAsHeir);
+                HeirsRepository.UpdateHeirRelation(heirAsHeir);
+            }
         }
+        
+        var testator = TestatorRepository.GetTestatorById(2);
+        if (testator != null)
+        {
+            TestatorRepository.AddTestatorToForcedHeirs(testator);
+        }
+
+        StateHasChanged();
+
     }
 
     private void ShowAsset()

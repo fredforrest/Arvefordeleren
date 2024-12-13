@@ -17,10 +17,10 @@ else
 
 
         <MudPaper Class="mud-p-4">
-            @foreach (var heir in ForcedHeirsList)
+            @foreach (var person in ForcedHeirsList)
             {
-                <MudTextField Label=@($"Share for Arving: {heir.Name} - {heir.Relation}")
-                              @bind-Value="heir.Share"
+                <MudTextField Label=@($"Share for Arving: {person.Name} - {person.Relation}")
+                              @bind-Value="person.Share"
                               Type="number"
                               Class="mud-mb-2">
                 </MudTextField>
@@ -49,9 +49,9 @@ else
 
     [Parameter]
     public List<PieChartSeriesProps> ForcedInheritanceInput { get; set; } = new List<PieChartSeriesProps>();
-    private List<Person> ForcedHeirsList => HeirsRepository.ForcedHeirs;
+    private List<Person> ForcedHeirsList => Models.Shared.SharedData.ForcedHeirs;
 
-    private List<double> ForcedHeirsValues => ForcedHeirsList.Select(heir => heir.Share).ToList();
-    private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(heir => heir.Name).ToList();
+    private List<double> ForcedHeirsValues => ForcedHeirsList.Select(person => person.Share).ToList();
+    private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(person => person.Name).ToList();
 }
 
