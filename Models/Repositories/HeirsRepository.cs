@@ -4,13 +4,21 @@ namespace Arvefordeleren.Models.Repositories
 {
     public static class HeirsRepository
     {
-        public static List<Heir> Heirs { get; set; } = new List<Heir>();
+         public static List<Heir> Heirs { get; set; } = new List<Heir>();
         public static List<Heir> ForcedHeirs { get; set; } = new List<Heir>();
 
         public static void AddHeir(Heir heir)
         {
             heir.Id = Heirs.Count + 1;
             Heirs.Add(heir);
+        }
+
+         public static void AddForcedHeir(Heir heir)
+        {
+            if (!ForcedHeirs.Contains(heir))
+            {
+                ForcedHeirs.Add(heir);
+            }
         }
 
         public static void RemoveHeir(int id)
@@ -126,7 +134,6 @@ public static void UpdateHeirShare(Heir heir, double newShare)
 
     OnForcedHeirsUpdated?.Invoke(); // Opdater UI
 }
-
 
 
 
