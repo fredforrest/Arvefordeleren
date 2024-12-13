@@ -48,6 +48,6 @@ else
     public List<PieChartSeriesProps> InheritanceInput { get; set; } = new List<PieChartSeriesProps>();
     private List<Heir> HeirsList => HeirsRepository.Heirs;
 
-    private List<double> HeirsValues => HeirsList.Select(heir => heir.Share).ToList();
-    private List<string> HeirsLabels => HeirsList.Select(heir => heir.Name).ToList();
+    private List<double> HeirsValues => HeirsList.Select(h => h.Share).ToList();
+    private List<string> HeirsLabels => HeirsList.Select(h => h.Name).ToList();
 }

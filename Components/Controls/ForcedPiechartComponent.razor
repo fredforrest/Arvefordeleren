@@ -2,10 +2,29 @@
 
 <h3>ForcedPiechartComponent</h3>
 
+
+
+
 <MudChart ChartType="ChartType.Pie"
           Data="@ForcedInheritanceSeries.Select(i => i.Value).ToArray()" 
           Labels="@ForcedInheritanceSeries.Select(i => i.Name).ToArray()" />
 
+<MudChart ChartType="ChartType.Pie"
+          Data="@ForcedHeirsValues.ToArray()"
+          Labels="@ForcedHeirsLabels.ToArray()"
+          Width="400px"
+          Height="400px">
+</MudChart>
+
+<MudChart ChartType="ChartType.Bar"
+          Data="@ForcedHeirsValues"
+          Labels="@ForcedHeirsLabels">
+</MudChart>
+
+<MudChart ChartType="ChartType.Pie"
+          Data="@ForcedHeirsValues"
+          Labels="@ForcedHeirsLabels">
+</MudChart>
 
 @foreach (var heir in HeirsRepository.ForcedHeirs)
 {
@@ -23,41 +42,37 @@
     </div>
 }
 
-@if (!ForcedHeirsList.Any())
+@if (ForcedHeirsList == null || !ForcedHeirsList.Any())
 {
-    <span>No data available for Heirs</span>
+    <span>No data available for Forced Heirs</span>
 }
 else
 {
     <MudPaper Class="mud-p-4">
-        @foreach (var heir in ForcedHeirsList)
-        {
-            <MudTextField T="double"
-                          Label=@($"Share for Arving: {heir.Name} - {heir.Relation}")
-                          Value="@heir.Share"
-                          Immediate="true"
-                          OnBlur="@(e => ValidateAndSetShare(heir))"
-                          Adornment="Adornment.End"
-                          AdornmentText="%" />
-        }
+        <MudChart ChartType="ChartType.Pie"
+                  InputData="@ForcedHeirsValues.ToArray()"
+                  InputLabels="@ForcedHeirsLabels.ToArray()"
+                  Width="400px"
+                  Height="400px" />
     </MudPaper>
 }
 
 @code {
 
         [Parameter]
+        
     public List<PieChartSeriesProps> ForcedInheritanceInput { get; set; }
     private double TotalShare => HeirsRepository.ForcedHeirs.Sum(h => h.Share);
 
     private List<PieChartSeriesProps> ForcedInheritanceSeries => HeirsRepository.ForcedHeirs
-        .Select(h => new PieChartSeriesProps { Name = h.Name, Value = h.Share })
-        .ToList();
+    .Select(h => new PieChartSeriesProps { Name = h.Name, Value = h.Share })
+    .ToList();
 
-    private void OnShareChange(Heir heir, double newShare)
-    {
-        HeirsRepository.UpdateHeirShare(heir, newShare);
-        StateHasChanged(); // Opdater UI
-    }
+   private void OnShareChange(Heir heir, double newShare)
+{
+    HeirsRepository.UpdateHeirShare(heir, newShare);
+    StateHasChanged(); // Opdater UI
+}
 
     private void ValidateAndSetShare(Heir heir)
     {
@@ -100,9 +115,8 @@ else
         }
     }
 
-    private List<Heir> ForcedHeirsList => HeirsRepository.ForcedHeirs;
+   private List<Heir> ForcedHeirsList => HeirsRepository.ForcedHeirs;
 
-    private List<double> ForcedHeirsValues => ForcedHeirsList.Select(heir => heir.Share).ToList();
-
-    private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(heir => heir.Name).ToList();
+    private List<double> ForcedHeirsValues => ForcedHeirsList.Select(h => h.Share).ToList();
+    private List<string> ForcedHeirsLabels => ForcedHeirsList.Select(h => h.Name).ToList();
 }
