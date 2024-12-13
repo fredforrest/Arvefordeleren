@@ -1,6 +1,4 @@
-@using Arvefordeleren.Models.Repositories
-@using MudBlazor
-
+<div class="graph-div">
     <div class="title">
         <div class="title-left">
             <h4>Friarv</h4>
@@ -12,41 +10,28 @@
             </div>
         </div>
     </div>
+    
 
-<h3>FreePiechartComponent</h3>
-
-@if (HeirsList == null || !HeirsList.Any())
-{
-    <span>No data available for Heirs</span>
-}
-else
-{
-    <div>
-        <span>Heirs modtaget fra "HeirsList" Count: @HeirsList.Count</span>
-        <br />
-        <span>Indsæt value for Heirs "Share"</span>
-
-        <MudPaper Class="mud-p-4">
-            @foreach (var heir in HeirsList)
-            {
-                <MudTextField Label=@($"Share for Arving: {heir.Name} ")
-                              @bind-Value="heir.Share"
-                              Type="number"
-                              Class="mud-mb-2">
-                </MudTextField>
-            }
-
-            <MudChart ChartType="ChartType.Pie"
-                      InputData="@HeirsValues.ToArray()"
-                      InputLabels="@HeirsLabels.ToArray()"
-                      Width="400px"
-                      Height="400px">
+    <div class="graph-body">
+        <div class="graph-left">
+            <MudChart ChartType="ChartType.Pie" InputData="@HeirsValues.ToArray()" InputLabels="@HeirsLabels.ToArray()"
+                      Width="100%"
+            >
             </MudChart>
-        </MudPaper>
+        </div>
+
+        <div class="graph-right">
+            <div class="graph-grid">
+                @foreach (var heir in HeirsList)
+                {
+                    <div>
+                        <MudTextField Label=@($"Andel for: {heir.Name} ") @bind-Value="heir.Share" Type="number"/>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-}
-
-
+</div>
 @code {
 
     public class PieChartSeriesProps
@@ -60,6 +45,6 @@ else
     public List<PieChartSeriesProps> InheritanceInput { get; set; } = new List<PieChartSeriesProps>();
     private List<Heir> HeirsList => HeirsRepository.Heirs;
 
-    private List<double> HeirsValues => HeirsList.Select(h => h.Share).ToList();
-    private List<string> HeirsLabels => HeirsList.Select(h => h.Name).ToList();
+    private List<double> HeirsValues => HeirsList.Select(heir => heir.Share).ToList();
+    private List<string> HeirsLabels => HeirsList.Select(heir => heir.Name).ToList();
 }
