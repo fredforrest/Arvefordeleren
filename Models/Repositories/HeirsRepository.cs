@@ -78,7 +78,7 @@ namespace Arvefordeleren.Models.Repositories
                 ForcedHeirs.Remove(existingHeir);
             }
 
-            // Tjek om arvingen kvalificerer sig til ForcedHeirs baseret p� relation
+
             if (IsForcedRelation(heir.Relation))
             {
                 ForcedHeirs.Add(heir);
@@ -90,7 +90,7 @@ namespace Arvefordeleren.Models.Repositories
                 ForcedHeirs.Remove(heir);
             }
 
-            // Udl�s en event for at opdatere UI
+
             OnForcedHeirsUpdated?.Invoke();
         }
 
@@ -122,7 +122,7 @@ public static void UpdateHeirShare(Heir heir, double newShare)
         .Where(h => h.Id != heir.Id)
         .Sum(h => h.Share);
 
-    // Hvis den samlede værdi med ny andel overstiger 100, begræns det
+
     if (totalWithoutCurrent + newShare <= 100)
     {
         heir.Share = newShare;
