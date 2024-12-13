@@ -1,0 +1,72 @@
+﻿<MudPaper style="margin-top: 20px; width: 100%; color: gray; background-color: #EFFAF7; border-radius: 8px; box-shadow: 2px 2px 0 rgba(51, 51, 51, 0.2);" Id="Tree" Width="300px" Elevation="0">
+       <h3 style="color: black; text-align: center; margin-bottom: 20px;">Stamtræ</h3>
+    <MudTreeView T="string" ReadOnly="true" Hover="true" ExpandOnClick="true">
+       
+        @if(testator1.Heirs.Where(h => h.RelationType == RelationType.Forældre).Any())
+        {
+            foreach (Heir parent in testator1.Heirs.Where(h => h.RelationType == RelationType.Forældre))
+            {
+                <MudTreeViewItem Id="Tree" Value="@($"{parent.Name} ({parent.RelationType})")">
+                    <MudTreeViewItem Id="Tree" Value="@($"{testator1.Name}")">
+                        @foreach (Heir heir in testator1.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
+                        {
+                            <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
+                        }
+                    </MudTreeViewItem>
+                </MudTreeViewItem>
+            }
+        }
+        else // Hvis ingen parent, så bare lav børn  
+        {
+            <MudTreeViewItem Id="Tree" Value="@($"{testator1.Name}")">
+                @foreach (Heir heir in testator1.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
+                {
+                    <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
+                }
+            </MudTreeViewItem>
+        }
+        
+        @if (testator2 != null)
+        {
+            @if (testator2.Heirs.Where(h => h.RelationType == RelationType.Forældre).Any())
+            {
+                foreach (Heir parent in testator2.Heirs.Where(h => h.RelationType == RelationType.Forældre))
+                {
+                    <MudTreeViewItem Id="Tree" Value="@($"{parent.Name} ({parent.RelationType})")">
+                        <MudTreeViewItem Id="Tree" Value="@($"{testator2.Name}")">
+                            @foreach (Heir heir in testator2.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
+                            {
+                                <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
+                            }
+                        </MudTreeViewItem>
+                    </MudTreeViewItem>
+                }
+            }
+            else // Hvis ingen parent, så bare lav børn
+            {
+                <MudTreeViewItem Id="Tree" Value="@($"{testator2.Name}")">
+                    @foreach (Heir heir in testator2.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
+                    {
+                        <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
+                    }
+                </MudTreeViewItem>
+            }
+        }
+        
+    </MudTreeView>
+</MudPaper>
+
+@code {
+    private Testator testator1;
+    private Testator testator2;
+
+    protected override void OnInitialized()
+    {
+        testator1 = TestatorRepository.GetTestatorById(1);
+
+        if(TestatorRepository.GetTestatorById(2) != null)
+        {
+            testator2 = TestatorRepository.GetTestatorById(2);
+        }
+    }
+}

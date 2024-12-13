@@ -1,0 +1,134 @@
+@using Arvefordeleren.Components.Layout
+<div class="HeirContainer">
+    <div class="TopBox">
+        <div>
+            <h4>Arving</h4>
+        </div>
+        <div class="AssetContainer-remove-btn">
+            <button class="Remove-btn" @onclick="() => Close(Heir)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    
+    <EditForm EditContext="editContext">
+        <DataAnnotationsValidator/>
+        <ValidationMessage For="() => Heir.Name"></ValidationMessage>
+        <InputText id="name" @bind-Value="Heir.Name" type="text" placeholder="Indtast Navn *"/>
+
+        <select @bind="@SelectedTestatorId" name="Testator" @onclick="Validate">
+            <option value="">Angiv relation</option>
+            @foreach (var testator in TestatorRepository.testators)
+            {
+                <option value="@testator.Id">@testator.Name</option>
+            }
+            <option value=3>Begge</option>
+        </select>
+
+        <div>
+            @if(SelectedTestatorId != null)
+            {
+                <select @bind="Heir.RelationType" name="RelationType">
+                    <option value="">Angiv relation</option>
+                        @foreach (var relation in Enum.GetValues<RelationType>())
+                        {
+                            @if(SelectedTestatorId == 3)
+                            {
+                                if(relation != RelationType.Forældre)
+                                {
+                                    <option value="@relation">@relation.ToString()</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="@relation">@relation.ToString()</option>
+                            }
+                        }
+                </select>
+            }
+        </div>
+    </EditForm>
+
+    <div class="tooltip">
+        Hjælp
+        <span class="tooltiptext">Her skal de oprette deres arvinger med navn, relation og, hvis flere arveladere er oprettet, til hvilken denne arving er tilhørende til. Relationen har en betydning for hvordan tvangsarven fordeles.</span>
+    </div>
+
+</div>
+
+
+@code {
+    [CascadingParameter] public NavMenu? NavMenu { get; set; }
+    [Parameter] public Heir Heir { get; set; }
+    [Parameter] public EventCallback<Heir> OnClose { get; set; }
+
+    private EditContext editContext;
+    private bool Note = false;
+    private TestatorService service = new TestatorService();
+
+    private int? selectedTestatorId;
+    public int? SelectedTestatorId
+    {
+        get => selectedTestatorId;
+        set
+        {
+            
+            if (selectedTestatorId != value)
+            {
+                selectedTestatorId = value;
+                if(selectedTestatorId == 3)
+                {
+                    service.EstablishRelationToHeir(Heir, 1);
+                    service.EstablishRelationToHeir(Heir, 2);
+                }
+                else
+                {
+                    service.EstablishRelationToHeir(Heir, selectedTestatorId);
+                }
+            }
+        }
+    }
+
+    private void RemoveHeir(Heir heir)
+    {
+        HeirsRepository.RemoveHeir(heir.Id);
+        Validate();
+
+    }
+
+    protected override void OnInitialized()
+    {
+        var existingTestator = TestatorRepository.testators.FirstOrDefault(t => t.Heirs.Any(h => h.Name == Heir.Name && h.RelationType == Heir.RelationType));
+        if (existingTestator != null)
+        {
+            SelectedTestatorId = existingTestator.Id;
+        }
+
+        editContext = new EditContext(Heir);
+        editContext.OnFieldChanged += HandleFieldChanged;
+        Validate();
+    }
+
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        Validate();
+    }
+
+    private async void Close(Heir heir)
+    {
+        if (OnClose.HasDelegate)
+        {
+            await OnClose.InvokeAsync(heir);
+            Validate();
+        }
+    }
+
+    private void Validate()
+    {
+        if (NavMenu != null)
+        {
+            NavMenu.IsValid = ValidationService.IsAllFieldsValid(HeirsRepository.Heirs);
+        }
+    }
+}
