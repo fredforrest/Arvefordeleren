@@ -8,7 +8,7 @@
             {
                 <MudTreeViewItem Id="Tree" Value="@($"{parent.Name} ({parent.RelationType})")">
                     <MudTreeViewItem Id="Tree" Value="@($"{testator1.Name}")">
-                        @foreach (Heir heir in testator1.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn))
+                        @foreach (Heir heir in testator1.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
                         {
                             <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
                         }
@@ -19,36 +19,40 @@
         else // Hvis ingen parent, så bare lav børn  
         {
             <MudTreeViewItem Id="Tree" Value="@($"{testator1.Name}")">
-                @foreach (Heir heir in testator1.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn))
+                @foreach (Heir heir in testator1.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
                 {
                     <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
                 }
             </MudTreeViewItem>
         }
         
-        @if (testator2.Heirs.Where(h => h.RelationType == RelationType.Forældre).Any())
+        @if (testator2 != null)
         {
-            foreach (Heir parent in testator2.Heirs.Where(h => h.RelationType == RelationType.Forældre))
+            @if (testator2.Heirs.Where(h => h.RelationType == RelationType.Forældre).Any())
             {
-                <MudTreeViewItem Id="Tree" Value="@($"{parent.Name} ({parent.RelationType})")">
-                    <MudTreeViewItem Id="Tree" Value="@($"{testator2.Name}")">
-                        @foreach (Heir heir in testator2.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn))
-                        {
-                            <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
-                        }
+                foreach (Heir parent in testator2.Heirs.Where(h => h.RelationType == RelationType.Forældre))
+                {
+                    <MudTreeViewItem Id="Tree" Value="@($"{parent.Name} ({parent.RelationType})")">
+                        <MudTreeViewItem Id="Tree" Value="@($"{testator2.Name}")">
+                            @foreach (Heir heir in testator2.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
+                            {
+                                <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
+                            }
+                        </MudTreeViewItem>
                     </MudTreeViewItem>
+                }
+            }
+            else // Hvis ingen parent, så bare lav børn
+            {
+                <MudTreeViewItem Id="Tree" Value="@($"{testator2.Name}")">
+                    @foreach (Heir heir in testator2.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn || h.RelationType == RelationType.Søskende))
+                    {
+                        <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
+                    }
                 </MudTreeViewItem>
             }
         }
-        else // Hvis ingen parent, så bare lav børn
-        {
-            <MudTreeViewItem Id="Tree" Value="@($"{testator2.Name}")">
-                @foreach (Heir heir in testator2.Heirs.Where(h => h.RelationType == RelationType.Barn || h.RelationType == RelationType.Barnebarn))
-                {
-                    <MudTreeViewItem Id="Tree" Value="@($"{heir.Name} ({heir.RelationType})")"></MudTreeViewItem>
-                }
-            </MudTreeViewItem>
-        }
+        
     </MudTreeView>
 </MudPaper>
 
