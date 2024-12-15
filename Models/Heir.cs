@@ -13,7 +13,7 @@ namespace Arvefordeleren.Models
         public string Name { get; set; }
         [Required (ErrorMessage = "Relation skal udfyldes!")]
         public RelationType? Relation { get; set; }
-        public double Share { get; set; } = 1.0;
+        public double Share { get; set; } = 100.0;
 
         public TypeOfChild? TypeOfChild { get; set; }
         public List<Testator>? Testators { get; set; } = new List<Testator>();

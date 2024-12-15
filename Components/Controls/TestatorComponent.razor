@@ -1,30 +1,29 @@
 @using Arvefordeleren.Components.Layout
-@using Arvefordeleren.Services
 
 <div class="testator-container">
     <EditForm EditContext="_editContext">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
         <div class="form-group">
             <ValidationMessage For="() => Testator.Name"></ValidationMessage>
             <label for="name">Navn *</label>
-            <InputText id="name" @bind-Value="Testator.Name" type="text" placeholder="Indtast Navn"/>
+            <InputText id="name" @bind-Value="Testator.Name" type="text" placeholder="Indtast Navn" />
         </div>
 
-            <div class="form-group">
-                <label for="address">Adresse</label>
-                <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
-            </div>
+        <div class="form-group">
+            <label for="address">Adresse</label>
+            <InputText id="address" class="form-control" @bind-Value="Testator.Address" placeholder="Indtast Adresse"></InputText>
+        </div>
 
-            <div class="form-group">
-                <label for="mail">Email</label>
-                <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
-            </div>
+        <div class="form-group">
+            <label for="mail">Email</label>
+            <InputText id="mail" class="form-control" @bind-Value="Testator.Email" placeholder="Indtast Email"></InputText>
+        </div>
 
         @if (Testator.Id == 1)
         {
             <div class="form-group">
                 <label>Er du gift?</label>
-                <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large"/>
+                <MudSwitch @bind-Value="Testator.isMarried" Color="Color.Success" Size="Size.Large" />
             </div>
         }
     </EditForm>
@@ -37,9 +36,6 @@
     [Parameter] public Testator Testator { get; set; }
     public bool EnableOtherField;
     private EditContext? _editContext;
-    
-    private List<Person> ForcedHeirs => HeirsRepository.ForcedHeirs;
-
 
     protected override void OnInitialized()
     {
@@ -52,12 +48,12 @@
         }
         Validate();
     }
-    
-        private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
-        {
-            Validate();
-        }
-    
+
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        Validate();
+    }
+
     private void Validate()
     {
         if (NavMenu != null && EnableOtherField == false)
@@ -69,27 +65,4 @@
             NavMenu.IsValid = ValidationService.IsAllFieldsValid(TestatorRepository.testators);
         }
     }
-            Enable = true;
-        }
-
-        var spouse = new Person();
-
-        spouse = TestatorRepository.GetTestatorById(2);
-
-        if (spouse != null)
-        {
-            TestatorRepository.AddTestatorToForcedHeirs(spouse);
-            StateHasChanged();
-        }
-    }
-
-    // private void AddTestatorToForcedHeirs(Person testator)
-    // {
-    //     if (testator.Id == 2)
-    //     {
-    //         ForcedHeirsList.Add(testator);
-    //     }
-    // }
-
-    public bool Enable;
 }

@@ -77,8 +77,24 @@
             TestatorRepository.AddTestatorToForcedHeirs(testator);
         }
 
+        ExecuteDistributionLogic();
+
+
         StateHasChanged();
 
+    }
+
+    private void ExecuteDistributionLogic()
+    {
+        // Check if there's a spouse in the forced heirs list
+        var spouse = forcedHeirsList.FirstOrDefault(h => h.Address != null);
+
+        // If a spouse is present, distribute shares with the spouse and children
+        if (spouse != null)
+        {
+            var children = forcedHeirsList.Where(h => h.Relation == RelationType.Barn).ToList();
+            HeirsRepository.DistributeSharesWithSpouseAndChildren();
+        }
     }
 
     private void ShowAsset()
