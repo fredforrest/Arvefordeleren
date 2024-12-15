@@ -68,6 +68,8 @@
             {
                 HeirsRepository.AddHeirToFamilyList(heirAsHeir);
                 HeirsRepository.UpdateHeirRelation(heirAsHeir);
+                HeirsRepository.OnForcedHeirsUpdated += UpdateHeirList;
+
             }
         }
         
@@ -82,6 +84,12 @@
 
         StateHasChanged();
 
+    }
+
+    private void UpdateHeirList()
+    {
+        heirList = HeirsRepository.Heirs;
+        StateHasChanged();
     }
 
     private void ExecuteDistributionLogic()
