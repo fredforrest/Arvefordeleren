@@ -40,6 +40,25 @@
                 </div>
             }
         </div>
+
+@*         <!-- Kasse for tvangsarvinger -->
+        <div class="content-container">
+            <h3>Tvangsarvinger</h3>
+            <div class="content">
+                @foreach (Person person in forcedHeirsList)
+                {
+                    <div class="item @(person == selectedItem ? "highlighted" : "")" @onclick="() => SelectItem(person)">
+                        <div class="icon">
+                            <img class="icon" src="@person.Icon" />
+                        </div>
+                        <div class="details">
+                            <strong>@person.Name</strong>
+                            <p>@person.Relation</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div> *@
     }
 </div>
 
@@ -72,7 +91,7 @@
 
             }
         }
-        
+
         var testator = TestatorRepository.GetTestatorById(2);
         if (testator != null)
         {
@@ -80,6 +99,8 @@
         }
 
         //ExecuteDistributionLogic();
+
+        HeirsRepository.UpdateShares();
 
         StateHasChanged();
     }

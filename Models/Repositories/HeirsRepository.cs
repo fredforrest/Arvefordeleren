@@ -78,7 +78,7 @@ namespace Arvefordeleren.Models.Repositories
             }
             //PROBLEMER HERRRRRR MED SHARE
         }
-        private static void UpdateShares()
+        public static void UpdateShares()
         {
             var children = ForcedHeirs.Where(h => h.Relation == RelationType.Barn).ToList();
             var spouse = ForcedHeirs.FirstOrDefault(h => h is Testator testator && testator.Address != null);
