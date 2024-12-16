@@ -14,26 +14,10 @@
                 if (testator.Id == 2)
                 {
                     ForcedHeirs.Add(testator);
-
                 }
             }
 
         }
-
-        //public static void AddTestatorToForcedHeirs(Person testator)
-        //{
-        //    if (!testators.Any(t => t.Id == testator.Id))
-        //    {
-        //        ForcedHeirs.Add(new Person
-        //        {
-        //            Id = testator.Id,
-        //            Name = testator.Name,
-        //          // Or appropriate relation type for a Testator.
-        //        });
-        //    }
-        //}
-
-
 
         public static void AddNewTestator(Testator testator)
         {

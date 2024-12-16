@@ -62,13 +62,13 @@ namespace Arvefordeleren.Models.Repositories
             }
             else if (!ForcedHeirs.Any(h => h.Id == heir.Id))
             {
-                if (IsForcedRelation((RelationType)heir.Relation))
+                if (IsForcedRelation((RelationType)heir.RelationType))
                 {
                     ForcedHeirs.Add(new Person
                     {
                         Id = heir.Id,
                         Name = heir.Name,
-                        Relation = heir.Relation
+                        Relation = heir.RelationType
                     });
                     
              
@@ -82,7 +82,7 @@ namespace Arvefordeleren.Models.Repositories
         {
             var children = ForcedHeirs.Where(h => h.Relation == RelationType.Barn).ToList();
             var spouse = ForcedHeirs.FirstOrDefault(h => h is Testator testator && testator.Address != null);
-            var parents = ForcedHeirs.Where(h => h.Relation == RelationType.For�ldre).ToList();
+            var parents = ForcedHeirs.Where(h => h.Relation == RelationType.Forældre).ToList();
 
             // Hvis der ikke er b�rn eller for�ldre
             if (children.Count == 0 && parents.Count == 0)
@@ -170,13 +170,13 @@ namespace Arvefordeleren.Models.Repositories
                 ForcedHeirs.Remove(existingHeir);
             }
 
-            if (IsForcedRelation((RelationType)heir.Relation))
+            if (IsForcedRelation((RelationType)heir.RelationType))
             {
                 ForcedHeirs.Add(new Person
                 {
                     Id = heir.Id,
                     Name = heir.Name,
-                    Relation = heir.Relation
+                    Relation = heir.RelationType
                 });
 
                 UpdateShares();
@@ -190,8 +190,26 @@ namespace Arvefordeleren.Models.Repositories
         {
             return relation == RelationType.Barn ||
                    relation == RelationType.Barnebarn ||
-                   relation == RelationType.For�ldre ||
-                   relation == RelationType.Bedstefor�ldre;
+                   relation == RelationType.Forældre;
+        }
+
+        public static void UpdateHeirShare(Person heir, double newShare)
+        {
+            double totalWithoutCurrent = ForcedHeirs
+                .Where(h => h.Id != heir.Id)
+                .Sum(h => h.Share);
+
+
+            if (totalWithoutCurrent + newShare <= 100)
+            {
+                heir.Share = newShare;
+            }
+            else
+            {
+                heir.Share = Math.Max(0, 100 - totalWithoutCurrent);
+            }
+
+            OnForcedHeirsUpdated?.Invoke(); // Opdater UI
         }
 
     }

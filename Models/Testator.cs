@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
-
-namespace Arvefordeleren.Models
+﻿namespace Arvefordeleren.Models
 {
     public class Testator : Person
     {
         public int Id { get; set; }
-        [Required (AllowEmptyStrings = false, ErrorMessage = "Navn skal udfyldes!")]
-        public string? Name { get; set; } = "";
-
         public bool isMarried { get; set; }
 
         public string? Address { get; set; } = "";

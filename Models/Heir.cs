@@ -6,11 +6,9 @@ using static MudBlazor.Icons.Material;
 
 namespace Arvefordeleren.Models
 {
-    public class Heir
+    public class Heir : Person
     {
         public int Id { get; set; }
-        [Required (ErrorMessage = "Navn skal udfyldes!")]
-        public string Name { get; set; }
         [Required (ErrorMessage = "Relation skal udfyldes!")]
         public RelationType? RelationType { get; set; }
         public double Share { get; set; } = 1.0;

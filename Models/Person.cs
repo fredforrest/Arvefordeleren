@@ -1,8 +1,11 @@
-﻿namespace Arvefordeleren.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Arvefordeleren.Models
 {
     public class Person
     {
         public int Id { get; set; }
+        [Required (AllowEmptyStrings = false, ErrorMessage = "Navn skal udfyldes!")]
         public string Name { get; set; }
         public double Share { get; set; }
         public string? Address { get; set; }
@@ -23,14 +26,8 @@
                     case RelationType.Forældre:
                         return "/images/Forældre.png";
 
-                    case RelationType.Bedsteforældre:
-                        return "/images/Bedsteforældre.png";
-
-                    case RelationType.Andet:
-                        return "/images/Andet.png";
-
                     default:
-                        return "/images/favicon.png";
+                        return "/images/Andet.png";
                 }
             }
         }
