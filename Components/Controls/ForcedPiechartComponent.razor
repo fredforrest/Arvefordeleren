@@ -32,9 +32,9 @@
                                      MaxValue="@GetMaxAllowedShare(heir)"
                                      ValueChanged="@(newShare => OnShareChange(heir, newShare))"
                                      Immediate="true"
-                                     Step="1"
                                      Adornment="Adornment.End"
-                                     AdornmentText="%" />
+                                     AdornmentText="%"
+                                     HideSpinButtons="true" disabled/>
                 </div>
                 }
             </div>
