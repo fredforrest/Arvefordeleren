@@ -1,5 +1,6 @@
 ﻿@page "/rapport"
 @using System.IO.Compression
+@using Arvefordeleren.Services
 @inject IJSRuntime JS
 
 <div class="main-container">
@@ -10,10 +11,12 @@
     <div class="body">
         <div class="left-body">
             <FreePiechartComponent InheritanceInput="@FreeInheritanceSeries" />
+            <br />
+            <ForcedPiechartComponent ForcedInheritanceInput="@ForcedInheritanceSeries" />
+
         </div>
         <div class="right-body">
             <RapportListComponent/>
-            <FamilyTreeComponent/>
         </div>
     </div>
     <div class="btn-box">
@@ -25,25 +28,27 @@
 
 @code {
     private List<Heir> FreeInheritance { get; set; } = new List<Heir>();
+    private List<Person> ForcedInheritance => Models.Shared.SharedData.ForcedHeirs;
+
 
     private List<FreePiechartComponent.PieChartSeriesProps> FreeInheritanceSeries => FreeInheritance.Select(h => new FreePiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
-    
+
     private async Task _download()
     {
         if (AssetsRepository.Assets.Any())
-             CSVExporter.AssetsExport(AssetsRepository.Assets);
-        
+            CSVExporter.AssetsExport(AssetsRepository.Assets);
+
         if (TestatorRepository.testators.Any())
             CSVExporter.TestatorsExport(TestatorRepository.testators);
-        
+
         if (HeirsRepository.Heirs.Any())
-            CSVExporter.HeirsExport(HeirsRepository.Heirs);
+            CSVExporter.HeirsExport(HeirsRepository.Heirs.OfType<Heir>().ToList());
 
         if (File.Exists(@"Data/data.zip"))
         {
             File.Delete(@"Data/data.zip");
         }
-        
+
         ZipFile.CreateFromDirectory("Data/Downloads/", "Data/data.zip");
         var fileStream = File.OpenRead(@"Data/data.zip");
         var fileName = "Arvefordeleren.zip";
@@ -51,5 +56,16 @@
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 
         await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+    private List<ForcedPiechartComponent.PieChartSeriesProps> ForcedInheritanceSeries => ForcedInheritance.Select(h => new ForcedPiechartComponent.PieChartSeriesProps { Name = h.Name, Value = h.Share }).ToList();
+
+    private List<Heir> HeirsList { get; set; } = HeirsRepository.Heirs;
+
+    protected override void OnInitialized()
+    {
+        HeirsRepository.OnForcedHeirsUpdated = () =>
+        {
+            StateHasChanged(); 
+        };
     }
 }
