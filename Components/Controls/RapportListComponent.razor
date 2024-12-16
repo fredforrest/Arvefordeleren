@@ -40,6 +40,25 @@
                 </div>
             }
         </div>
+
+@*         <!-- Kasse for tvangsarvinger -->
+        <div class="content-container">
+            <h3>Tvangsarvinger</h3>
+            <div class="content">
+                @foreach (Person person in forcedHeirsList)
+                {
+                    <div class="item @(person == selectedItem ? "highlighted" : "")" @onclick="() => SelectItem(person)">
+                        <div class="icon">
+                            <img class="icon" src="@person.Icon" />
+                        </div>
+                        <div class="details">
+                            <strong>@person.Name</strong>
+                            <p>@person.Relation</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div> *@
     }
 </div>
 
@@ -54,7 +73,7 @@
 
     private List<Asset> assetList;
     private List<Heir> heirList;
-    private List<Heir> forcedHeirsList => HeirsRepository.ForcedHeirs;
+    private List<Person> forcedHeirsList => Models.Shared.SharedData.ForcedHeirs;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,11 +83,45 @@
 
         foreach (var heir in HeirsRepository.Heirs)
         {
-            HeirsRepository.AddHeirToFamilyList(heir);
-            HeirsRepository.UpdateHeirRelation(heir);
+            if (heir is Heir heirAsHeir)
+            {
+                HeirsRepository.AddHeirToFamilyList(heirAsHeir);
+                HeirsRepository.UpdateHeirRelation(heirAsHeir);
+                HeirsRepository.OnForcedHeirsUpdated += UpdateHeirList;
 
+            }
         }
+
+        var testator = TestatorRepository.GetTestatorById(2);
+        if (testator != null)
+        {
+            TestatorRepository.AddTestatorToForcedHeirs(testator);
+        }
+
+        //ExecuteDistributionLogic();
+
+        HeirsRepository.UpdateShares();
+
+        StateHasChanged();
     }
+
+    private void UpdateHeirList()
+    {
+        heirList = HeirsRepository.Heirs;
+        StateHasChanged();
+    }
+
+    // private void ExecuteDistributionLogic()
+    // {
+        
+    //     var spouse = forcedHeirsList.FirstOrDefault(h => h.Address != null);
+
+    //     if (spouse != null)
+    //     {
+    //         var children = forcedHeirsList.Where(h => h.Relation == RelationType.Barn).ToList();
+    //         //HeirsRepository.DistributeSharesWithSpouseAndChildren();
+    //     }
+    // }
 
     private void ShowAsset()
     {

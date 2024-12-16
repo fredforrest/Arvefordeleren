@@ -3,7 +3,7 @@ using System.Dynamic;
 
 namespace Arvefordeleren.Models
 {
-    public class Testator
+    public class Testator : Person
     {
         public int Id { get; set; }
         [Required (AllowEmptyStrings = false, ErrorMessage = "Navn skal udfyldes!")]
@@ -14,6 +14,7 @@ namespace Arvefordeleren.Models
         public string? Address { get; set; } = "";
 
         public string? Email { get; set; }
+        public double Share { get; set; }
 
         public List<Heir> Heirs { get; set; } = new List<Heir>();
 

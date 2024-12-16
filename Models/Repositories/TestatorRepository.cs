@@ -4,6 +4,37 @@
     {
         public static List<Testator> testators { get; set; } = new List<Testator>();
 
+        public static List<Person> ForcedHeirs => Shared.SharedData.ForcedHeirs;
+
+        public static void AddTestatorToForcedHeirs(Testator testator)
+        {
+
+            if (!ForcedHeirs.OfType<Testator>().Any(t => t.Id == testator.Id))
+            {
+                if (testator.Id == 2)
+                {
+                    ForcedHeirs.Add(testator);
+
+                }
+            }
+
+        }
+
+        //public static void AddTestatorToForcedHeirs(Person testator)
+        //{
+        //    if (!testators.Any(t => t.Id == testator.Id))
+        //    {
+        //        ForcedHeirs.Add(new Person
+        //        {
+        //            Id = testator.Id,
+        //            Name = testator.Name,
+        //          // Or appropriate relation type for a Testator.
+        //        });
+        //    }
+        //}
+
+
+
         public static void AddNewTestator(Testator testator)
         {
             int maxId = testators.Any() ? testators.Max(t => t.Id) : 0; // Hvis listen er tom, start med ID 1
