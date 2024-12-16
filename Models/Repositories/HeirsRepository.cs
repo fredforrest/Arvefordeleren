@@ -76,23 +76,90 @@ namespace Arvefordeleren.Models.Repositories
                 UpdateShares();
                 OnForcedHeirsUpdated?.Invoke();
             }
+            //PROBLEMER HERRRRRR MED SHARE
         }
-
         private static void UpdateShares()
         {
-            if (ForcedHeirs.Count == 0) return;
+            var children = ForcedHeirs.Where(h => h.Relation == RelationType.Barn).ToList();
+            var spouse = ForcedHeirs.FirstOrDefault(h => h is Testator testator && testator.Address != null);
+            var parents = ForcedHeirs.Where(h => h.Relation == RelationType.Forældre).ToList();
 
-            // Calculate equal share
-            double equalShare = 100.0 / ForcedHeirs.Count;
-
-            // Assign the share to each person in the list
-            foreach (var person in ForcedHeirs)
+            // Hvis der ikke er børn eller forældre
+            if (children.Count == 0 && parents.Count == 0)
             {
-                person.Share = equalShare;
+                // Hvis der er ægtefælle, får ægtefællen 100%
+                if (spouse != null)
+                {
+                    spouse.Share = 100.0;
+                }
             }
+            else
+            {
+                // Hvis der er børn
+                if (children.Count > 0)
+                {
+                    if (spouse != null)
+                    {
+                        // Hvis der er ægtefælle, får ægtefællen 50%
+                        spouse.Share = 50.0;
+
+                        // Fordel resterende 50% til børnene
+                        double equalShare = 50.0 / children.Count;
+                        foreach (var child in children)
+                        {
+                            child.Share = equalShare;
+                        }
+                    }
+                    else
+                    {
+                        // Hvis der ikke er ægtefælle, og der er børn, fordeles 100% mellem børnene
+                        double equalShare = 100.0 / children.Count;
+                        foreach (var child in children)
+                        {
+                            child.Share = equalShare;
+                        }
+                    }
+                }
+
+                // Hvis der er forældre, men ikke børn
+                else if (parents.Count > 0)
+                {
+                    if (spouse != null)
+                    {
+                        // Hvis der er ægtefælle, får ægtefællen 50%
+                        spouse.Share = 50.0;
+
+                        // Fordel resterende 50% til forældrene
+                        double equalShareForParents = 50.0 / parents.Count;
+
+                        foreach (var parent in parents)
+                        {
+                            parent.Share = equalShareForParents;
+                        }
+                    }
+                    else
+                    {
+                        // Hvis der ikke er ægtefælle, og der kun er forældre, deles 100% mellem forældrene
+                        double equalShareForParents = 100.0 / parents.Count;
+                        foreach (var parent in parents)
+                        {
+                            parent.Share = equalShareForParents;
+                        }
+                    }
+                }
+            }
+
+            // Hvis der er både ægtefælle og børn, forældre får ikke noget
+            if (spouse != null && children.Count > 0)
+            {
+                // Forældre får intet, deres share sættes til 0
+                foreach (var parent in parents)
+                {
+                    parent.Share = 0.0;
+                }
+            }
+
         }
-
-
 
 
         public static void UpdateHeirRelation(Heir heir)
@@ -111,6 +178,8 @@ namespace Arvefordeleren.Models.Repositories
                     Name = heir.Name,
                     Relation = heir.Relation
                 });
+
+                UpdateShares();
             }
 
             // Udløs en event for at opdatere UI
@@ -123,64 +192,6 @@ namespace Arvefordeleren.Models.Repositories
                    relation == RelationType.Barnebarn ||
                    relation == RelationType.Forældre ||
                    relation == RelationType.Bedsteforældre;
-        }
-
-
-        public static void DistributeSharesWithSpouseAndChildren()
-        {
-
-            foreach (var person in ForcedHeirs)
-            {
-                person.Share = 100.0;
-            }
-
-            // Identificer spouse i ForcedHeirs list (hvor Address is NOT NULL)
-            var spouse = ForcedHeirs.FirstOrDefault(person => person.Address != null);
-
-            if (spouse == null)
-            {
-                throw new InvalidOperationException("No spouse found in the ForcedHeirs list.");
-            }
-
-            // Identificer children i ForcedHeirs list (Relation == Barn)
-            var children = ForcedHeirs.Where(person => person.Relation == RelationType.Barn).ToList();
-
-            // Giv 50% share til spouse
-            spouse.Share = 50;
-
-            if (children.Count == 0)
-            {
-                spouse.Share = 100;
-
-                // Ingen børn, spouse får 100%
-                //foreach (var person in ForcedHeirs.Where(p => p.Id != spouse.Id))
-                //{
-                //    person.Share = 0;
-                //}
-            }
-            else
-            {
-                spouse.Share = 50;
-
-                double childShare = 50.0 / children.Count;
-                foreach (var child in children)
-
-                {
-                    child.Share = childShare;
-                }
-
-
-                //// Divider remaining 50% lige mellem børn
-                //double childShare = 50.0 / children.Count;
-
-                //foreach (var child in children)
-                //{
-                //    child.Share = childShare;
-                //}
-            }
-
-            // Trigger UI update
-            OnForcedHeirsUpdated?.Invoke();
         }
 
     }
