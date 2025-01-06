@@ -29,7 +29,7 @@
         <div>
             @if(SelectedTestatorId != null)
             {
-                <select @bind="Heir.RelationType" name="RelationType">
+                <select @bind="Heir.RelationType" name="RelationType" @onclick="Validate">
                     <option value="">Angiv relation</option>
                         @foreach (var relation in Enum.GetValues<RelationType>())
                         {

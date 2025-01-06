@@ -1,4 +1,4 @@
-﻿<div class="graph-div">
+<div class="graph-div">
     <div class="title">
         <div class="title-left">
             <h4>Friarv</h4>
@@ -16,7 +16,7 @@
         <div class="graph-left">
             <MudChart ChartType="ChartType.Pie" InputData="@HeirsValues.ToArray()" InputLabels="@HeirsLabels.ToArray()"
                       Width="100%"
-                      >
+            >
             </MudChart>
         </div>
 
@@ -24,9 +24,9 @@
             <div class="graph-grid">
                 @foreach (var heir in HeirsList)
                 {
-                <div>
-                    <MudTextField Label=@($"Andel for: {heir.Name} ") @bind-Value="heir.Share" Type="number"/>
-                </div>
+                    <div>
+                        <MudTextField Label=@($"Andel for: {heir.Name} ") @bind-Value="heir.Share" Type="number"/>
+                    </div>
                 }
             </div>
         </div>
