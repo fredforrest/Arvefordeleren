@@ -3,6 +3,8 @@
 ## Project Intro
 A powerful tool designed to streamline the estate planning process for attorneys. With this application, you can simulate the division of assets among heirs, tailoring distributions to meet your client’s wishes with precision and clarity.
 
+Developed in .Net Blazor using Entity Frameworkcore.
+
 Key features include the ability to work with two testators (e.g., spouses) and support for an unlimited number of assets and heirs, allowing for comprehensive and flexible estate planning. By experimenting with various scenarios, attorneys can prepare detailed proposals before meeting with clients, saving time and ensuring the most effective testament solutions.
 
 Simplify estate planning with the Inheritance Simulator—your assistant in creating thoughtful, equitable inheritances.
